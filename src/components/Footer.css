@@ -1,0 +1,34 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2rem 0 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.footer-left p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.version {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+}

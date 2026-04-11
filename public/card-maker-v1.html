@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전단지 상품 카드 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'GmarketSans';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'GmarketSans';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'TmonMonsori';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.woff2') format('woff2-variations');
+      font-weight: 100 900;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #eef0f4;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #5c4ee8, #9b8dff);
+      color: white;
+      padding: 16px 28px;
+      font-size: 19px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 12px rgba(92,78,232,0.3);
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+
+    /* ── Left panel ─────────────────────────────────────────────────────── */
+    .ctrl-panel {
+      width: 360px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    }
+
+    .card-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    /* ── Inputs ─────────────────────────────────────────────────────────── */
+    input[type="text"] {
+      width: 100%;
+      border: 1.5px solid #e3e3e3;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #333;
+      outline: none;
+      transition: border-color .18s;
+      background: #fafafa;
+    }
+    input[type="text"]:focus { border-color: #5c4ee8; background: #fff; }
+
+    select {
+      flex: 1;
+      border: 1.5px solid #e3e3e3;
+      border-radius: 8px;
+      padding: 7px 8px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #333;
+      background: #fafafa;
+      cursor: pointer;
+      outline: none;
+      transition: border-color .18s;
+      min-width: 0;
+    }
+    select:focus { border-color: #5c4ee8; }
+
+    input[type="number"] {
+      width: 58px;
+      border: 1.5px solid #e3e3e3;
+      border-radius: 8px;
+      padding: 7px 6px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #333;
+      text-align: center;
+      outline: none;
+      transition: border-color .18s;
+      background: #fafafa;
+      flex-shrink: 0;
+    }
+    input[type="number"]:focus { border-color: #5c4ee8; }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .unit { font-size: 11px; color: #bbb; flex-shrink: 0; }
+
+    /* ── Sliders ─────────────────────────────────────────────────────────── */
+    .sliders {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f2f2f2;
+    }
+    .sr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 7px;
+    }
+    .sr label {
+      font-size: 11px;
+      color: #888;
+      min-width: 44px;
+      flex-shrink: 0;
+    }
+    .sr input[type="range"] {
+      flex: 1;
+      accent-color: #5c4ee8;
+      cursor: pointer;
+      height: 4px;
+    }
+    .sv {
+      font-size: 11px;
+      color: #5c4ee8;
+      font-weight: 700;
+      min-width: 38px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── Upload ─────────────────────────────────────────────────────────── */
+    .upload-box {
+      border: 2px dashed #d8d8d8;
+      border-radius: 10px;
+      padding: 20px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: #fafafa;
+      user-select: none;
+    }
+    .upload-box:hover, .upload-box.drag { border-color: #5c4ee8; background: #f5f3ff; }
+    .upload-box.done { border-color: #00b894; background: #f0faf7; }
+    .upload-icon { font-size: 28px; }
+    .upload-main { font-size: 13px; font-weight: 600; color: #555; margin: 3px 0 2px; }
+    .upload-sub  { font-size: 11px; color: #bbb; }
+
+    /* ── Badge colors ────────────────────────────────────────────────────── */
+    .color-row { display: flex; gap: 10px; margin-top: 6px; margin-bottom: 4px; }
+    .dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: transform .15s, border-color .15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .dot.on  { border-color: #222; transform: scale(1.18); }
+    .dot.red   { background: #e74c3c; }
+    .dot.blue  { background: #2980b9; }
+    .dot.green { background: #27ae60; }
+
+    /* ── Text color picker ───────────────────────────────────────────────── */
+    .cp-row {
+      display: flex; align-items: center; gap: 6px; margin-top: 8px;
+    }
+    .cp-label {
+      font-size: 11px; color: #999; min-width: 40px; flex-shrink: 0;
+    }
+    .cdot {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer; flex-shrink: 0;
+      transition: transform .15s, border-color .15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .cdot.on { border-color: #5c4ee8; transform: scale(1.25); }
+    .cdot.cw { background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.35); }
+    .cdot.ck { background: #111111; }
+    .cdot.cr { background: #e74c3c; }
+    .cdot.cg { background: #888888; }
+    .cdot.cb { background: #2980b9; }
+
+    /* ── Badge shape buttons ─────────────────────────────────────────────── */
+    .shape-row { display: flex; gap: 7px; margin-top: 6px; }
+    .shape-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      gap: 5px; padding: 8px 4px;
+      border: 1.5px solid #e3e3e3; border-radius: 10px;
+      background: #fafafa; cursor: pointer; font-family: inherit;
+      font-size: 10px; font-weight: 700; color: #aaa;
+      transition: all .18s;
+    }
+    .shape-btn:hover { border-color: #bbb; color: #666; }
+    .shape-btn.on    { border-color: #5c4ee8; background: #f5f3ff; color: #5c4ee8; }
+    .shape-btn svg   { display: block; }
+
+    /* ── Stroke toggle ───────────────────────────────────────────────────── */
+    .stroke-row {
+      display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+    }
+    .stk-btn {
+      font-size: 11px; font-weight: 700; font-family: inherit;
+      padding: 3px 11px; border-radius: 20px;
+      border: 1.5px solid #ddd; background: #f5f5f5; color: #bbb;
+      cursor: pointer; transition: all .2s; flex-shrink: 0;
+    }
+    .stk-btn.on { background: #5c4ee8; border-color: #5c4ee8; color: white; }
+
+    .field-label {
+      font-size: 12px; color: #777; margin-bottom: 5px; margin-top: 10px;
+    }
+
+    /* ── Preview ─────────────────────────────────────────────────────────── */
+    .preview-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 20px;
+      align-self: flex-start;
+    }
+    .preview-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      width: 100%;
+      max-width: 700px;
+    }
+    .size-row {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; font-size: 12px; color: #888; margin-bottom: 14px;
+    }
+    .size-row input[type="number"] { width: 72px; }
+    .apply-btn {
+      padding: 6px 14px;
+      background: #f0f0f0;
+      border: none; border-radius: 7px;
+      font-size: 12px; font-weight: 600; color: #555;
+      cursor: pointer; font-family: inherit;
+      transition: background .15s;
+    }
+    .apply-btn:hover { background: #e0e0e0; }
+
+    .canvas-wrap {
+      border-radius: 10px; overflow: hidden;
+      display: flex; justify-content: center;
+      background-color: #e8e8e8;
+      background-image:
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+    }
+    #cv { display: block; max-width: 100%; }
+
+    .dl-btn {
+      background: linear-gradient(135deg, #5c4ee8, #9b8dff);
+      color: white; border: none;
+      padding: 14px 42px; border-radius: 10px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(92,78,232,0.35);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .dl-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 18px rgba(92,78,232,0.42); }
+    .dl-btn:active { transform: translateY(0); }
+
+    #loadingMsg { font-size: 12px; color: #aaa; text-align: center; padding: 6px 0 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+  </svg>
+  전단지 상품 카드 생성기
+</header>
+
+<div class="layout">
+
+  <!-- ══ Controls ═══════════════════════════════════════════════════════════ -->
+  <div class="ctrl-panel">
+
+    <!-- 이미지 -->
+    <div class="card">
+      <div class="card-title">상품 이미지</div>
+      <div class="upload-box" id="uploadBox">
+        <input type="file" id="fileIn" accept="image/*" style="display:none">
+        <div class="upload-icon" id="uIcon">🖼️</div>
+        <div class="upload-main" id="uMain">이미지 업로드</div>
+        <div class="upload-sub"  id="uSub">클릭 또는 드래그</div>
+      </div>
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="imgX" min="-100" max="100" value="0" oninput="ss('imgX','imgXv','%')">
+          <span class="sv" id="imgXv">0%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="imgY" min="-100" max="100" value="0" oninput="ss('imgY','imgYv','%')">
+          <span class="sv" id="imgYv">0%</span>
+        </div>
+        <div class="sr">
+          <label>크기</label>
+          <input type="range" id="imgS" min="10" max="200" value="100" oninput="ss('imgS','imgSv','%')">
+          <span class="sv" id="imgSv">100%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상품명 -->
+    <div class="card">
+      <div class="card-title">상품명</div>
+      <textarea id="name" placeholder="상품명 입력&#10;(Enter로 줄바꿈)" rows="2"
+        style="width:100%;border:1.5px solid #e3e3e3;border-radius:8px;padding:8px 12px;
+               font-size:13px;font-family:inherit;color:#333;outline:none;resize:vertical;
+               background:#fafafa;transition:border-color .18s;line-height:1.5;">프링글스 11종</textarea>
+      <div class="row">
+        <select id="nameFont">
+          <option value="GmarketSans">지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard">프리텐다드</option>
+        </select>
+        <input type="number" id="nameSize" value="36" min="6" max="300">
+        <span class="unit">px</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-label">글자색</span>
+        <div class="cdot cw" data-k="name" data-c="#ffffff" onclick="setTC(this)"></div>
+        <div class="cdot ck on" data-k="name" data-c="#111111" onclick="setTC(this)"></div>
+        <div class="cdot cr" data-k="name" data-c="#e74c3c" onclick="setTC(this)"></div>
+        <div class="cdot cg" data-k="name" data-c="#888888" onclick="setTC(this)"></div>
+        <div class="cdot cb" data-k="name" data-c="#2980b9" onclick="setTC(this)"></div>
+      </div>
+      <div class="stroke-row">
+        <span class="cp-label">테두리선</span>
+        <button class="stk-btn" id="nameStkBtn" onclick="toggleStroke()">OFF</button>
+        <div id="nameStkPicker" style="display:none; gap:6px; align-items:center; display:none;">
+          <div class="cdot cw on" data-c="#ffffff" onclick="setStrokeC(this)" style="box-shadow:0 1px 3px rgba(0,0,0,0.4)"></div>
+          <div class="cdot ck"    data-c="#111111" onclick="setStrokeC(this)"></div>
+        </div>
+      </div>
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="nameX" min="0" max="100" value="5" oninput="ss('nameX','nameXv','%')">
+          <span class="sv" id="nameXv">5%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="nameY" min="0" max="100" value="62" oninput="ss('nameY','nameYv','%')">
+          <span class="sv" id="nameYv">62%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상품설명 -->
+    <div class="card">
+      <div class="card-title">상품설명</div>
+      <textarea id="desc" placeholder="상품설명 입력&#10;(Enter로 줄바꿈)" rows="2"
+        style="width:100%;border:1.5px solid #e3e3e3;border-radius:8px;padding:8px 12px;
+               font-size:13px;font-family:inherit;color:#333;outline:none;resize:vertical;
+               background:#fafafa;transition:border-color .18s;line-height:1.5;"></textarea>
+      <div class="row">
+        <select id="descFont">
+          <option value="GmarketSans">지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard" selected>프리텐다드</option>
+        </select>
+        <input type="number" id="descSize" value="18" min="6" max="300">
+        <span class="unit">px</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-label">글자색</span>
+        <div class="cdot cw" data-k="desc" data-c="#ffffff" onclick="setTC(this)"></div>
+        <div class="cdot ck" data-k="desc" data-c="#111111" onclick="setTC(this)"></div>
+        <div class="cdot cr" data-k="desc" data-c="#e74c3c" onclick="setTC(this)"></div>
+        <div class="cdot cg on" data-k="desc" data-c="#888888" onclick="setTC(this)"></div>
+        <div class="cdot cb" data-k="desc" data-c="#2980b9" onclick="setTC(this)"></div>
+      </div>
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="descX" min="0" max="100" value="5" oninput="ss('descX','descXv','%')">
+          <span class="sv" id="descXv">5%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="descY" min="0" max="100" value="69" oninput="ss('descY','descYv','%')">
+          <span class="sv" id="descYv">69%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 정상가 -->
+    <div class="card">
+      <div class="card-title">정상가</div>
+      <input type="text" id="origPrice" placeholder="예) 6,660원" value="">
+      <div class="row">
+        <select id="origFont">
+          <option value="GmarketSans">지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard" selected>프리텐다드</option>
+        </select>
+        <input type="number" id="origSize" value="22" min="6" max="300">
+        <span class="unit">px</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-label">글자색</span>
+        <div class="cdot cw" data-k="orig" data-c="#ffffff" onclick="setTC(this)"></div>
+        <div class="cdot ck" data-k="orig" data-c="#111111" onclick="setTC(this)"></div>
+        <div class="cdot cr" data-k="orig" data-c="#e74c3c" onclick="setTC(this)"></div>
+        <div class="cdot cg on" data-k="orig" data-c="#888888" onclick="setTC(this)"></div>
+        <div class="cdot cb" data-k="orig" data-c="#2980b9" onclick="setTC(this)"></div>
+      </div>
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="origX" min="0" max="100" value="5" oninput="ss('origX','origXv','%')">
+          <span class="sv" id="origXv">5%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="origY" min="0" max="100" value="72" oninput="ss('origY','origYv','%')">
+          <span class="sv" id="origYv">72%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 행사가 -->
+    <div class="card">
+      <div class="card-title">행사가</div>
+      <input type="text" id="salePrice" placeholder="예) 3,330원" value="3,330원">
+      <div class="row">
+        <select id="saleFont">
+          <option value="GmarketSans" selected>지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard">프리텐다드</option>
+        </select>
+        <input type="number" id="saleSize" value="52" min="6" max="300">
+        <span class="unit">px</span>
+      </div>
+      <div class="cp-row">
+        <span class="cp-label">글자색</span>
+        <div class="cdot cw" data-k="sale" data-c="#ffffff" onclick="setTC(this)"></div>
+        <div class="cdot ck on" data-k="sale" data-c="#111111" onclick="setTC(this)"></div>
+        <div class="cdot cr" data-k="sale" data-c="#e74c3c" onclick="setTC(this)"></div>
+        <div class="cdot cg" data-k="sale" data-c="#888888" onclick="setTC(this)"></div>
+        <div class="cdot cb" data-k="sale" data-c="#2980b9" onclick="setTC(this)"></div>
+      </div>
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="saleX" min="0" max="100" value="5" oninput="ss('saleX','saleXv','%')">
+          <span class="sv" id="saleXv">5%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="saleY" min="0" max="100" value="78" oninput="ss('saleY','saleYv','%')">
+          <span class="sv" id="saleYv">78%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 뱃지 -->
+    <div class="card">
+      <div class="card-title">뱃지</div>
+
+      <div class="field-label" style="margin-top:0">모양</div>
+      <div class="shape-row">
+        <button class="shape-btn on" data-shape="circle" onclick="setBadgeShape(this)">
+          <svg width="28" height="28" viewBox="0 0 28 28">
+            <circle cx="14" cy="14" r="11" fill="currentColor"/>
+          </svg>
+          원
+        </button>
+        <button class="shape-btn" data-shape="square" onclick="setBadgeShape(this)">
+          <svg width="28" height="28" viewBox="0 0 28 28">
+            <rect x="3" y="3" width="22" height="22" rx="4" fill="currentColor"/>
+          </svg>
+          사각형
+        </button>
+        <button class="shape-btn" data-shape="banner" onclick="setBadgeShape(this)">
+          <svg width="28" height="28" viewBox="0 0 28 28">
+            <path d="M3 3 Q3 3 5 3 L23 3 Q25 3 25 5 L25 17 L14 26 L3 17 L3 5 Q3 3 5 3 Z" fill="currentColor"/>
+          </svg>
+          배너
+        </button>
+      </div>
+
+      <div class="field-label" style="margin-top:10px">색상</div>
+      <div class="color-row">
+        <div class="dot red on"   data-c="#e74c3c" onclick="pickColor(this)"></div>
+        <div class="dot blue"     data-c="#2980b9" onclick="pickColor(this)"></div>
+        <div class="dot green"    data-c="#27ae60" onclick="pickColor(this)"></div>
+      </div>
+
+      <div class="field-label">상단 텍스트 (작은 글씨)</div>
+      <input type="text" id="b1" placeholder="예) 하나 더" value="하나 더">
+      <div class="row">
+        <select id="b1Font">
+          <option value="GmarketSans">지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard">프리텐다드</option>
+        </select>
+        <input type="number" id="b1Size" value="16" min="6" max="120">
+        <span class="unit">px</span>
+      </div>
+
+      <div class="field-label">메인 텍스트 (큰 글씨)</div>
+      <input type="text" id="b2" placeholder="예) 1+1" value="1+1">
+      <div class="row">
+        <select id="b2Font">
+          <option value="GmarketSans">지마켓 산스</option>
+          <option value="TmonMonsori">티몬 몬소리체</option>
+          <option value="Jua">배달의민족 주아체</option>
+          <option value="Pretendard">프리텐다드</option>
+        </select>
+        <input type="number" id="b2Size" value="36" min="6" max="120">
+        <span class="unit">px</span>
+      </div>
+
+      <div class="sliders">
+        <div class="sr">
+          <label>X 위치</label>
+          <input type="range" id="bx" min="0" max="100" value="15" oninput="ss('bx','bxv','%')">
+          <span class="sv" id="bxv">15%</span>
+        </div>
+        <div class="sr">
+          <label>Y 위치</label>
+          <input type="range" id="by" min="0" max="100" value="58" oninput="ss('by','byv','%')">
+          <span class="sv" id="byv">58%</span>
+        </div>
+        <div class="sr">
+          <label>크기</label>
+          <input type="range" id="br" min="10" max="300" value="57" oninput="ss('br','brv','px')">
+          <span class="sv" id="brv">57px</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ctrl-panel -->
+
+  <!-- ══ Preview ═════════════════════════════════════════════════════════════ -->
+  <div class="preview-col">
+    <div class="preview-card">
+      <div class="card-title">미리보기</div>
+      <div class="size-row">
+        캔버스 크기:
+        <input type="number" id="cw" value="420" min="100" max="4000">
+        ×
+        <input type="number" id="ch" value="500" min="100" max="4000">
+        px
+        <button class="apply-btn" onclick="applySize()">적용</button>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="cv" width="420" height="500"></canvas>
+      </div>
+      <div id="loadingMsg">폰트 로딩 중…</div>
+    </div>
+    <button class="dl-btn" onclick="download()">⬇ PNG 다운로드</button>
+  </div>
+
+</div>
+
+<script>
+/* ── State ────────────────────────────────────────────────────────────────── */
+let img        = null;
+let badgeColor = '#e74c3c';
+
+/* Text colors */
+const tc = { name: '#111111', desc: '#888888', orig: '#888888', sale: '#111111' };
+
+/* Name stroke */
+let nameStrokeOn    = false;
+let nameStrokeColor = '#ffffff';
+
+/* Badge shape */
+let badgeShape = 'circle';  /* 'circle' | 'square' | 'banner' */
+
+/* Drag state */
+let dragging    = null;   // 'img'|'name'|'desc'|'orig'|'sale'|'badge'
+let selectedEl  = null;
+let dragStartMX = 0, dragStartMY = 0;
+let dragStartVX = 0, dragStartVY = 0;
+
+/* Bounding boxes computed during draw(), used for hit-testing */
+const bounds = { img: null, name: null, desc: null, orig: null, sale: null, badge: null };
+
+/* ── Helpers ──────────────────────────────────────────────────────────────── */
+const g  = id => document.getElementById(id).value;
+const gi = id => parseInt(g(id))   || 0;
+const gf = id => parseFloat(g(id)) || 0;
+const fontStr = id => `'${g(id)}', 'Pretendard', sans-serif`;
+
+/* Slider id / label id tables */
+const XID  = { img:'imgX', name:'nameX', desc:'descX', orig:'origX', sale:'saleX', badge:'bx'  };
+const YID  = { img:'imgY', name:'nameY', desc:'descY', orig:'origY', sale:'saleY', badge:'by'  };
+const XLBL = { img:'imgXv',name:'nameXv',desc:'descXv',orig:'origXv',sale:'saleXv',badge:'bxv' };
+const YLBL = { img:'imgYv',name:'nameYv',desc:'descYv',orig:'origYv',sale:'saleYv',badge:'byv' };
+const XMIN = { img:-100, name:0, desc:0, orig:0, sale:0, badge:0 };
+const YMIN = { img:-100, name:0, desc:0, orig:0, sale:0, badge:0 };
+const XMAX = { img:100,  name:100, desc:100, orig:100, sale:100, badge:100 };
+const YMAX = { img:100,  name:100, desc:100, orig:100, sale:100, badge:100 };
+
+function getXY(k)       { return { x: gi(XID[k]), y: gi(YID[k]) }; }
+function setXY(k, x, y) {
+  x = Math.max(XMIN[k], Math.min(XMAX[k], Math.round(x)));
+  y = Math.max(YMIN[k], Math.min(YMAX[k], Math.round(y)));
+  document.getElementById(XID[k]).value  = x;
+  document.getElementById(YID[k]).value  = y;
+  document.getElementById(XLBL[k]).textContent = x + '%';
+  document.getElementById(YLBL[k]).textContent = y + '%';
+}
+
+/* Slider sync: update label then redraw */
+function ss(sliderId, labelId, unit) {
+  document.getElementById(labelId).textContent = g(sliderId) + unit;
+  draw();
+}
+
+/* ── Font loading ─────────────────────────────────────────────────────────── */
+async function loadFonts() {
+  const defs = [
+    ['GmarketSans', 'https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff', '400'],
+    ['GmarketSans', 'https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff',   '700'],
+    ['TmonMonsori', 'https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff',        'normal'],
+    ['Pretendard',  'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.woff2', '400 900'],
+  ];
+  await Promise.allSettled(defs.map(([fam, src, wt]) => {
+    const ff = new FontFace(fam, `url(${src})`, { weight: wt });
+    return ff.load().then(f => document.fonts.add(f)).catch(() => {});
+  }));
+  await document.fonts.ready;
+  document.getElementById('loadingMsg').textContent = '미리보기 준비 완료';
+  setTimeout(() => { document.getElementById('loadingMsg').style.display = 'none'; }, 1200);
+  draw();
+}
+
+/* ── Image upload ─────────────────────────────────────────────────────────── */
+const box    = document.getElementById('uploadBox');
+const fileIn = document.getElementById('fileIn');
+
+box.addEventListener('click',     () => fileIn.click());
+box.addEventListener('dragover',  e  => { e.preventDefault(); box.classList.add('drag'); });
+box.addEventListener('dragleave', () => box.classList.remove('drag'));
+box.addEventListener('drop', e => {
+  e.preventDefault(); box.classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) loadImg(f);
+});
+fileIn.addEventListener('change', e => { if (e.target.files[0]) loadImg(e.target.files[0]); });
+
+function loadImg(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const el = new Image();
+    el.onload = () => {
+      img = el;
+      box.classList.add('done');
+      document.getElementById('uIcon').textContent = '✅';
+      document.getElementById('uMain').textContent =
+        file.name.length > 24 ? file.name.slice(0, 22) + '…' : file.name;
+      document.getElementById('uSub').textContent = `${el.width} × ${el.height} px`;
+      draw();
+    };
+    el.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── Badge color ──────────────────────────────────────────────────────────── */
+function pickColor(el) {
+  document.querySelectorAll('.dot').forEach(d => d.classList.remove('on'));
+  el.classList.add('on');
+  badgeColor = el.dataset.c;
+  draw();
+}
+
+/* ── Text color picker ────────────────────────────────────────────────────── */
+function setTC(el) {
+  const key = el.dataset.k;
+  el.closest('.cp-row').querySelectorAll('.cdot').forEach(d => d.classList.remove('on'));
+  el.classList.add('on');
+  tc[key] = el.dataset.c;
+  draw();
+}
+
+/* ── Name stroke toggle / color ───────────────────────────────────────────── */
+function toggleStroke() {
+  nameStrokeOn = !nameStrokeOn;
+  const btn    = document.getElementById('nameStkBtn');
+  const picker = document.getElementById('nameStkPicker');
+  btn.textContent = nameStrokeOn ? 'ON' : 'OFF';
+  btn.classList.toggle('on', nameStrokeOn);
+  picker.style.display = nameStrokeOn ? 'flex' : 'none';
+  draw();
+}
+
+function setStrokeC(el) {
+  document.querySelectorAll('#nameStkPicker .cdot').forEach(d => d.classList.remove('on'));
+  el.classList.add('on');
+  nameStrokeColor = el.dataset.c;
+  draw();
+}
+
+/* ── Hit testing ──────────────────────────────────────────────────────────── */
+function hitTest(mx, my) {
+  if (bounds.badge) {
+    const b = bounds.badge;
+    const hit = b.hitW
+      /* banner/square → rect hit box */
+      ? mx >= b.hitX && mx <= b.hitX + b.hitW && my >= b.hitY && my <= b.hitY + b.hitH
+      /* circle */
+      : Math.hypot(mx - b.cx, my - b.cy) <= b.r;
+    if (hit) return 'badge';
+  }
+  for (const k of ['sale', 'orig', 'desc', 'name']) {
+    const b = bounds[k];
+    if (b && mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) return k;
+  }
+  if (bounds.img) {
+    const b = bounds.img;
+    if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h) return 'img';
+  }
+  return null;
+}
+
+/* ── Canvas coordinate helper (accounts for CSS scaling) ─────────────────── */
+function cvXY(e) {
+  const cv   = document.getElementById('cv');
+  const rect = cv.getBoundingClientRect();
+  return {
+    mx: (e.clientX - rect.left) * (cv.width  / rect.width),
+    my: (e.clientY - rect.top)  * (cv.height / rect.height),
+  };
+}
+
+/* ── Mouse events ─────────────────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  const cv = document.getElementById('cv');
+
+  cv.addEventListener('mousedown', e => {
+    const { mx, my } = cvXY(e);
+    const hit = hitTest(mx, my);
+    selectedEl = hit;
+    if (hit) {
+      dragging    = hit;
+      dragStartMX = mx;  dragStartMY = my;
+      const xy = getXY(hit);
+      dragStartVX = xy.x;  dragStartVY = xy.y;
+      e.preventDefault();
+    }
+    draw();
+  });
+
+  window.addEventListener('mousemove', e => {
+    const cv2  = document.getElementById('cv');
+    const rect = cv2.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (cv2.width  / rect.width);
+    const my = (e.clientY - rect.top)  * (cv2.height / rect.height);
+
+    cv2.style.cursor = dragging ? 'grabbing' : (hitTest(mx, my) ? 'grab' : 'default');
+
+    if (!dragging) return;
+    const dxPct = (mx - dragStartMX) / cv2.width  * 100;
+    const dyPct = (my - dragStartMY) / cv2.height * 100;
+    setXY(dragging, dragStartVX + dxPct, dragStartVY + dyPct);
+    draw();
+  });
+
+  window.addEventListener('mouseup', () => {
+    dragging = null;
+    const cv2 = document.getElementById('cv');
+    cv2.style.cursor = selectedEl ? 'grab' : 'default';
+  });
+
+  /* Clicking outside canvas clears selection */
+  document.addEventListener('mousedown', e => {
+    if (!document.getElementById('cv').contains(e.target)) {
+      selectedEl = null;
+      draw();
+    }
+  });
+
+  draw();
+  loadFonts();
+});
+
+/* ── Selection highlight ──────────────────────────────────────────────────── */
+const EL_LABEL = { img:'이미지', name:'상품명', desc:'상품설명', orig:'정상가', sale:'행사가', badge:'뱃지' };
+
+function drawHighlight(ctx, key) {
+  const b = bounds[key];
+  if (!b) return;
+  ctx.save();
+  ctx.setLineDash([5, 3]);
+  ctx.lineWidth   = 1.8;
+  ctx.strokeStyle = '#5c4ee8';
+  ctx.shadowColor = 'rgba(92,78,232,0.35)';
+  ctx.shadowBlur  = 6;
+
+  let labelX, labelY;
+  if (key === 'badge') {
+    ctx.beginPath();
+    ctx.arc(b.cx, b.cy, b.r + 6, 0, Math.PI * 2);
+    ctx.stroke();
+    labelX = b.cx - b.r;
+    labelY = b.cy - b.r - 10;
+  } else {
+    const pad = 5;
+    ctx.strokeRect(b.x - pad, b.y - pad, b.w + pad * 2, b.h + pad * 2);
+    labelX = b.x;
+    labelY = b.y - 10;
+  }
+  ctx.restore();
+
+  /* Label tag */
+  ctx.save();
+  ctx.font         = 'bold 11px Pretendard, sans-serif';
+  ctx.fillStyle    = '#5c4ee8';
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign    = 'left';
+  ctx.fillText(EL_LABEL[key], labelX, labelY);
+  ctx.restore();
+}
+
+/* ── Main draw ────────────────────────────────────────────────────────────── */
+function draw() {
+  const canvas = document.getElementById('cv');
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  /* 1. Image */
+  if (img) {
+    const scale  = gi('imgS') / 100;
+    const offXpx = (gf('imgX') / 100) * W;
+    const offYpx = (gf('imgY') / 100) * H;
+    const dw = W * scale;
+    const dh = dw * (img.height / img.width);
+    const dx = offXpx + (W - dw) / 2;
+    ctx.drawImage(img, dx, offYpx, dw, dh);
+    bounds.img = { x: dx, y: offYpx, w: dw, h: dh };
+  } else { bounds.img = null; }
+
+  /* 2. Product name */
+  const nameStr  = g('name'), nameSize = gi('nameSize') || 36;
+  if (nameStr) {
+    const nx = (gi('nameX') / 100) * W, ny = (gi('nameY') / 100) * H;
+    const lines = nameStr.split('\n');
+    ctx.font = `700 ${nameSize}px ${fontStr('nameFont')}`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.lineJoin = 'round';
+    let maxW = 0;
+    lines.forEach((line, i) => {
+      maxW = Math.max(maxW, ctx.measureText(line).width);
+      const ly = ny + i * nameSize * 1.25;
+      if (nameStrokeOn) {
+        ctx.strokeStyle = nameStrokeColor;
+        ctx.lineWidth = Math.max(2, nameSize * 0.1);
+        ctx.strokeText(line, nx, ly);
+      }
+      ctx.fillStyle = tc.name;
+      ctx.fillText(line, nx, ly);
+    });
+    bounds.name = { x: nx, y: ny, w: maxW, h: nameSize * 1.25 * lines.length };
+  } else { bounds.name = null; }
+
+  /* 3. Product description */
+  const descStr  = g('desc'), descSize = gi('descSize') || 18;
+  if (descStr) {
+    const dx2 = (gi('descX') / 100) * W, dy2 = (gi('descY') / 100) * H;
+    const lines = descStr.split('\n');
+    ctx.font = `400 ${descSize}px ${fontStr('descFont')}`;
+    ctx.fillStyle = tc.desc; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    let maxW = 0;
+    lines.forEach((line, i) => {
+      maxW = Math.max(maxW, ctx.measureText(line).width);
+      ctx.fillText(line, dx2, dy2 + i * descSize * 1.3);
+    });
+    bounds.desc = { x: dx2, y: dy2, w: maxW, h: descSize * 1.3 * lines.length };
+  } else { bounds.desc = null; }
+
+  /* 4. Regular price */
+  const origStr  = g('origPrice'), origSize = gi('origSize') || 22;
+  if (origStr) {
+    const ox = (gi('origX') / 100) * W, oy = (gi('origY') / 100) * H;
+    ctx.font = `400 ${origSize}px ${fontStr('origFont')}`;
+    ctx.fillStyle = tc.orig; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(origStr, ox, oy);
+    const tw = ctx.measureText(origStr).width;
+    ctx.beginPath();
+    ctx.strokeStyle = tc.orig; ctx.lineWidth = Math.max(1, origSize * 0.07);
+    ctx.moveTo(ox, oy + origSize * 0.54); ctx.lineTo(ox + tw, oy + origSize * 0.54);
+    ctx.stroke();
+    bounds.orig = { x: ox, y: oy, w: tw, h: origSize };
+  } else { bounds.orig = null; }
+
+  /* 5. Sale price */
+  const saleStr  = g('salePrice'), saleSize = gi('saleSize') || 52;
+  if (saleStr) {
+    const sx = (gi('saleX') / 100) * W, sy = (gi('saleY') / 100) * H;
+    ctx.font = `700 ${saleSize}px ${fontStr('saleFont')}`;
+    ctx.fillStyle = tc.sale; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(saleStr, sx, sy);
+    bounds.sale = { x: sx, y: sy, w: ctx.measureText(saleStr).width, h: saleSize };
+  } else { bounds.sale = null; }
+
+  /* 6. Badge */
+  const bRadius = gi('br') || 57;
+  const bcx = Math.round((gi('bx') / 100) * W);
+  const bcy = Math.round((gi('by') / 100) * H);
+  bounds.badge = badgeBounds(bcx, bcy, bRadius, badgeShape);
+  drawBadge(ctx, bcx, bcy, bRadius);
+
+  /* 7. Selection highlight — drawn last so it's always on top */
+  if (selectedEl) drawHighlight(ctx, selectedEl);
+}
+
+/* ── Badge shape selector ─────────────────────────────────────────────────── */
+function setBadgeShape(el) {
+  document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  badgeShape = el.dataset.shape;
+  draw();
+}
+
+/* ── Badge path helper ────────────────────────────────────────────────────── */
+/* Draws the badge outline path for the given shape.
+   shrink = inward offset (for inner ring effect).            */
+function badgePath(ctx, cx, cy, r, shape, shrink) {
+  const s = r - (shrink || 0);
+  ctx.beginPath();
+  if (shape === 'circle') {
+    ctx.arc(cx, cy, s, 0, Math.PI * 2);
+
+  } else if (shape === 'square') {
+    const rc = s * 0.18;          /* corner radius */
+    const x = cx - s, y = cy - s, w = s * 2;
+    ctx.moveTo(x + rc, y);
+    ctx.lineTo(x + w - rc, y);
+    ctx.arcTo(x + w, y,     x + w, y + rc,     rc);
+    ctx.lineTo(x + w, y + w - rc);
+    ctx.arcTo(x + w, y + w, x + w - rc, y + w, rc);
+    ctx.lineTo(x + rc, y + w);
+    ctx.arcTo(x,     y + w, x,     y + w - rc, rc);
+    ctx.lineTo(x,     y + rc);
+    ctx.arcTo(x,     y,     x + rc, y,          rc);
+    ctx.closePath();
+
+  } else {  /* banner / shield */
+    /* Flat rounded top, straight sides, single bottom point.
+       The shape occupies y ∈ [cy-s, cy+s*1.25] → total height 2.25s. */
+    const rc = s * 0.2;
+    const top    = cy - s;
+    const mid    = cy + s * 0.18;   /* where sides start tapering */
+    const bottom = cy + s * 1.25;   /* tip of the point */
+    const left   = cx - s, right = cx + s;
+    ctx.moveTo(left + rc, top);
+    ctx.lineTo(right - rc, top);
+    ctx.arcTo(right, top,  right, top + rc, rc);
+    ctx.lineTo(right, mid);
+    ctx.lineTo(cx,    bottom);        /* → bottom tip */
+    ctx.lineTo(left,  mid);
+    ctx.lineTo(left,  top + rc);
+    ctx.arcTo(left, top, left + rc, top, rc);
+    ctx.closePath();
+  }
+}
+
+/* ── Badge text centre Y (accounts for banner's asymmetry) ───────────────── */
+function badgeCY(cy, r, shape) {
+  /* For banner, the visual "content" block sits in the upper portion */
+  return shape === 'banner' ? cy - r * 0.05 : cy;
+}
+
+/* ── Badge bounds for hit-testing (returns enclosing rect) ───────────────── */
+function badgeBounds(cx, cy, r, shape) {
+  if (shape === 'banner') {
+    return { cx, cy, r,
+             hitX: cx - r,  hitY: cy - r,
+             hitW: r * 2,   hitH: r * 2.25 };
+  }
+  return { cx, cy, r };
+}
+
+/* ── Badge drawing ────────────────────────────────────────────────────────── */
+function drawBadge(ctx, cx, cy, r) {
+  /* Shadow + fill */
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.22)'; ctx.shadowBlur = 14;
+  ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 5;
+  badgePath(ctx, cx, cy, r, badgeShape, 0);
+  ctx.fillStyle = badgeColor;
+  ctx.fill();
+  ctx.restore();
+
+  /* Inner ring */
+  badgePath(ctx, cx, cy, r, badgeShape, 3);
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+  ctx.lineWidth   = Math.max(2, r * 0.06);
+  ctx.stroke();
+
+  /* Text anchor */
+  const tcy = badgeCY(cy, r, badgeShape);
+
+  const t1 = g('b1');
+  if (t1) {
+    ctx.font         = `700 ${gi('b1Size') || 16}px ${fontStr('b1Font')}`;
+    ctx.fillStyle    = 'white';
+    ctx.textAlign    = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(t1, cx, tcy - r * 0.22);
+  }
+
+  /* Separator line */
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1;
+  ctx.moveTo(cx - r * 0.52, tcy + r * 0.04);
+  ctx.lineTo(cx + r * 0.52, tcy + r * 0.04);
+  ctx.stroke();
+
+  const t2 = g('b2');
+  if (t2) {
+    ctx.font         = `700 ${gi('b2Size') || 36}px ${fontStr('b2Font')}`;
+    ctx.fillStyle    = 'white';
+    ctx.textAlign    = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(t2, cx, tcy + r * 0.30);
+  }
+  ctx.textBaseline = 'alphabetic';
+}
+
+/* ── Canvas size ──────────────────────────────────────────────────────────── */
+function applySize() {
+  const cv = document.getElementById('cv');
+  cv.width  = Math.min(parseInt(g('cw')) || 420, 4000);
+  cv.height = Math.min(parseInt(g('ch')) || 500, 4000);
+  draw();
+}
+
+/* ── Download PNG — selection highlight excluded from export ──────────────── */
+function download() {
+  const prev = selectedEl;
+  selectedEl = null;
+  draw();                                   /* redraw without highlight */
+  const cv = document.getElementById('cv');
+  const a  = document.createElement('a');
+  a.download = '상품카드.png';
+  a.href     = cv.toDataURL('image/png');
+  a.click();
+  selectedEl = prev;
+  if (prev) draw();                         /* restore highlight */
+}
+
+/* ── Live redraw on input / select / textarea change ─────────────────────── */
+document.querySelectorAll('input[type="text"], input[type="number"], select, textarea')
+  .forEach(el => {
+    el.addEventListener('input', () => {
+      if (el.id !== 'cw' && el.id !== 'ch') draw();
+    });
+  });
+</script>
+</body>
+</html>
