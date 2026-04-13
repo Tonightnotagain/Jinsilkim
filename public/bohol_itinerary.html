@@ -826,6 +826,23 @@
     </div>
   </div>
 
+  <!-- ── Admin: Token setup modal ── -->
+  <div id="adminTokenModal">
+    <div class="apw-box">
+      <p class="apw-title">🔑 GitHub 토큰 설정</p>
+      <p class="apw-sub">GitHub Personal Access Token(PAT)을 입력하세요.<br>이 브라우저에만 저장됩니다.</p>
+      <input id="adminTokenInput" type="password" class="apw-input"
+             placeholder="ghp_..." maxlength="100" style="letter-spacing:0.05em;font-size:0.85rem;">
+      <div class="apw-actions">
+        <button id="adminTokenCancel" class="apw-btn apw-cancel">취소</button>
+        <button id="adminTokenConfirm" class="apw-btn apw-confirm">저장 후 계속</button>
+      </div>
+      <p style="font-size:0.7rem;color:#94a3b8;text-align:center;margin-top:4px;">
+        Settings → Developer settings → PAT (classic) → repo 권한
+      </p>
+    </div>
+  </div>
+
   <!-- ── Admin: Toast ── -->
   <div id="adminToast"></div>
 
@@ -847,12 +864,12 @@
   body.edit-mode #adminLockBtn { background: #fef3c7; border-color: #f59e0b; }
 
   /* ── Password modal ── */
-  #adminPwModal {
+  #adminPwModal, #adminTokenModal {
     display: none; position: fixed; inset: 0; z-index: 500;
     background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
     align-items: center; justify-content: center;
   }
-  #adminPwModal.show { display: flex; }
+  #adminPwModal.show, #adminTokenModal.show { display: flex; }
   .apw-box {
     background: #fff; border-radius: 16px;
     padding: 2rem 2.2rem; width: 300px;
@@ -951,12 +968,16 @@
   ══════════════════════════════════════════════ -->
   <script id="adminEditScript">
   /* ── Config ── */
-  const GITHUB_TOKEN   = 'YOUR_PAT_HERE';
   const GITHUB_OWNER   = 'tonightnotagain';
   const GITHUB_REPO    = 'Jinsilkim';
   const GITHUB_FILE    = 'bohol_itinerary.html';
   const GITHUB_BRANCH  = 'gh-pages';
   const ADMIN_PASSWORD = '1013';
+  const TOKEN_STORAGE_KEY = 'gh_bohol_pat';
+
+  /* ── Token helpers (localStorage) ── */
+  const getToken  = () => localStorage.getItem(TOKEN_STORAGE_KEY) || '';
+  const saveToken = t  => localStorage.setItem(TOKEN_STORAGE_KEY, t.trim());
 
   /* ── Selectors that should be editable ── */
   const EDITABLE_SELECTORS = [
@@ -975,12 +996,16 @@
   let isEditMode = false;
 
   /* ── Elements ── */
-  const lockBtn    = document.getElementById('adminLockBtn');
-  const pwModal    = document.getElementById('adminPwModal');
-  const pwInput    = document.getElementById('adminPwInput');
-  const pwConfirm  = document.getElementById('adminPwConfirm');
-  const pwCancel   = document.getElementById('adminPwCancel');
-  const toastWrap  = document.getElementById('adminToast');
+  const lockBtn        = document.getElementById('adminLockBtn');
+  const pwModal        = document.getElementById('adminPwModal');
+  const pwInput        = document.getElementById('adminPwInput');
+  const pwConfirm      = document.getElementById('adminPwConfirm');
+  const pwCancel       = document.getElementById('adminPwCancel');
+  const tokenModal     = document.getElementById('adminTokenModal');
+  const tokenInput     = document.getElementById('adminTokenInput');
+  const tokenConfirm   = document.getElementById('adminTokenConfirm');
+  const tokenCancel    = document.getElementById('adminTokenCancel');
+  const toastWrap      = document.getElementById('adminToast');
 
   /* ── Lock button ── */
   lockBtn.addEventListener('click', () => {
@@ -1037,10 +1062,48 @@
     /* push content down */
     document.body.style.paddingTop = (banner.offsetHeight + 4) + 'px';
 
-    document.getElementById('saveGithubBtn').addEventListener('click', saveToGithub);
+    document.getElementById('saveGithubBtn').addEventListener('click', onSaveClick);
     document.getElementById('exitEditBtn').addEventListener('click', exitEditMode);
 
     showToast('편집 모드가 활성화되었습니다. 텍스트를 클릭하여 수정하세요.', 'info');
+  }
+
+  /* ── Token modal ── */
+  function openTokenModal(onConfirm) {
+    tokenInput.value = getToken(); // prefill if already stored
+    tokenInput.classList.remove('error');
+    tokenModal.classList.add('show');
+    setTimeout(() => tokenInput.focus(), 60);
+
+    const confirm = () => {
+      const t = tokenInput.value.trim();
+      if (!t || !t.startsWith('ghp_')) {
+        tokenInput.classList.add('error');
+        setTimeout(() => tokenInput.classList.remove('error'), 400);
+        return;
+      }
+      saveToken(t);
+      tokenModal.classList.remove('show');
+      tokenConfirm.removeEventListener('click', confirm);
+      tokenInput.removeEventListener('keydown', onEnter);
+      onConfirm(t);
+    };
+    const onEnter = e => { if (e.key === 'Enter') confirm(); };
+    tokenConfirm.addEventListener('click', confirm);
+    tokenInput.addEventListener('keydown', onEnter);
+  }
+
+  tokenCancel.addEventListener('click', () => tokenModal.classList.remove('show'));
+  tokenModal.addEventListener('click', e => { if (e.target === tokenModal) tokenModal.classList.remove('show'); });
+
+  /* ── Save click: check token first ── */
+  function onSaveClick() {
+    const t = getToken();
+    if (!t || t === 'YOUR_PAT_HERE') {
+      openTokenModal(() => saveToGithub());
+    } else {
+      saveToGithub();
+    }
   }
 
   /* ── Exit edit mode ── */
@@ -1066,12 +1129,19 @@
     saveBtn.textContent = '⏳ 저장 중...';
     saveBtn.disabled = true;
 
+    const token = getToken();
+
     try {
       /* 1. GET current file SHA (from gh-pages branch) */
       const shaRes = await fetch(
         `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}`,
-        { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github+json' } }
+        { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } }
       );
+      if (shaRes.status === 401) {
+        /* token invalid — clear stored token and ask again */
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        throw new Error('토큰 인증 실패 (401). 토큰을 다시 설정해주세요.');
+      }
       if (!shaRes.ok) throw new Error(`SHA 조회 실패: ${shaRes.status}`);
       const shaData = await shaRes.json();
       const sha = shaData.sha;
@@ -1094,7 +1164,7 @@
         {
           method: 'PUT',
           headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Authorization': `Bearer ${token}`,
             'Accept': 'application/vnd.github+json',
             'Content-Type': 'application/json'
           },
@@ -1114,12 +1184,14 @@
         throw new Error(errData.message || putRes.status);
       }
     } catch (err) {
-      showToast(`❌ 저장 실패: ${err.message}`, 'error');
-    } finally {
-      if (saveBtn) {
-        saveBtn.textContent = '☁️ GitHub에 저장';
-        saveBtn.disabled = false;
+      showToast(`❌ ${err.message}`, 'error');
+      /* if token issue, re-open token setup */
+      if (err.message.includes('401') || err.message.includes('토큰')) {
+        setTimeout(() => openTokenModal(() => saveToGithub()), 1500);
       }
+    } finally {
+      const btn = document.getElementById('saveGithubBtn');
+      if (btn) { btn.textContent = '☁️ GitHub에 저장'; btn.disabled = false; }
     }
   }
 
