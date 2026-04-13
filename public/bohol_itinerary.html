@@ -995,6 +995,18 @@
   /* ── State ── */
   let isEditMode = false;
 
+  /* ── Stop-propagation handlers (attached/detached with edit mode) ──
+     Prevents editable element interactions from bubbling up to the
+     .schedule-item toggle listeners (click toggle + space/enter toggle). */
+  function _stopClick(e)  { e.stopPropagation(); }
+  function _stopTouch(e)  { e.stopPropagation(); }
+  function _stopSpace(e)  {
+    // Block Space from reaching the schedule-item keydown handler
+    // (it calls preventDefault which swallows the character).
+    // Enter is fine to let through so it creates newlines normally.
+    if (e.key === ' ') e.stopPropagation();
+  }
+
   /* ── Elements ── */
   const lockBtn        = document.getElementById('adminLockBtn');
   const pwModal        = document.getElementById('adminPwModal');
@@ -1047,6 +1059,9 @@
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('data-editable', '');
       el.setAttribute('spellcheck', 'false');
+      el.addEventListener('click',   _stopClick);
+      el.addEventListener('touchend', _stopTouch);
+      el.addEventListener('keydown',  _stopSpace);
     });
 
     /* inject banner */
@@ -1114,6 +1129,9 @@
     lockBtn.textContent = '🔒';
 
     document.querySelectorAll('[data-editable]').forEach(el => {
+      el.removeEventListener('click',   _stopClick);
+      el.removeEventListener('touchend', _stopTouch);
+      el.removeEventListener('keydown',  _stopSpace);
       el.removeAttribute('contenteditable');
       el.removeAttribute('data-editable');
       el.removeAttribute('spellcheck');
