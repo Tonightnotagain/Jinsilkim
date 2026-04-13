@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#e8e4de"/>
+  <!-- shopping bag icon -->
+  <g transform="translate(150,175)">
+    <path d="M-28,35 L-34,-12 L34,-12 L28,35 Z"
+          fill="none" stroke="#b0a898" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-14,-12 Q-14,-34 0,-34 Q14,-34 14,-12"
+          fill="none" stroke="#b0a898" stroke-width="2.5"/>
+    <circle cx="0" cy="8" r="4" fill="#b0a898"/>
+  </g>
+  <text x="150" y="248"
+        font-family="Noto Sans KR, sans-serif"
+        font-size="13"
+        fill="#b0a898"
+        text-anchor="middle">이미지 준비중</text>
+</svg>
