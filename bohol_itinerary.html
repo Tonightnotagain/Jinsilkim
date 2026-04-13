@@ -808,9 +808,360 @@
 
   </div>
 
-  <button class="fab" id="scrollTopBtn">
-    ↑
-  </button>
+  <button class="fab" id="scrollTopBtn">↑</button>
+
+  <!-- ── Admin: Lock button ── -->
+  <button id="adminLockBtn" title="관리자 편집">🔒</button>
+
+  <!-- ── Admin: Password modal ── -->
+  <div id="adminPwModal">
+    <div class="apw-box">
+      <p class="apw-title">관리자 로그인</p>
+      <p class="apw-sub">비밀번호를 입력해주세요</p>
+      <input id="adminPwInput" type="password" class="apw-input" placeholder="••••" maxlength="20">
+      <div class="apw-actions">
+        <button id="adminPwCancel" class="apw-btn apw-cancel">취소</button>
+        <button id="adminPwConfirm" class="apw-btn apw-confirm">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Admin: Toast ── -->
+  <div id="adminToast"></div>
+
+  <!-- ══════════════════════════════════════════════
+       ADMIN EDIT SYSTEM — CSS
+  ══════════════════════════════════════════════ -->
+  <style id="adminEditStyle">
+  /* ── Lock button ── */
+  #adminLockBtn {
+    position: fixed; bottom: 90px; right: 30px;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #fff; border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #adminLockBtn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+  body.edit-mode #adminLockBtn { background: #fef3c7; border-color: #f59e0b; }
+
+  /* ── Password modal ── */
+  #adminPwModal {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  #adminPwModal.show { display: flex; }
+  .apw-box {
+    background: #fff; border-radius: 16px;
+    padding: 2rem 2.2rem; width: 300px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; gap: 0.8rem;
+  }
+  .apw-title { font-size: 1rem; font-weight: 700; color: #1e293b; text-align: center; }
+  .apw-sub   { font-size: 0.78rem; color: #64748b; text-align: center; }
+  .apw-input {
+    width: 100%; padding: 0.65rem 1rem; border-radius: 8px;
+    border: 1.5px solid #e2e8f0; font-size: 1.2rem;
+    text-align: center; letter-spacing: 0.3em;
+    outline: none; font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .apw-input:focus  { border-color: #0d9488; }
+  .apw-input.error  { border-color: #ef4444; animation: apwShake 0.3s; }
+  @keyframes apwShake {
+    0%,100% { transform: translateX(0); }
+    25%      { transform: translateX(-5px); }
+    75%      { transform: translateX(5px); }
+  }
+  .apw-actions { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
+  .apw-btn {
+    flex: 1; padding: 0.65rem; border-radius: 8px; border: none;
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .apw-confirm { background: #0d9488; color: #fff; }
+  .apw-confirm:hover { background: #0f766e; }
+  .apw-cancel  { background: #f1f5f9; color: #64748b; }
+  .apw-cancel:hover { background: #e2e8f0; }
+
+  /* ── Edit banner (dynamically injected) ── */
+  #editBanner {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+    color: #fff; padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 2px 10px rgba(249,115,22,0.4);
+  }
+  #editBanner .banner-left  { display: flex; align-items: center; gap: 6px; }
+  #editBanner .banner-right { display: flex; align-items: center; gap: 6px; }
+  .banner-btn {
+    padding: 6px 14px; border-radius: 20px; border: none;
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  }
+  .banner-btn:hover { opacity: 0.9; transform: scale(1.03); }
+  .banner-btn:active { transform: scale(0.97); }
+  .banner-btn.save  { background: #fff; color: #f59e0b; }
+  .banner-btn.exit  { background: rgba(255,255,255,0.25); color: #fff; }
+  .banner-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+  /* ── Editable elements ── */
+  body.edit-mode [data-editable] {
+    cursor: text;
+    border-radius: 3px;
+    transition: background 0.15s, outline 0.15s;
+  }
+  body.edit-mode [data-editable]:hover {
+    background: rgba(245, 158, 11, 0.15);
+    outline: 1.5px dashed #f59e0b;
+  }
+  body.edit-mode [data-editable]:focus {
+    background: rgba(245, 158, 11, 0.12);
+    outline: 2px solid #f59e0b;
+    outline-offset: 1px;
+  }
+
+  /* ── Toast ── */
+  #adminToast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 600; pointer-events: none;
+    display: flex; flex-direction: column; gap: 8px; align-items: center;
+  }
+  .toast-msg {
+    padding: 10px 20px; border-radius: 24px;
+    font-size: 13px; font-weight: 600; color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    opacity: 0; transform: translateY(10px);
+    animation: toastIn 0.3s ease forwards, toastOut 0.4s ease 3.6s forwards;
+    white-space: nowrap;
+  }
+  .toast-msg.success { background: #10b981; }
+  .toast-msg.error   { background: #ef4444; }
+  .toast-msg.info    { background: #3b82f6; }
+  @keyframes toastIn  { to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastOut { to { opacity: 0; transform: translateY(-8px); } }
+  </style>
+
+  <!-- ══════════════════════════════════════════════
+       ADMIN EDIT SYSTEM — JavaScript
+  ══════════════════════════════════════════════ -->
+  <script id="adminEditScript">
+  /* ── Config ── */
+  const GITHUB_TOKEN   = 'YOUR_PAT_HERE';
+  const GITHUB_OWNER   = 'tonightnotagain';
+  const GITHUB_REPO    = 'Jinsilkim';
+  const GITHUB_FILE    = 'bohol_itinerary.html';
+  const GITHUB_BRANCH  = 'gh-pages';
+  const ADMIN_PASSWORD = '1013';
+
+  /* ── Selectors that should be editable ── */
+  const EDITABLE_SELECTORS = [
+    '.timeline-icon',
+    '.time-text',
+    '.title-text > span:first-child',
+    '.details-content p',
+    '.details-content span.label',
+    '.day-label',
+    '.hero h1', '.hero p',
+    '.header h1', '.header .subtitle',
+    '[style*="text-align: center"]',
+  ].join(', ');
+
+  /* ── State ── */
+  let isEditMode = false;
+
+  /* ── Elements ── */
+  const lockBtn    = document.getElementById('adminLockBtn');
+  const pwModal    = document.getElementById('adminPwModal');
+  const pwInput    = document.getElementById('adminPwInput');
+  const pwConfirm  = document.getElementById('adminPwConfirm');
+  const pwCancel   = document.getElementById('adminPwCancel');
+  const toastWrap  = document.getElementById('adminToast');
+
+  /* ── Lock button ── */
+  lockBtn.addEventListener('click', () => {
+    if (isEditMode) {
+      exitEditMode();
+    } else {
+      pwInput.value = '';
+      pwInput.classList.remove('error');
+      pwModal.classList.add('show');
+      setTimeout(() => pwInput.focus(), 60);
+    }
+  });
+
+  /* ── Password ── */
+  function checkPw() {
+    if (pwInput.value === ADMIN_PASSWORD) {
+      pwModal.classList.remove('show');
+      enterEditMode();
+    } else {
+      pwInput.value = '';
+      pwInput.classList.add('error');
+      setTimeout(() => pwInput.classList.remove('error'), 400);
+      pwInput.focus();
+    }
+  }
+  pwConfirm.addEventListener('click', checkPw);
+  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+  pwCancel.addEventListener('click', () => pwModal.classList.remove('show'));
+  pwModal.addEventListener('click', e => { if (e.target === pwModal) pwModal.classList.remove('show'); });
+
+  /* ── Enter edit mode ── */
+  function enterEditMode() {
+    isEditMode = true;
+    document.body.classList.add('edit-mode');
+    lockBtn.textContent = '🔓';
+
+    /* make text elements editable */
+    document.querySelectorAll(EDITABLE_SELECTORS).forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('data-editable', '');
+      el.setAttribute('spellcheck', 'false');
+    });
+
+    /* inject banner */
+    const banner = document.createElement('div');
+    banner.id = 'editBanner';
+    banner.innerHTML = `
+      <div class="banner-left">🔓 편집 모드 활성화 중</div>
+      <div class="banner-right">
+        <button class="banner-btn save" id="saveGithubBtn">☁️ GitHub에 저장</button>
+        <button class="banner-btn exit" id="exitEditBtn">✕ 종료</button>
+      </div>`;
+    document.body.prepend(banner);
+    /* push content down */
+    document.body.style.paddingTop = (banner.offsetHeight + 4) + 'px';
+
+    document.getElementById('saveGithubBtn').addEventListener('click', saveToGithub);
+    document.getElementById('exitEditBtn').addEventListener('click', exitEditMode);
+
+    showToast('편집 모드가 활성화되었습니다. 텍스트를 클릭하여 수정하세요.', 'info');
+  }
+
+  /* ── Exit edit mode ── */
+  function exitEditMode() {
+    isEditMode = false;
+    document.body.classList.remove('edit-mode');
+    document.body.style.paddingTop = '';
+    lockBtn.textContent = '🔒';
+
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.removeAttribute('data-editable');
+      el.removeAttribute('spellcheck');
+    });
+
+    const banner = document.getElementById('editBanner');
+    if (banner) banner.remove();
+  }
+
+  /* ── Save to GitHub ── */
+  async function saveToGithub() {
+    const saveBtn = document.getElementById('saveGithubBtn');
+    saveBtn.textContent = '⏳ 저장 중...';
+    saveBtn.disabled = true;
+
+    try {
+      /* 1. GET current file SHA (from gh-pages branch) */
+      const shaRes = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}`,
+        { headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github+json' } }
+      );
+      if (!shaRes.ok) throw new Error(`SHA 조회 실패: ${shaRes.status}`);
+      const shaData = await shaRes.json();
+      const sha = shaData.sha;
+
+      /* 2. Build clean HTML (no edit-mode artifacts) */
+      const cleanHtml = buildCleanHtml();
+
+      /* 3. Base64 encode (UTF-8 safe) */
+      const b64 = utfToB64(cleanHtml);
+
+      /* 4. Commit timestamp */
+      const now = new Date().toLocaleString('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      /* 5. PUT to GitHub */
+      const putRes = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `✏️ 일정 수정 - ${now}`,
+            content: b64,
+            sha: sha,
+            branch: GITHUB_BRANCH
+          })
+        }
+      );
+
+      if (putRes.ok) {
+        showToast('✅ GitHub에 저장되었습니다! 1~2분 후 반영됩니다.', 'success');
+      } else {
+        const errData = await putRes.json();
+        throw new Error(errData.message || putRes.status);
+      }
+    } catch (err) {
+      showToast(`❌ 저장 실패: ${err.message}`, 'error');
+    } finally {
+      if (saveBtn) {
+        saveBtn.textContent = '☁️ GitHub에 저장';
+        saveBtn.disabled = false;
+      }
+    }
+  }
+
+  /* ── Build clean HTML for saving ── */
+  function buildCleanHtml() {
+    const clone = document.documentElement.cloneNode(true);
+
+    /* remove edit-mode class */
+    clone.querySelector('body').classList.remove('edit-mode');
+    clone.querySelector('body').style.paddingTop = '';
+
+    /* remove dynamically created banner */
+    const banner = clone.querySelector('#editBanner');
+    if (banner) banner.remove();
+
+    /* remove contenteditable / data-editable */
+    clone.querySelectorAll('[contenteditable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.removeAttribute('data-editable');
+      el.removeAttribute('spellcheck');
+    });
+
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  /* ── UTF-8 safe Base64 encoder ── */
+  function utfToB64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    bytes.forEach(b => { bin += String.fromCharCode(b); });
+    return btoa(bin);
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, type = 'info') {
+    const t = document.createElement('div');
+    t.className = `toast-msg ${type}`;
+    t.textContent = msg;
+    toastWrap.appendChild(t);
+    setTimeout(() => t.remove(), 4200);
+  }
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
