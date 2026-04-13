@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardMaker Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+/* ── Custom Fonts ─────────────────────────────────────────────────────── */
+@font-face{font-family:'GmarketSans';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');font-weight:400}
+@font-face{font-family:'GmarketSans';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');font-weight:700}
+@font-face{font-family:'TmonMonsori';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff')}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.woff2') format('woff2-variations');font-weight:100 900}
+
+/* ── Design Tokens ────────────────────────────────────────────────────── */
+:root{
+  --p:#6366F1; --p-dk:#4F46E5; --p-lt:#EEF2FF; --p-bdr:#C7D2FE;
+  --bg:#F5F7FF; --srf:#fff; --srf2:#F8FAFF;
+  --bdr:#E4E7EF; --bdr-lt:#F1F5F9;
+  --t1:#111827; --t2:#6B7280; --t3:#9CA3AF;
+  --r:12px; --r-sm:8px; --r-lg:18px;
+  --sh:0 2px 12px rgba(0,0,0,.07);
+  --sh-p:0 4px 20px rgba(99,102,241,.28);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--t1);min-height:100vh}
+
+/* ── Navbar ───────────────────────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--bdr);
+  padding:0 24px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--p),#8B5CF6);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;
+  box-shadow:var(--sh-p);
+}
+.nav-logo-text{font-size:16px;font-weight:800;color:var(--t1);letter-spacing:-.4px}
+.nav-logo-text span{color:var(--p)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.size-pill{
+  display:flex;align-items:center;gap:6px;
+  background:var(--srf2);border:1px solid var(--bdr);border-radius:999px;
+  padding:6px 14px;font-size:12px;color:var(--t2);
+}
+.size-pill input[type="number"]{
+  width:46px;border:none;background:transparent;
+  font-size:12px;font-family:inherit;color:var(--t1);
+  text-align:center;outline:none;font-weight:700;
+}
+.size-pill .x{color:var(--t3);font-size:11px}
+.btn-apply{
+  padding:5px 12px;background:var(--p-lt);color:var(--p);border:none;
+  border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:background .15s;
+}
+.btn-apply:hover{background:var(--p-bdr)}
+.btn-dl{
+  display:flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,var(--p),#8B5CF6);color:#fff;border:none;
+  border-radius:999px;padding:9px 20px;font-size:13px;font-weight:700;
+  cursor:pointer;font-family:inherit;box-shadow:var(--sh-p);
+  transition:opacity .15s,transform .15s;
+}
+.btn-dl:hover{opacity:.9;transform:translateY(-1px)}
+.btn-dl:active{transform:translateY(0)}
+
+/* ── Main layout ──────────────────────────────────────────────────────── */
+.main{display:flex;min-height:calc(100vh - 58px);align-items:flex-start}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+.sidebar{
+  width:340px;flex-shrink:0;
+  background:var(--srf);border-right:1px solid var(--bdr);
+  padding:16px 14px;
+  display:flex;flex-direction:column;gap:8px;
+}
+
+/* Accordion section */
+.ctrl{border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;background:var(--srf);transition:box-shadow .2s}
+.ctrl.open{box-shadow:var(--sh)}
+.ctrl-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 13px;cursor:pointer;user-select:none;transition:background .15s;
+}
+.ctrl-head:hover{background:var(--srf2)}
+.ctrl-hl{display:flex;align-items:center;gap:9px}
+.ctrl-ico{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
+}
+.ctrl-title{font-size:12px;font-weight:700;color:var(--t1)}
+.ctrl-arr{font-size:10px;color:var(--t3);transition:transform .22s}
+.ctrl.open .ctrl-arr{transform:rotate(180deg)}
+.ctrl-body{padding:0 13px 14px;display:flex;flex-direction:column;gap:10px}
+
+/* ── Form atoms ───────────────────────────────────────────────────────── */
+.flbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
+
+input[type="text"],textarea{
+  width:100%;border:1.5px solid var(--bdr);border-radius:var(--r-sm);
+  padding:8px 11px;font-size:13px;font-family:inherit;color:var(--t1);
+  background:var(--srf2);outline:none;transition:border-color .18s,box-shadow .18s;
+}
+input[type="text"]:focus,textarea:focus{
+  border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(99,102,241,.1);
+}
+textarea{resize:vertical;line-height:1.5}
+
+select{
+  flex:1;border:1.5px solid var(--bdr);border-radius:var(--r-sm);
+  padding:7px 9px;font-size:12px;font-family:inherit;color:var(--t1);
+  background:var(--srf2);cursor:pointer;outline:none;transition:border-color .18s;min-width:0;
+}
+select:focus{border-color:var(--p)}
+
+input[type="number"]{
+  width:56px;border:1.5px solid var(--bdr);border-radius:var(--r-sm);
+  padding:7px 5px;font-size:12px;font-family:inherit;color:var(--t1);
+  text-align:center;background:var(--srf2);outline:none;transition:border-color .18s;flex-shrink:0;
+}
+input[type="number"]:focus{border-color:var(--p)}
+
+.row{display:flex;align-items:center;gap:6px;margin-top:6px}
+.unit{font-size:11px;color:var(--t3);flex-shrink:0}
+
+/* ── Slider (only size sliders remain) ───────────────────────────────── */
+.sliders{margin-top:4px;display:flex;flex-direction:column;gap:7px}
+.sr{display:flex;align-items:center;gap:8px}
+.sr label{font-size:11px;color:var(--t2);min-width:32px;flex-shrink:0}
+.sr input[type="range"]{flex:1;accent-color:var(--p);cursor:pointer;height:4px}
+.sv{font-size:11px;color:var(--p);font-weight:700;min-width:36px;text-align:right;flex-shrink:0}
+
+/* ── Upload ───────────────────────────────────────────────────────────── */
+.upload-box{
+  border:2px dashed var(--bdr);border-radius:var(--r);padding:18px 14px;
+  text-align:center;cursor:pointer;background:var(--srf2);
+  transition:border-color .2s,background .2s;user-select:none;
+}
+.upload-box:hover,.upload-box.drag{border-color:var(--p);background:var(--p-lt)}
+.upload-box.done{border-color:#10B981;background:#F0FDF4}
+.uico{font-size:24px}.umain{font-size:13px;font-weight:600;color:var(--t2);margin:4px 0 2px}.usub{font-size:11px;color:var(--t3)}
+
+/* ── Badge colors ─────────────────────────────────────────────────────── */
+.color-row{display:flex;gap:8px}
+.dot{width:26px;height:26px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.dot.on{border-color:#111;transform:scale(1.18)}
+.dot.red{background:#e74c3c}.dot.blue{background:#2980b9}.dot.green{background:#27ae60}
+
+/* ── Text color dots ──────────────────────────────────────────────────── */
+.cp-row{display:flex;align-items:center;gap:6px}
+.cp-lbl{font-size:11px;color:var(--t3);min-width:36px;flex-shrink:0}
+.cdot{width:20px;height:20px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;flex-shrink:0;transition:transform .15s,border-color .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.cdot.on{border-color:var(--p);transform:scale(1.25)}
+.cdot.cw{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}.cdot.ck{background:#111}.cdot.cr{background:#e74c3c}.cdot.cg{background:#888}.cdot.cb{background:#2980b9}
+
+/* ── Stroke toggle ────────────────────────────────────────────────────── */
+.stroke-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stk-btn{font-size:11px;font-weight:700;font-family:inherit;padding:4px 12px;border-radius:999px;border:1.5px solid var(--bdr);background:var(--srf2);color:var(--t3);cursor:pointer;transition:all .2s}
+.stk-btn.on{background:var(--p);border-color:var(--p);color:#fff}
+
+/* ── Shape buttons ────────────────────────────────────────────────────── */
+.shape-row{display:flex;gap:6px}
+.shape-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:10px 4px;border:1.5px solid var(--bdr);border-radius:var(--r-sm);
+  background:var(--srf2);cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;color:var(--t3);
+  transition:all .18s;
+}
+.shape-btn:hover{border-color:#bbb;color:var(--t2)}
+.shape-btn.on{border-color:var(--p);background:var(--p-lt);color:var(--p)}
+.shape-btn svg{display:block}
+
+/* ── Divider ──────────────────────────────────────────────────────────── */
+.div{height:1px;background:var(--bdr-lt);margin:2px 0}
+
+/* ── Preview panel ────────────────────────────────────────────────────── */
+.preview-col{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:24px;gap:16px;
+  position:sticky;top:58px;
+  max-height:calc(100vh - 58px);
+  overflow-y:auto;
+}
+.preview-sticky{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  width:100%;max-width:620px;
+}
+.preview-card{
+  width:100%;background:var(--srf);border-radius:var(--r-lg);
+  padding:20px;box-shadow:var(--sh);border:1px solid var(--bdr);
+}
+.preview-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.preview-live{font-size:12px;font-weight:700;color:var(--t2);display:flex;align-items:center;gap:7px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.preview-tip{font-size:11px;color:var(--t3)}
+.canvas-wrap{
+  border-radius:10px;overflow:hidden;display:flex;justify-content:center;
+  background-color:#e8e8e8;
+  background-image:linear-gradient(45deg,#ccc 25%,transparent 25%),linear-gradient(-45deg,#ccc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ccc 75%),linear-gradient(-45deg,transparent 75%,#ccc 75%);
+  background-size:18px 18px;background-position:0 0,0 9px,9px -9px,-9px 0;
+}
+#cv{display:block;max-width:100%}
+.preview-btns{display:flex;gap:10px;width:100%;max-width:620px}
+.btn-save{
+  flex:1;padding:11px;background:var(--srf);border:1.5px solid var(--bdr);
+  border-radius:var(--r-sm);font-size:13px;font-weight:600;color:var(--t2);
+  cursor:pointer;font-family:inherit;transition:all .18s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-save:hover{border-color:var(--p);color:var(--p);background:var(--p-lt)}
+#loadingMsg{font-size:11px;color:var(--t3);text-align:center;padding:4px 0}
+
+/* ── Gallery ──────────────────────────────────────────────────────────── */
+.gallery{padding:0 24px 48px;width:100%}
+.gallery-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;padding-top:8px;border-top:1px solid var(--bdr-lt);
+}
+.gallery-title{font-size:15px;font-weight:800;color:var(--t1)}
+.gallery-count{font-size:11px;color:var(--t3);background:var(--srf);border:1px solid var(--bdr);border-radius:999px;padding:3px 10px}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.gallery-empty{
+  text-align:center;padding:36px 20px;color:var(--t3);font-size:13px;
+  border:2px dashed var(--bdr);border-radius:var(--r-lg);background:var(--srf);
+}
+.empty-ico{font-size:30px;margin-bottom:8px}
+.card-thumb{
+  background:var(--srf);border:1px solid var(--bdr);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--sh);transition:transform .2s,box-shadow .2s;
+}
+.card-thumb:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.card-thumb img{
+  width:100%;display:block;
+  background-color:#e8e8e8;
+  background-image:linear-gradient(45deg,#ccc 25%,transparent 25%),linear-gradient(-45deg,#ccc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ccc 75%),linear-gradient(-45deg,transparent 75%,#ccc 75%);
+  background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;
+}
+.card-thumb-ft{padding:8px 10px;display:flex;align-items:center;gap:6px}
+.card-thumb-name{font-size:11px;font-weight:600;color:var(--t2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thumb-btn{
+  width:22px;height:22px;border-radius:6px;border:none;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;
+  color:var(--t3);transition:background .15s,color .15s;flex-shrink:0;
+}
+.thumb-btn.dl:hover{background:var(--p-lt);color:var(--p)}
+.thumb-btn.del:hover{background:#FEE2E2;color:#EF4444}
+
+/* ── Theme Color Swatches ─────────────────────────────────────────────── */
+.theme-swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.theme-swatch{
+  width:28px;height:28px;border-radius:50%;border:3px solid transparent;
+  cursor:pointer;transition:transform .15s,border-color .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,.28);flex-shrink:0;
+}
+.theme-swatch.on{border-color:#111;transform:scale(1.2)}
+.theme-color-picker{
+  width:28px;height:28px;border-radius:50%;border:2.5px solid var(--bdr);
+  cursor:pointer;padding:0;background:none;overflow:hidden;flex-shrink:0;
+  appearance:none;-webkit-appearance:none;
+}
+.theme-color-picker::-webkit-color-swatch-wrapper{padding:0}
+.theme-color-picker::-webkit-color-swatch{border:none;border-radius:50%}
+
+/* ── Size Preset Buttons ──────────────────────────────────────────────── */
+.size-presets{display:flex;gap:5px;align-items:center}
+.size-preset-btn{
+  padding:5px 11px;border:1.5px solid var(--bdr);border-radius:999px;
+  background:var(--srf2);font-size:11px;font-weight:700;font-family:inherit;
+  color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+
+/* ── Default Template Button ──────────────────────────────────────────── */
+.btn-template{
+  width:100%;padding:10px;border:1.5px dashed var(--bdr);border-radius:var(--r-sm);
+  background:var(--srf2);font-size:12px;font-weight:700;font-family:inherit;
+  color:var(--t2);cursor:pointer;transition:all .18s;
+}
+.btn-template:hover{border-color:var(--p);color:var(--p);background:var(--p-lt)}
+</style>
+</head>
+<body>
+
+<!-- ══ Navbar ══════════════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <a class="nav-logo">
+    <div class="nav-logo-icon">🎯</div>
+    <span class="nav-logo-text">Card<span>Maker</span> Pro</span>
+  </a>
+  <div class="nav-right">
+    <div class="size-presets" id="sizePresets">
+      <button class="size-preset-btn" data-w="1123" data-h="794"  onclick="applyPreset(this)">A4 가로</button>
+      <button class="size-preset-btn" data-w="794"  data-h="1123" onclick="applyPreset(this)" id="defaultPresetBtn">A4 세로</button>
+      <button class="size-preset-btn" data-w="1587" data-h="1123" onclick="applyPreset(this)">A3 가로</button>
+      <button class="size-preset-btn" data-w="1123" data-h="1587" onclick="applyPreset(this)">A3 세로</button>
+    </div>
+    <button class="btn-dl" onclick="download()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      PNG 저장
+    </button>
+  </div>
+</nav>
+
+<!-- ══ Main ════════════════════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+
+    <!-- 테마 컬러 -->
+    <div class="ctrl open" id="sec-theme">
+      <div class="ctrl-head" onclick="toggleSec('sec-theme','body-theme')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#FFF3E0">🎨</div>
+          <span class="ctrl-title">테마 컬러</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-theme">
+        <div>
+          <div class="flbl">프리셋 색상</div>
+          <div class="theme-swatches" style="margin-top:6px">
+            <div class="theme-swatch on" style="background:#FF8C00" data-c="#FF8C00" onclick="setThemeColor(this)" title="주황"></div>
+            <div class="theme-swatch"    style="background:#E02020" data-c="#E02020" onclick="setThemeColor(this)" title="빨강"></div>
+            <div class="theme-swatch"    style="background:#F5C400" data-c="#F5C400" onclick="setThemeColor(this)" title="노랑"></div>
+            <div class="theme-swatch"    style="background:#1A8C3A" data-c="#1A8C3A" onclick="setThemeColor(this)" title="초록"></div>
+            <div class="theme-swatch"    style="background:#1565C0" data-c="#1565C0" onclick="setThemeColor(this)" title="파랑"></div>
+            <div class="theme-swatch"    style="background:#6A1B9A" data-c="#6A1B9A" onclick="setThemeColor(this)" title="보라"></div>
+            <input type="color" class="theme-color-picker" id="themeColorPicker" value="#FF8C00" oninput="setThemeColorDirect(this.value)" title="커스텀 색상">
+          </div>
+        </div>
+        <div class="sliders">
+          <div class="sr">
+            <label>타이틀 배경 높이</label>
+            <input type="range" id="titleBgH" min="0" max="50" value="22" oninput="ss('titleBgH','titleBgHv','%')">
+            <span class="sv" id="titleBgHv">22%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기본 템플릿 -->
+    <button class="btn-template" onclick="applyDefaultTemplate()">🛒 기본 템플릿 적용</button>
+
+    <!-- 타이틀 -->
+    <div class="ctrl open" id="sec-title">
+      <div class="ctrl-head" onclick="toggleSec('sec-title','body-title')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#FFF3E0">📢</div>
+          <span class="ctrl-title">타이틀</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-title">
+        <textarea id="titleText" placeholder="타이틀 입력&#10;(Enter로 줄바꿈)" rows="2">블랙 라벨 오렌지 등장!</textarea>
+        <div class="row">
+          <select id="titleFont">
+            <option value="GmarketSans" selected>지마켓 산스</option>
+            <option value="TmonMonsori">티몬 몬소리체</option>
+            <option value="Jua">배달의민족 주아체</option>
+            <option value="Pretendard">프리텐다드</option>
+          </select>
+          <input type="number" id="titleSize" value="52" min="6" max="300">
+          <span class="unit">px</span>
+        </div>
+        <div class="cp-row">
+          <span class="cp-lbl">글자색</span>
+          <div class="cdot cw on" data-k="title" data-c="#ffffff" onclick="setTC(this)"></div>
+          <div class="cdot ck"    data-k="title" data-c="#111111" onclick="setTC(this)"></div>
+          <div class="cdot cr"    data-k="title" data-c="#e74c3c" onclick="setTC(this)"></div>
+          <div class="cdot cg"    data-k="title" data-c="#888888" onclick="setTC(this)"></div>
+          <div class="cdot cb"    data-k="title" data-c="#2980b9" onclick="setTC(this)"></div>
+        </div>
+        <div class="stroke-row">
+          <span class="cp-lbl">테두리선</span>
+          <button class="stk-btn" id="titleStkBtn" onclick="toggleTitleStroke()">OFF</button>
+          <div id="titleStkPicker" style="display:none;gap:6px;align-items:center;">
+            <div class="cdot cw on" data-c="#ffffff" onclick="setTitleStrokeC(this)"></div>
+            <div class="cdot ck"    data-c="#111111" onclick="setTitleStrokeC(this)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 이미지 -->
+    <div class="ctrl open" id="sec-img">
+      <div class="ctrl-head" onclick="toggleSec('sec-img','body-img')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#EFF6FF">🖼️</div>
+          <span class="ctrl-title">상품 이미지</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-img">
+        <div class="upload-box" id="uploadBox">
+          <input type="file" id="fileIn" accept="image/*" style="display:none">
+          <div class="uico" id="uIcon">🖼️</div>
+          <div class="umain" id="uMain">이미지 업로드</div>
+          <div class="usub" id="uSub">클릭 또는 드래그</div>
+        </div>
+        <div class="sliders">
+          <div class="sr">
+            <label>크기</label>
+            <input type="range" id="imgS" min="10" max="200" value="100" oninput="ss('imgS','imgSv','%')">
+            <span class="sv" id="imgSv">100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상품명 -->
+    <div class="ctrl open" id="sec-name">
+      <div class="ctrl-head" onclick="toggleSec('sec-name','body-name')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#F5F3FF">🏷️</div>
+          <span class="ctrl-title">상품명</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-name">
+        <textarea id="name" placeholder="상품명 입력&#10;(Enter로 줄바꿈)" rows="2">프링글스 11종</textarea>
+        <div class="row">
+          <select id="nameFont">
+            <option value="GmarketSans">지마켓 산스</option>
+            <option value="TmonMonsori">티몬 몬소리체</option>
+            <option value="Jua">배달의민족 주아체</option>
+            <option value="Pretendard">프리텐다드</option>
+          </select>
+          <input type="number" id="nameSize" value="36" min="6" max="300">
+          <span class="unit">px</span>
+        </div>
+        <div class="cp-row">
+          <span class="cp-lbl">글자색</span>
+          <div class="cdot cw" data-k="name" data-c="#ffffff" onclick="setTC(this)"></div>
+          <div class="cdot ck on" data-k="name" data-c="#111111" onclick="setTC(this)"></div>
+          <div class="cdot cr" data-k="name" data-c="#e74c3c" onclick="setTC(this)"></div>
+          <div class="cdot cg" data-k="name" data-c="#888888" onclick="setTC(this)"></div>
+          <div class="cdot cb" data-k="name" data-c="#2980b9" onclick="setTC(this)"></div>
+        </div>
+        <div class="stroke-row">
+          <span class="cp-lbl">테두리선</span>
+          <button class="stk-btn" id="nameStkBtn" onclick="toggleStroke()">OFF</button>
+          <div id="nameStkPicker" style="display:none;gap:6px;align-items:center;">
+            <div class="cdot cw on" data-c="#ffffff" onclick="setStrokeC(this)"></div>
+            <div class="cdot ck"    data-c="#111111" onclick="setStrokeC(this)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상품설명 -->
+    <div class="ctrl open" id="sec-desc">
+      <div class="ctrl-head" onclick="toggleSec('sec-desc','body-desc')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#F0FDF4">📝</div>
+          <span class="ctrl-title">상품설명</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-desc">
+        <textarea id="desc" placeholder="상품설명 입력&#10;(Enter로 줄바꿈)" rows="2"></textarea>
+        <div class="row">
+          <select id="descFont">
+            <option value="GmarketSans">지마켓 산스</option>
+            <option value="TmonMonsori">티몬 몬소리체</option>
+            <option value="Jua">배달의민족 주아체</option>
+            <option value="Pretendard" selected>프리텐다드</option>
+          </select>
+          <input type="number" id="descSize" value="18" min="6" max="300">
+          <span class="unit">px</span>
+        </div>
+        <div class="cp-row">
+          <span class="cp-lbl">글자색</span>
+          <div class="cdot cw" data-k="desc" data-c="#ffffff" onclick="setTC(this)"></div>
+          <div class="cdot ck" data-k="desc" data-c="#111111" onclick="setTC(this)"></div>
+          <div class="cdot cr" data-k="desc" data-c="#e74c3c" onclick="setTC(this)"></div>
+          <div class="cdot cg on" data-k="desc" data-c="#888888" onclick="setTC(this)"></div>
+          <div class="cdot cb" data-k="desc" data-c="#2980b9" onclick="setTC(this)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 정상가 -->
+    <div class="ctrl open" id="sec-orig">
+      <div class="ctrl-head" onclick="toggleSec('sec-orig','body-orig')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#FFF7ED">💲</div>
+          <span class="ctrl-title">정상가</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-orig">
+        <input type="text" id="origPrice" placeholder="예) 19,800원 (숫자만 입력)">
+        <div class="row">
+          <select id="origFont">
+            <option value="GmarketSans">지마켓 산스</option>
+            <option value="TmonMonsori">티몬 몬소리체</option>
+            <option value="Jua">배달의민족 주아체</option>
+            <option value="Pretendard" selected>프리텐다드</option>
+          </select>
+          <input type="number" id="origSize" value="22" min="6" max="300">
+          <span class="unit">px</span>
+        </div>
+        <div class="cp-row">
+          <span class="cp-lbl">글자색</span>
+          <div class="cdot cw" data-k="orig" data-c="#ffffff" onclick="setTC(this)"></div>
+          <div class="cdot ck" data-k="orig" data-c="#111111" onclick="setTC(this)"></div>
+          <div class="cdot cr" data-k="orig" data-c="#e74c3c" onclick="setTC(this)"></div>
+          <div class="cdot cg on" data-k="orig" data-c="#888888" onclick="setTC(this)"></div>
+          <div class="cdot cb" data-k="orig" data-c="#2980b9" onclick="setTC(this)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 행사가 -->
+    <div class="ctrl open" id="sec-sale">
+      <div class="ctrl-head" onclick="toggleSec('sec-sale','body-sale')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#FEF2F2">🔥</div>
+          <span class="ctrl-title">행사가</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-sale">
+        <input type="text" id="salePrice" placeholder="예) 3,330원" value="3,330원">
+        <div class="row">
+          <select id="saleFont">
+            <option value="GmarketSans" selected>지마켓 산스</option>
+            <option value="TmonMonsori">티몬 몬소리체</option>
+            <option value="Jua">배달의민족 주아체</option>
+            <option value="Pretendard">프리텐다드</option>
+          </select>
+          <input type="number" id="saleSize" value="52" min="6" max="300">
+          <span class="unit">px</span>
+        </div>
+        <div class="cp-row">
+          <span class="cp-lbl">글자색</span>
+          <div class="cdot cw" data-k="sale" data-c="#ffffff" onclick="setTC(this)"></div>
+          <div class="cdot ck on" data-k="sale" data-c="#111111" onclick="setTC(this)"></div>
+          <div class="cdot cr" data-k="sale" data-c="#e74c3c" onclick="setTC(this)"></div>
+          <div class="cdot cg" data-k="sale" data-c="#888888" onclick="setTC(this)"></div>
+          <div class="cdot cb" data-k="sale" data-c="#2980b9" onclick="setTC(this)"></div>
+        </div>
+        <div class="stroke-row">
+          <span class="cp-lbl">테두리선</span>
+          <button class="stk-btn" id="saleStkBtn" onclick="toggleSaleStroke()">OFF</button>
+          <div id="saleStkPicker" style="display:none;gap:6px;align-items:center;">
+            <div class="cdot cw on" data-c="#ffffff" onclick="setSaleStrokeC(this)"></div>
+            <div class="cdot ck"    data-c="#111111" onclick="setSaleStrokeC(this)"></div>
+          </div>
+        </div>
+        <div class="cp-row" style="margin-top:4px">
+          <span class="cp-lbl">글자 배경</span>
+          <div class="cdot" style="background:none;border:2px dashed #bbb;" data-bg="none"  onclick="setSaleBg(this)" title="없음">✕</div>
+          <div class="cdot" style="background:#e02020" data-bg="#e02020" onclick="setSaleBg(this)" title="빨강"></div>
+          <div class="cdot" style="background:#F5C400" data-bg="#F5C400" onclick="setSaleBg(this)" title="노랑"></div>
+          <div class="cdot" style="background:#FF8C00" data-bg="#FF8C00" onclick="setSaleBg(this)" title="주황"></div>
+          <div class="cdot" style="background:#111111" data-bg="#111111" onclick="setSaleBg(this)" title="검정"></div>
+          <div class="cdot cw" style="background:#ffffff;box-shadow:0 0 0 1.5px #ccc" data-bg="#ffffff" onclick="setSaleBg(this)" title="흰색"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 뱃지 -->
+    <div class="ctrl open" id="sec-badge">
+      <div class="ctrl-head" onclick="toggleSec('sec-badge','body-badge')">
+        <div class="ctrl-hl">
+          <div class="ctrl-ico" style="background:#FEF3C7">🎖️</div>
+          <span class="ctrl-title">뱃지</span>
+        </div>
+        <span class="ctrl-arr">▾</span>
+      </div>
+      <div class="ctrl-body" id="body-badge">
+        <div>
+          <div class="flbl">모양</div>
+          <div class="shape-row">
+            <button class="shape-btn on" data-shape="circle" onclick="setBadgeShape(this)">
+              <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="10" fill="currentColor"/></svg>원
+            </button>
+            <button class="shape-btn" data-shape="square" onclick="setBadgeShape(this)">
+              <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="3" width="20" height="20" rx="4" fill="currentColor"/></svg>사각형
+            </button>
+            <button class="shape-btn" data-shape="rect" onclick="setBadgeShape(this)">
+              <svg width="26" height="26" viewBox="0 0 26 26"><rect x="1" y="8" width="24" height="10" rx="3" fill="currentColor"/></svg>가로형
+            </button>
+            <button class="shape-btn" data-shape="banner" onclick="setBadgeShape(this)">
+              <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 3 Q3 3 5 3 L21 3 Q23 3 23 5 L23 16 L13 24 L3 16 L3 5 Q3 3 5 3 Z" fill="currentColor"/></svg>배너
+            </button>
+          </div>
+        </div>
+        <div>
+          <div class="flbl">색상</div>
+          <div class="color-row">
+            <div class="dot red on" data-c="#e74c3c" onclick="pickColor(this)"></div>
+            <div class="dot blue"   data-c="#2980b9" onclick="pickColor(this)"></div>
+            <div class="dot green"  data-c="#27ae60" onclick="pickColor(this)"></div>
+          </div>
+        </div>
+        <div class="div"></div>
+        <div>
+          <div class="flbl">메인 텍스트</div>
+          <input type="text" id="b2" placeholder="예) 1+1" value="1+1">
+          <div class="row">
+            <select id="b2Font">
+              <option value="GmarketSans">지마켓 산스</option>
+              <option value="TmonMonsori">티몬 몬소리체</option>
+              <option value="Jua">배달의민족 주아체</option>
+              <option value="Pretendard">프리텐다드</option>
+            </select>
+            <input type="number" id="b2Size" value="36" min="6" max="120">
+            <span class="unit">px</span>
+          </div>
+        </div>
+        <div class="sliders">
+          <div class="sr">
+            <label>크기</label>
+            <input type="range" id="br" min="10" max="300" value="57" oninput="ss('br','brv','px')">
+            <span class="sv" id="brv">57px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside><!-- /sidebar -->
+
+  <!-- ── Preview ────────────────────────────────────────────────────── -->
+  <div class="preview-col">
+    <div class="preview-sticky">
+      <div class="preview-card">
+        <div class="preview-hdr">
+          <div class="preview-live">
+            <div class="live-dot"></div>실시간 미리보기
+          </div>
+          <div class="preview-tip">✦ 요소를 클릭 후 드래그하여 위치 조정</div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="cv" width="794" height="1123"></canvas>
+        </div>
+        <div id="loadingMsg" style="padding-top:8px">폰트 로딩 중…</div>
+      </div>
+      <div class="preview-btns">
+        <button class="btn-save" onclick="saveCard()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          카드 저장
+        </button>
+        <button class="btn-dl" onclick="download()" style="flex:2;justify-content:center;border-radius:var(--r-sm)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PNG 다운로드
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ══ Gallery ══════════════════════════════════════════════════════════════ -->
+<div class="gallery">
+  <div class="gallery-hdr">
+    <span class="gallery-title">저장된 카드</span>
+    <span class="gallery-count" id="galleryCount">0개</span>
+  </div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-empty">
+      <div class="empty-ico">🗂️</div>
+      저장된 카드가 없습니다<br>
+      <span style="font-size:11px;margin-top:4px;display:block">미리보기에서 '카드 저장'을 눌러보세요</span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ State ════════════════════════════════════════════════════════════════ */
+let img        = null;
+let badgeColor = '#e74c3c';
+let badgeShape = 'circle';
+const tc = { title:'#ffffff', name:'#111111', desc:'#888888', orig:'#888888', sale:'#111111' };
+let nameStrokeOn  = false, nameStrokeColor  = '#ffffff';
+let titleStrokeOn = false, titleStrokeColor = '#111111';
+let saleStrokeOn  = false, saleStrokeColor  = '#ffffff';
+let saleBgColor   = 'none';
+let savedCards   = [];
+let themeColor   = '#FF8C00';
+
+/* Drag */
+let dragging = null, selectedEl = null;
+let dragStartMX = 0, dragStartMY = 0, dragStartVX = 0, dragStartVY = 0;
+
+/* Bounds (for hit-test) */
+const bounds = { img:null, title:null, name:null, desc:null, orig:null, sale:null, badge:null };
+
+/* === Position state (replaces X/Y sliders) === */
+/* Values are % of canvas W/H, except br (badge radius px) */
+const pos = {
+  imgX:0,    imgY:0,
+  titleX:5,  titleY:3,
+  nameX:5,   nameY:62,
+  descX:5,   descY:69,
+  origX:5,   origY:72,
+  saleX:5,   saleY:78,
+  bx:15,     by:58,
+};
+
+/* ══ Element ID maps ══════════════════════════════════════════════════════ */
+const XID  = { img:'imgX', title:'titleX', name:'nameX', desc:'descX', orig:'origX', sale:'saleX', badge:'bx' };
+const YID  = { img:'imgY', title:'titleY', name:'nameY', desc:'descY', orig:'origY', sale:'saleY', badge:'by' };
+const XMIN = { img:-100, title:-20, name:-20, desc:-20, orig:-20, sale:-20, badge:0 };
+const XMAX = { img:200,  title:120, name:120, desc:120, orig:120, sale:120, badge:100 };
+const YMIN = { img:-100, title:0,   name:0,   desc:0,   orig:0,   sale:0,   badge:0 };
+const YMAX = { img:200,  title:100, name:100, desc:100, orig:100, sale:100, badge:100 };
+
+function getXY(k){ return { x: pos[XID[k]]||0, y: pos[YID[k]]||0 }; }
+function setXY(k, x, y){
+  pos[XID[k]] = Math.max(XMIN[k], Math.min(XMAX[k], Math.round(x)));
+  pos[YID[k]] = Math.max(YMIN[k], Math.min(YMAX[k], Math.round(y)));
+}
+
+/* ══ Helpers ══════════════════════════════════════════════════════════════ */
+const g  = id => document.getElementById(id).value;
+const gi = id => parseInt(g(id))   || 0;
+const gf = id => parseFloat(g(id)) || 0;
+const fontStr = id => `'${g(id)}','Pretendard',sans-serif`;
+
+function ss(sliderId, labelId, unit){
+  document.getElementById(labelId).textContent = g(sliderId) + unit;
+  draw();
+}
+
+/* ══ Accordion ════════════════════════════════════════════════════════════ */
+function toggleSec(secId, bodyId){
+  const sec  = document.getElementById(secId);
+  const body = document.getElementById(bodyId);
+  const arr  = sec.querySelector('.ctrl-arr');
+  const open = sec.classList.toggle('open');
+  body.style.display = open ? '' : 'none';
+  if (!open) body.style.display = 'none';
+  else        body.style.display = '';
+}
+
+/* ══ Font loading ══════════════════════════════════════════════════════════ */
+async function loadFonts(){
+  const defs = [
+    ['GmarketSans','https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff','400'],
+    ['GmarketSans','https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff','700'],
+    ['TmonMonsori','https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff','normal'],
+    ['Pretendard','https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.woff2','400 900'],
+  ];
+  await Promise.allSettled(defs.map(([fam,src,wt])=>{
+    const ff = new FontFace(fam,`url(${src})`,{weight:wt});
+    return ff.load().then(f=>document.fonts.add(f)).catch(()=>{});
+  }));
+  await document.fonts.ready;
+  const msg = document.getElementById('loadingMsg');
+  msg.textContent = '✓ 준비 완료 — 캔버스에서 드래그하여 위치를 조정하세요';
+  setTimeout(()=>msg.style.display='none', 2500);
+  draw();
+}
+
+/* ══ Image upload ══════════════════════════════════════════════════════════ */
+const box    = document.getElementById('uploadBox');
+const fileIn = document.getElementById('fileIn');
+box.addEventListener('click',    ()=>fileIn.click());
+box.addEventListener('dragover', e=>{e.preventDefault();box.classList.add('drag')});
+box.addEventListener('dragleave',()=>box.classList.remove('drag'));
+box.addEventListener('drop',e=>{
+  e.preventDefault();box.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/')) loadImg(f);
+});
+fileIn.addEventListener('change',e=>{if(e.target.files[0]) loadImg(e.target.files[0])});
+
+function loadImg(file){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const el=new Image();
+    el.onload=()=>{
+      img=el;
+      box.classList.add('done');
+      document.getElementById('uIcon').textContent='✅';
+      document.getElementById('uMain').textContent=file.name.length>24?file.name.slice(0,22)+'…':file.name;
+      document.getElementById('uSub').textContent=`${el.width} × ${el.height} px`;
+      draw();
+    };
+    el.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ══ Badge color / shape ══════════════════════════════════════════════════ */
+function pickColor(el){
+  document.querySelectorAll('.dot').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  badgeColor=el.dataset.c;
+  draw();
+}
+function setBadgeShape(el){
+  document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  badgeShape=el.dataset.shape;
+  draw();
+}
+
+/* ══ Text color / stroke ══════════════════════════════════════════════════ */
+function setTC(el){
+  const key=el.dataset.k;
+  el.closest('.cp-row').querySelectorAll('.cdot').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  tc[key]=el.dataset.c;
+  draw();
+}
+function toggleStroke(){
+  nameStrokeOn=!nameStrokeOn;
+  const btn=document.getElementById('nameStkBtn');
+  const picker=document.getElementById('nameStkPicker');
+  btn.textContent=nameStrokeOn?'ON':'OFF';
+  btn.classList.toggle('on',nameStrokeOn);
+  picker.style.display=nameStrokeOn?'flex':'none';
+  draw();
+}
+function setStrokeC(el){
+  document.querySelectorAll('#nameStkPicker .cdot').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  nameStrokeColor=el.dataset.c;
+  draw();
+}
+function toggleSaleStroke(){
+  saleStrokeOn=!saleStrokeOn;
+  const btn=document.getElementById('saleStkBtn');
+  const picker=document.getElementById('saleStkPicker');
+  btn.textContent=saleStrokeOn?'ON':'OFF';
+  btn.classList.toggle('on',saleStrokeOn);
+  picker.style.display=saleStrokeOn?'flex':'none';
+  draw();
+}
+function setSaleStrokeC(el){
+  document.querySelectorAll('#saleStkPicker .cdot').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  saleStrokeColor=el.dataset.c;
+  draw();
+}
+function setSaleBg(el){
+  document.querySelectorAll('[data-bg]').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  saleBgColor=el.dataset.bg;
+  draw();
+}
+function toggleTitleStroke(){
+  titleStrokeOn=!titleStrokeOn;
+  const btn=document.getElementById('titleStkBtn');
+  const picker=document.getElementById('titleStkPicker');
+  btn.textContent=titleStrokeOn?'ON':'OFF';
+  btn.classList.toggle('on',titleStrokeOn);
+  picker.style.display=titleStrokeOn?'flex':'none';
+  draw();
+}
+function setTitleStrokeC(el){
+  document.querySelectorAll('#titleStkPicker .cdot').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  titleStrokeColor=el.dataset.c;
+  draw();
+}
+
+/* ══ Hit testing ══════════════════════════════════════════════════════════ */
+function hitTest(mx, my){
+  if(bounds.badge){
+    const b=bounds.badge;
+    const hit=b.hitW
+      ? mx>=b.hitX&&mx<=b.hitX+b.hitW&&my>=b.hitY&&my<=b.hitY+b.hitH
+      : Math.hypot(mx-b.cx,my-b.cy)<=b.r;
+    if(hit) return 'badge';
+  }
+  for(const k of ['sale','orig','desc','name','title']){
+    const b=bounds[k];
+    if(b&&mx>=b.x&&mx<=b.x+b.w&&my>=b.y&&my<=b.y+b.h) return k;
+  }
+  if(bounds.img){
+    const b=bounds.img;
+    if(mx>=b.x&&mx<=b.x+b.w&&my>=b.y&&my<=b.y+b.h) return 'img';
+  }
+  return null;
+}
+
+/* ══ Badge helpers ════════════════════════════════════════════════════════ */
+function badgePath(ctx,cx,cy,r,shape,shrink){
+  const s=r-(shrink||0);
+  ctx.beginPath();
+  if(shape==='circle'){
+    ctx.arc(cx,cy,s,0,Math.PI*2);
+  } else if(shape==='square'){
+    const rc=s*.18,x=cx-s,y=cy-s,w=s*2;
+    ctx.moveTo(x+rc,y);ctx.lineTo(x+w-rc,y);ctx.arcTo(x+w,y,x+w,y+rc,rc);
+    ctx.lineTo(x+w,y+w-rc);ctx.arcTo(x+w,y+w,x+w-rc,y+w,rc);
+    ctx.lineTo(x+rc,y+w);ctx.arcTo(x,y+w,x,y+w-rc,rc);
+    ctx.lineTo(x,y+rc);ctx.arcTo(x,y,x+rc,y,rc);ctx.closePath();
+  } else if(shape==='rect'){
+    /* 가로 직사각형: 너비 r*3, 높이 r */
+    const hw=r*1.5-(shrink||0), hh=r*0.5-(shrink||0);
+    const rc=Math.max(3,hh*.4);
+    const x=cx-hw,y=cy-hh,w=hw*2,h=hh*2;
+    ctx.moveTo(x+rc,y);ctx.lineTo(x+w-rc,y);ctx.arcTo(x+w,y,x+w,y+rc,rc);
+    ctx.lineTo(x+w,y+h-rc);ctx.arcTo(x+w,y+h,x+w-rc,y+h,rc);
+    ctx.lineTo(x+rc,y+h);ctx.arcTo(x,y+h,x,y+h-rc,rc);
+    ctx.lineTo(x,y+rc);ctx.arcTo(x,y,x+rc,y,rc);ctx.closePath();
+  } else {
+    const rc=s*.2,top=cy-s,mid=cy+s*.18,bot=cy+s*1.25,l=cx-s,ri=cx+s;
+    ctx.moveTo(l+rc,top);ctx.lineTo(ri-rc,top);ctx.arcTo(ri,top,ri,top+rc,rc);
+    ctx.lineTo(ri,mid);ctx.lineTo(cx,bot);ctx.lineTo(l,mid);
+    ctx.lineTo(l,top+rc);ctx.arcTo(l,top,l+rc,top,rc);ctx.closePath();
+  }
+}
+function badgeCY(cy,r,shape){ return shape==='banner'?cy-r*.05:cy; }
+function badgeBounds(cx,cy,r,shape){
+  if(shape==='banner') return {cx,cy,r,hitX:cx-r,    hitY:cy-r,    hitW:r*2,   hitH:r*2.25};
+  if(shape==='square') return {cx,cy,r,hitX:cx-r,    hitY:cy-r,    hitW:r*2,   hitH:r*2};
+  if(shape==='rect')   return {cx,cy,r,hitX:cx-r*1.5,hitY:cy-r*.5, hitW:r*3,   hitH:r};
+  return {cx,cy,r};
+}
+
+/* ══ Selection highlight ══════════════════════════════════════════════════ */
+const EL_LABEL={img:'이미지',title:'타이틀',name:'상품명',desc:'상품설명',orig:'정상가',sale:'행사가',badge:'뱃지'};
+function drawHighlight(ctx,key){
+  const b=bounds[key]; if(!b) return;
+  ctx.save();
+  ctx.setLineDash([5,3]);ctx.lineWidth=1.8;ctx.strokeStyle='#6366F1';
+  ctx.shadowColor='rgba(99,102,241,.35)';ctx.shadowBlur=6;
+  let lx,ly;
+  if(key==='badge'){
+    if(b.hitW){
+      ctx.strokeRect(b.hitX-5,b.hitY-5,b.hitW+10,b.hitH+10);
+      lx=b.hitX; ly=b.hitY-10;
+    } else {
+      ctx.beginPath();ctx.arc(b.cx,b.cy,b.r+6,0,Math.PI*2);ctx.stroke();
+      lx=b.cx-b.r; ly=b.cy-b.r-10;
+    }
+  } else {
+    ctx.strokeRect(b.x-5,b.y-5,b.w+10,b.h+10);
+    lx=b.x; ly=b.y-10;
+  }
+  ctx.restore();
+  ctx.save();
+  ctx.font='bold 11px Pretendard,sans-serif';ctx.fillStyle='#6366F1';
+  ctx.textBaseline='bottom';ctx.textAlign='left';
+  ctx.fillText(EL_LABEL[key],lx,ly);
+  ctx.restore();
+}
+
+/* ══ Main draw ════════════════════════════════════════════════════════════ */
+function draw(){
+  const canvas=document.getElementById('cv');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  /* 0-a. Canvas background: white */
+  ctx.fillStyle='#ffffff';
+  ctx.fillRect(0,0,W,H);
+
+  /* 0. Title background */
+  const titlePct = parseInt(document.getElementById('titleBgH').value)||0;
+  if(titlePct>0){
+    const bgH=Math.round((titlePct/100)*H);
+    ctx.fillStyle=themeColor;
+    ctx.fillRect(0,0,W,bgH);
+  }
+
+  /* 0c. Title text */
+  const titleStr=g('titleText'), titleSize=gi('titleSize')||52;
+  if(titleStr){
+    const tx=(pos.titleX/100)*W, ty=(pos.titleY/100)*H;
+    const lines=titleStr.split('\n');
+    ctx.font=`700 ${titleSize}px ${fontStr('titleFont')}`;
+    ctx.textAlign='left';ctx.textBaseline='top';ctx.lineJoin='round';
+    let maxW=0;
+    lines.forEach((line,i)=>{
+      maxW=Math.max(maxW,ctx.measureText(line).width);
+      const ly=ty+i*titleSize*1.2;
+      if(titleStrokeOn){ctx.strokeStyle=titleStrokeColor;ctx.lineWidth=Math.max(2,titleSize*.1);ctx.strokeText(line,tx,ly);}
+      ctx.fillStyle=tc.title;ctx.fillText(line,tx,ly);
+    });
+    bounds.title={x:tx,y:ty,w:maxW,h:titleSize*1.2*lines.length};
+  } else { bounds.title=null; }
+
+  /* 1. Image */
+  if(img){
+    const scale=gi('imgS')/100;
+    const ox=(pos.imgX/100)*W, oy=(pos.imgY/100)*H;
+    const dw=W*scale, dh=dw*(img.height/img.width);
+    const dx=ox+(W-dw)/2;
+    ctx.drawImage(img,dx,oy,dw,dh);
+    bounds.img={x:dx,y:oy,w:dw,h:dh};
+  } else { bounds.img=null; }
+
+  /* 2. Product name */
+  const nameStr=g('name'), nameSize=gi('nameSize')||36;
+  if(nameStr){
+    const nx=(pos.nameX/100)*W, ny=(pos.nameY/100)*H;
+    const lines=nameStr.split('\n');
+    ctx.font=`700 ${nameSize}px ${fontStr('nameFont')}`;
+    ctx.textAlign='left';ctx.textBaseline='top';ctx.lineJoin='round';
+    let maxW=0;
+    lines.forEach((line,i)=>{
+      maxW=Math.max(maxW,ctx.measureText(line).width);
+      const ly=ny+i*nameSize*1.25;
+      if(nameStrokeOn){ctx.strokeStyle=nameStrokeColor;ctx.lineWidth=Math.max(2,nameSize*.1);ctx.strokeText(line,nx,ly);}
+      ctx.fillStyle=tc.name;ctx.fillText(line,nx,ly);
+    });
+    bounds.name={x:nx,y:ny,w:maxW,h:nameSize*1.25*lines.length};
+  } else { bounds.name=null; }
+
+  /* 3. Description */
+  const descStr=g('desc'), descSize=gi('descSize')||18;
+  if(descStr){
+    const dx2=(pos.descX/100)*W, dy2=(pos.descY/100)*H;
+    const lines=descStr.split('\n');
+    ctx.font=`400 ${descSize}px ${fontStr('descFont')}`;
+    ctx.fillStyle=tc.desc;ctx.textAlign='left';ctx.textBaseline='top';
+    let maxW=0;
+    lines.forEach((line,i)=>{maxW=Math.max(maxW,ctx.measureText(line).width);ctx.fillText(line,dx2,dy2+i*descSize*1.3);});
+    bounds.desc={x:dx2,y:dy2,w:maxW,h:descSize*1.3*lines.length};
+  } else { bounds.desc=null; }
+
+  /* 4. Regular price — "정상가 : " 자동 앞붙임, 숫자 부분 빨간 취소선 */
+  const origStr=g('origPrice'), origSize=gi('origSize')||22;
+  if(origStr){
+    const ox2=(pos.origX/100)*W, oy2=(pos.origY/100)*H;
+    ctx.font=`400 ${origSize}px ${fontStr('origFont')}`;
+    ctx.fillStyle=tc.orig;ctx.textAlign='left';ctx.textBaseline='top';
+    /* 레이블 */
+    const prefix='정상가 : ';
+    ctx.fillText(prefix,ox2,oy2);
+    const prefixW=ctx.measureText(prefix).width;
+    /* 가격 숫자 */
+    const priceX=ox2+prefixW;
+    ctx.fillText(origStr,priceX,oy2);
+    const priceW=ctx.measureText(origStr).width;
+    /* 빨간 취소선 (숫자 부분만) */
+    ctx.beginPath();
+    ctx.strokeStyle='#e02020';
+    ctx.lineWidth=Math.max(1.5,origSize*.07);
+    ctx.moveTo(priceX,oy2+origSize*.54);
+    ctx.lineTo(priceX+priceW,oy2+origSize*.54);
+    ctx.stroke();
+    bounds.orig={x:ox2,y:oy2,w:prefixW+priceW,h:origSize};
+  } else { bounds.orig=null; }
+
+  /* 5. Sale price */
+  const saleStr=g('salePrice'), saleSize=gi('saleSize')||52;
+  if(saleStr){
+    const sx=(pos.saleX/100)*W, sy=(pos.saleY/100)*H;
+    ctx.font=`700 ${saleSize}px ${fontStr('saleFont')}`;
+    ctx.textAlign='left';ctx.textBaseline='top';ctx.lineJoin='round';
+    const sw=ctx.measureText(saleStr).width;
+    const padX=saleSize*0.25, padY=saleSize*0.12;
+    /* 글자 배경 */
+    if(saleBgColor!=='none'){
+      ctx.fillStyle=saleBgColor;
+      ctx.fillRect(sx-padX,sy-padY,sw+padX*2,saleSize+padY*2);
+    }
+    /* 테두리선 */
+    if(saleStrokeOn){
+      ctx.strokeStyle=saleStrokeColor;
+      ctx.lineWidth=Math.max(2,saleSize*.1);
+      ctx.strokeText(saleStr,sx,sy);
+    }
+    ctx.fillStyle=tc.sale;
+    ctx.fillText(saleStr,sx,sy);
+    bounds.sale={x:sx-padX,y:sy-padY,w:sw+padX*2,h:saleSize+padY*2};
+  } else { bounds.sale=null; }
+
+  /* 6. Badge */
+  const br=gi('br')||57;
+  const bcx=Math.round((pos.bx/100)*W), bcy=Math.round((pos.by/100)*H);
+  bounds.badge=badgeBounds(bcx,bcy,br,badgeShape);
+  drawBadge(ctx,bcx,bcy,br);
+
+  /* 7. Highlight */
+  if(selectedEl) drawHighlight(ctx,selectedEl);
+
+  /* 8. Canvas outer border — theme color */
+  const bw=Math.max(8,Math.round(Math.min(W,H)*0.014));
+  ctx.save();
+  ctx.strokeStyle=themeColor;
+  ctx.lineWidth=bw;
+  ctx.strokeRect(bw/2,bw/2,W-bw,H-bw);
+  ctx.restore();
+}
+
+/* ══ Badge drawing ════════════════════════════════════════════════════════ */
+function drawBadge(ctx,cx,cy,r){
+  ctx.save();
+  ctx.shadowColor='rgba(0,0,0,.22)';ctx.shadowBlur=14;ctx.shadowOffsetX=2;ctx.shadowOffsetY=5;
+  badgePath(ctx,cx,cy,r,badgeShape,0);ctx.fillStyle=badgeColor;ctx.fill();
+  ctx.restore();
+  badgePath(ctx,cx,cy,r,badgeShape,3);
+  ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=Math.max(2,r*.06);ctx.stroke();
+  /* 메인 텍스트 — 항상 뱃지 정중앙 */
+  const t2=g('b2');
+  if(t2){
+    ctx.font=`700 ${gi('b2Size')||36}px ${fontStr('b2Font')}`;
+    ctx.fillStyle='white';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(t2,cx,cy);
+  }
+  ctx.textBaseline='alphabetic';
+}
+
+/* ══ Canvas mouse events ══════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  const cv=document.getElementById('cv');
+
+  function getCanvasXY(e){
+    const r=cv.getBoundingClientRect();
+    return{mx:(e.clientX-r.left)*(cv.width/r.width),my:(e.clientY-r.top)*(cv.height/r.height)};
+  }
+
+  cv.addEventListener('mousedown',e=>{
+    const {mx,my}=getCanvasXY(e);
+    const hit=hitTest(mx,my);
+    selectedEl=hit;
+    if(hit){
+      dragging=hit;dragStartMX=mx;dragStartMY=my;
+      const xy=getXY(hit);dragStartVX=xy.x;dragStartVY=xy.y;
+      e.preventDefault();
+    }
+    draw();
+  });
+
+  window.addEventListener('mousemove',e=>{
+    const r2=cv.getBoundingClientRect();
+    const mx=(e.clientX-r2.left)*(cv.width/r2.width);
+    const my=(e.clientY-r2.top)*(cv.height/r2.height);
+    cv.style.cursor=dragging?'grabbing':(hitTest(mx,my)?'grab':'default');
+    if(!dragging) return;
+    setXY(dragging,dragStartVX+(mx-dragStartMX)/cv.width*100,dragStartVY+(my-dragStartMY)/cv.height*100);
+    draw();
+  });
+
+  window.addEventListener('mouseup',()=>{
+    dragging=null;
+    cv.style.cursor=selectedEl?'grab':'default';
+  });
+
+  document.addEventListener('mousedown',e=>{
+    if(!cv.contains(e.target)){selectedEl=null;draw();}
+  });
+
+  /* Highlight default size preset (A4 세로) */
+  const defBtn=document.getElementById('defaultPresetBtn');
+  if(defBtn){
+    defBtn.classList.add('on');
+    defBtn.style.background=themeColor;
+    defBtn.style.borderColor=themeColor;
+    defBtn.style.color='#fff';
+  }
+
+  draw();
+  loadFonts();
+});
+
+/* ══ Theme color ══════════════════════════════════════════════════════════ */
+function setThemeColor(el){
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');
+  themeColor=el.dataset.c;
+  document.getElementById('themeColorPicker').value=themeColor;
+  updatePresetHighlight();
+  draw();
+}
+function setThemeColorDirect(color){
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('on'));
+  themeColor=color;
+  updatePresetHighlight();
+  draw();
+}
+function updatePresetHighlight(){
+  document.querySelectorAll('.size-preset-btn').forEach(b=>{
+    if(b.classList.contains('on')){
+      b.style.background=themeColor;
+      b.style.borderColor=themeColor;
+      b.style.color='#fff';
+    }
+  });
+}
+
+/* ══ Size presets ═════════════════════════════════════════════════════════ */
+function applyPreset(el){
+  document.querySelectorAll('.size-preset-btn').forEach(b=>{
+    b.classList.remove('on');
+    b.style.background='';b.style.borderColor='';b.style.color='';
+  });
+  el.classList.add('on');
+  el.style.background=themeColor;
+  el.style.borderColor=themeColor;
+  el.style.color='#fff';
+  const cv=document.getElementById('cv');
+  cv.width=parseInt(el.dataset.w);
+  cv.height=parseInt(el.dataset.h);
+  draw();
+}
+
+/* ══ Default template ═════════════════════════════════════════════════════ */
+function applyDefaultTemplate(){
+  /* Theme: orange */
+  themeColor='#FF8C00';
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('on'));
+  const orangeSwatch=document.querySelector('.theme-swatch[data-c="#FF8C00"]');
+  if(orangeSwatch) orangeSwatch.classList.add('on');
+  document.getElementById('themeColorPicker').value='#FF8C00';
+
+  /* Size: A4 세로 */
+  const a4Btn=document.getElementById('defaultPresetBtn');
+  if(a4Btn) applyPreset(a4Btn);
+
+  /* Title bg: 22% */
+  document.getElementById('titleBgH').value=22;
+  document.getElementById('titleBgHv').textContent='22%';
+
+  /* Product name */
+  document.getElementById('name').value='블랙라벨 상품명';
+  document.getElementById('nameSize').value=60;
+  document.getElementById('nameFont').value='GmarketSans';
+  document.querySelectorAll('[data-k="name"]').forEach(d=>d.classList.remove('on'));
+  const wn=document.querySelector('[data-k="name"][data-c="#ffffff"]');
+  if(wn){wn.classList.add('on');tc.name='#ffffff';}
+  pos.nameX=5; pos.nameY=5;
+
+  /* Description: clear */
+  document.getElementById('desc').value='';
+
+  /* Original price */
+  document.getElementById('origPrice').value='6,660원';
+  document.getElementById('origSize').value=30;
+  document.querySelectorAll('[data-k="orig"]').forEach(d=>d.classList.remove('on'));
+  const go=document.querySelector('[data-k="orig"][data-c="#888888"]');
+  if(go){go.classList.add('on');tc.orig='#888888';}
+  pos.origX=5; pos.origY=58;
+
+  /* Sale price */
+  document.getElementById('salePrice').value='3,330원';
+  document.getElementById('saleSize').value=64;
+  document.getElementById('saleFont').value='GmarketSans';
+  document.querySelectorAll('[data-k="sale"]').forEach(d=>d.classList.remove('on'));
+  const rs=document.querySelector('[data-k="sale"][data-c="#e74c3c"]');
+  if(rs){rs.classList.add('on');tc.sale='#e74c3c';}
+  pos.saleX=5; pos.saleY=70;
+
+  /* Image */
+  pos.imgX=0; pos.imgY=18;
+  document.getElementById('imgS').value=72;
+  document.getElementById('imgSv').textContent='72%';
+
+  /* Badge */
+  document.getElementById('b1').value='하나 더';
+  document.getElementById('b2').value='1+1';
+  pos.bx=85; pos.by=32;
+  document.getElementById('br').value=70;
+  document.getElementById('brv').textContent='70px';
+
+  draw();
+}
+
+/* ══ Download ═════════════════════════════════════════════════════════════ */
+function download(){
+  const prev=selectedEl; selectedEl=null; draw();
+  const cv=document.getElementById('cv');
+  const a=document.createElement('a');
+  a.download='상품카드.png';a.href=cv.toDataURL('image/png');a.click();
+  selectedEl=prev; if(prev) draw();
+}
+
+/* ══ Save to gallery ══════════════════════════════════════════════════════ */
+function saveCard(){
+  const prev=selectedEl; selectedEl=null; draw();
+  const cv=document.getElementById('cv');
+  const url=cv.toDataURL('image/png');
+  const name=g('name').split('\n')[0]||'카드 '+(savedCards.length+1);
+  savedCards.push({url,name,id:Date.now()});
+  renderGallery();
+  selectedEl=prev; if(prev) draw();
+}
+function renderGallery(){
+  const grid=document.getElementById('galleryGrid');
+  const count=document.getElementById('galleryCount');
+  count.textContent=savedCards.length+'개';
+  if(!savedCards.length){
+    grid.innerHTML='<div class="gallery-empty"><div class="empty-ico">🗂️</div>저장된 카드가 없습니다<br><span style="font-size:11px;margin-top:4px;display:block">미리보기에서 \'카드 저장\'을 눌러보세요</span></div>';
+    return;
+  }
+  grid.innerHTML=savedCards.map((c,i)=>`
+    <div class="card-thumb">
+      <img src="${c.url}" alt="${c.name}">
+      <div class="card-thumb-ft">
+        <span class="card-thumb-name">${c.name}</span>
+        <button class="thumb-btn dl" onclick="dlCard(${i})" title="다운로드">⬇</button>
+        <button class="thumb-btn del" onclick="delCard(${i})" title="삭제">✕</button>
+      </div>
+    </div>`).join('');
+}
+function dlCard(i){const a=document.createElement('a');a.download=savedCards[i].name+'.png';a.href=savedCards[i].url;a.click();}
+function delCard(i){savedCards.splice(i,1);renderGallery();}
+
+/* ══ Live redraw ══════════════════════════════════════════════════════════ */
+document.querySelectorAll('input[type="text"],input[type="number"],select,textarea').forEach(el=>{
+  el.addEventListener('input',()=>draw());
+});
+</script>
+</body>
+</html>

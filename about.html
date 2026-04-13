@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Jinsil Kim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #F5EDE0;
+  --bg-card:    #EDE2D3;
+  --c1:         #C44B2B;   /* 테라코타 — 이름·강조 */
+  --c2:         #2C6E6A;   /* 틸 — 라벨·태그·링크 */
+  --text:       #2A1F14;   /* 다크 웜브라운 — 본문 */
+  --text-muted: #7A6855;   /* 서브 텍스트 */
+  --border:     rgba(42,31,20,0.13);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; transition: opacity 0.2s ease; }
+a:hover { opacity: 0.65; }
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Navbar ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  text-transform: lowercase;
+}
+.navbar-links { display: flex; gap: 2rem; }
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--c2);
+  transition: color 0.2s ease;
+  font-weight: 600;
+}
+.back-btn:hover { color: var(--c1); opacity: 1; }
+.back-btn::before { content: '←'; font-size: 1rem; }
+
+/* ── Fade-in ── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Hero ── */
+.hero {
+  padding: 7rem 0 5.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.hero-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c2);
+  font-weight: 600;
+  margin-bottom: 1.8rem;
+}
+.hero-name {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  color: var(--c1);
+  margin-bottom: 2.8rem;
+}
+.hero-tagline {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.75;
+  min-height: 2em;
+}
+/* 타이핑 커서 */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--c1);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: blink 0.75s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── Sections ── */
+.section {
+  padding: 5.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c2);
+  font-weight: 700;
+  margin-bottom: 3rem;
+}
+
+/* ── Who am I ── */
+.bio-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+  align-items: start;
+}
+.bio-title {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--c1);
+  position: sticky;
+  top: 3rem;
+}
+.bio-body { display: flex; flex-direction: column; gap: 2rem; }
+.bio-body p {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.9;
+}
+.bio-body p strong { color: var(--text); font-weight: 700; }
+
+/* ── What I do ── */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.3rem;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+.tag:hover { border-color: var(--c2); color: var(--c2); background: var(--bg); }
+.tag-icon { font-size: 1.1rem; }
+.tag-sub {
+  font-size: 0.72rem;
+  color: var(--c2);
+  font-weight: 600;
+  margin-left: 0.2rem;
+  opacity: 0.7;
+}
+
+/* ── Vision ── */
+.vision-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.vision-line {
+  width: 3rem;
+  height: 2px;
+  background: var(--c1);
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+blockquote {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.65;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+blockquote em {
+  font-style: normal;
+  color: var(--c1);
+}
+
+/* ── CTA ── */
+.cta-section {
+  padding: 5.5rem 0 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.cta-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 2rem;
+  border: 1.5px solid var(--c1);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--c1);
+  letter-spacing: 0.02em;
+  transition: background 0.25s ease, color 0.25s ease;
+  border-radius: 2px;
+}
+.cta-btn:hover { background: var(--c1); color: #fff; opacity: 1; }
+.cta-btn::after { content: '→'; transition: transform 0.2s ease; }
+.cta-btn:hover::after { transform: translateX(4px); }
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2rem 0 1rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.footer-left p { font-size: 0.88rem; color: var(--text-muted); }
+.version { margin-top: 0.5rem; font-size: 0.78rem; }
+.footer-socials { display: flex; gap: 1.5rem; font-size: 0.88rem; color: var(--c2); font-weight: 600; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .container { padding: 1.5rem; }
+  .navbar { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  .hero { padding: 4.5rem 0 3.5rem; }
+  .bio-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .bio-title { position: static; }
+  .section { padding: 4rem 0; }
+  .cta-section { padding: 4rem 0 2rem; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="index.html">© coded by jinsil</a>
+    </div>
+    <div class="navbar-links">
+      <a href="index.html" class="back-btn">back to works</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero fade-in">
+    <p class="hero-label">about me</p>
+    <h1 class="hero-name">김진실</h1>
+    <p class="hero-tagline"><span id="typeTarget"></span><span class="cursor"></span></p>
+  </section>
+
+  <!-- Who am I -->
+  <section class="section">
+    <p class="section-label fade-in">who i am</p>
+    <div class="bio-grid">
+      <h2 class="bio-title fade-in">나는<br>누구인가</h2>
+      <div class="bio-body">
+        <p class="fade-in">
+          <strong>초보 마케터이지만, 콘텐츠 창작에 진심인 사람입니다.</strong><br>
+          기획부터 실행까지 직접 부딪히며 배우는 방식을 좋아합니다.
+          완성도보다 시작이 중요하다고 믿고, 일단 만들어보는 것을 두려워하지 않습니다.
+        </p>
+        <p class="fade-in">
+          완벽하지 않아도 <strong>계속 시도하고 기록하며 성장하는 중</strong>입니다.<br>
+          실패한 콘텐츠도, 어설픈 코드도 모두 제 성장의 흔적입니다.
+          멈추지 않는 것이 저의 가장 큰 강점이라고 생각합니다.
+        </p>
+        <p class="fade-in">
+          블로그, 유튜브, 웹 앱 등 <strong>다양한 방식으로 아이디어를 실현</strong>하고 있습니다.<br>
+          새로운 도구를 배우고 활용하는 것을 즐기며, 지금 이 포트폴리오도 그 과정의 일부입니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I do -->
+  <section class="section">
+    <p class="section-label fade-in">what i do</p>
+    <div class="tags">
+      <div class="tag fade-in">
+        <span class="tag-icon">📝</span>
+        네이버 블로그 운영
+        <span class="tag-sub">since 2025</span>
+      </div>
+      <div class="tag fade-in">
+        <span class="tag-icon">🎬</span>
+        유튜브 채널 운영
+        <span class="tag-sub">since 2025</span>
+      </div>
+      <div class="tag fade-in">
+        <span class="tag-icon">💻</span>
+        간단한 웹 앱 제작
+        <span class="tag-sub">클로드 활용</span>
+      </div>
+      <div class="tag fade-in">
+        <span class="tag-icon">📱</span>
+        마케팅 콘텐츠 기획 및 제작
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="section fade-in">
+    <p class="section-label">my direction</p>
+    <div class="vision-wrap">
+      <div class="vision-line"></div>
+      <blockquote>
+        "작게 시작하지만,<br><em>꾸준히 쌓아가는 것</em>이 저의 방식입니다."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <p class="cta-text">제 작업물이 궁금하시다면</p>
+    <a href="index.html" class="cta-btn">제 작업물 보러가기</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>경험하고 창조합니다.</p>
+      <p class="version">2026 © Edition</p>
+    </div>
+    <div class="footer-socials">
+      <a href="#instagram">Instagram</a>
+      <a href="#linkedin">LinkedIn</a>
+      <a href="#github">GitHub</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ── 타이핑 효과 (무한 반복) ── */
+const phrases = [
+  '마케터로 시작해 크리에이터로 성장하는 중입니다.',
+  '기획하고, 만들고, 기록합니다.',
+  '멈추지 않는 것이 저의 강점입니다.',
+];
+const target = document.getElementById('typeTarget');
+let phraseIdx = 0, charIdx = 0, deleting = false;
+const TYPE_SPEED = 60, DELETE_SPEED = 30, PAUSE = 1800;
+
+function type() {
+  const current = phrases[phraseIdx];
+  if (!deleting) {
+    target.textContent = current.slice(0, charIdx + 1);
+    charIdx++;
+    if (charIdx === current.length) {
+      deleting = true;
+      setTimeout(type, PAUSE);
+      return;
+    }
+    setTimeout(type, TYPE_SPEED);
+  } else {
+    target.textContent = current.slice(0, charIdx - 1);
+    charIdx--;
+    if (charIdx === 0) {
+      deleting = false;
+      phraseIdx = (phraseIdx + 1) % phrases.length;
+      setTimeout(type, 400);
+      return;
+    }
+    setTimeout(type, DELETE_SPEED);
+  }
+}
+setTimeout(type, 600);
+
+/* ── Fade-in on scroll ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.05}s`;
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
