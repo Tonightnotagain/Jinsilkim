@@ -268,6 +268,54 @@ a { color: inherit; text-decoration: none; }
 .btn-logout:hover { border-color: var(--navy); color: var(--navy); }
 .save-note { font-size: 0.72rem; color: var(--muted); text-align: center; }
 
+/* ══════════════════════════════════════════
+   LIGHTBOX
+══════════════════════════════════════════ */
+.lightbox {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.lightbox.active { opacity: 1; pointer-events: all; }
+
+.lightbox-img-wrap {
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.lightbox.active .lightbox-img-wrap { transform: scale(1); }
+
+.lightbox-img {
+  display: block;
+  max-width: 88vw;
+  max-height: 88vh;
+  border-radius: 6px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  filter: brightness(1) saturate(1);
+  object-fit: contain;
+  user-select: none;
+}
+
+.lightbox-close {
+  position: fixed; top: 20px; right: 24px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); border: none;
+  color: white; font-size: 1.3rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.25); }
+
+.lightbox-title {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  font-family: 'Outfit', sans-serif; font-size: 0.9rem;
+  color: rgba(255,255,255,0.65); letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px) {
@@ -297,6 +345,15 @@ a { color: inherit; text-decoration: none; }
   </header>
 
   <div class="grid" id="grid"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <div class="lightbox-img-wrap">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  </div>
+  <span class="lightbox-title" id="lightboxTitle"></span>
 </div>
 
 <!-- Floating admin button -->
@@ -373,21 +430,20 @@ function renderGrid(works) {
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
   works.forEach((item, i) => {
-    const a = document.createElement('a');
-    a.href      = item.url || '#';
-    a.target    = '_blank';
-    a.rel       = 'noopener noreferrer';
-    a.className = 'card';
-    a.style.animationDelay = `${i * 0.07}s`;
-    a.innerHTML = `
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = `${i * 0.07}s`;
+    card.style.cursor = 'pointer';
+    card.innerHTML = `
       <div class="card-img-wrap">
         <img src="${item.img}" alt="${item.title}" loading="lazy">
-        <div class="card-overlay"><span>View &rarr;</span></div>
+        <div class="card-overlay"><span>확대 보기</span></div>
       </div>
       <div class="card-label">
         <p class="card-title">${item.title}</p>
       </div>`;
-    grid.appendChild(a);
+    card.addEventListener('click', () => openLightbox(item.img, item.title));
+    grid.appendChild(card);
   });
 }
 
@@ -562,6 +618,27 @@ btnSave.addEventListener('click', () => {
   adminFab.style.background = '#2a7a4a';
   setTimeout(() => adminFab.style.background = '', 1200);
 });
+
+/* ── Lightbox ── */
+const lightbox      = document.getElementById('lightbox');
+const lightboxImg   = document.getElementById('lightboxImg');
+const lightboxTitle = document.getElementById('lightboxTitle');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(src, title) {
+  lightboxImg.src       = src;
+  lightboxTitle.textContent = title || '';
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 /* ── Init ── */
 renderGrid(loadWorks());
