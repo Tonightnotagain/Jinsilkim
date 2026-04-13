@@ -6,9 +6,7 @@
 <title>Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Jua&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg-color: #050505;
@@ -112,12 +110,12 @@ a:hover { opacity: 0.7; }
 }
 
 .section-title {
-  font-size: 3rem;
-  font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+  font-size: 1.5rem;
+  font-family: 'Jua', sans-serif;
   margin-bottom: 5rem;
-  text-transform: lowercase;
+  text-transform: none;
   letter-spacing: -0.04em;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .projects-grid {
@@ -242,11 +240,11 @@ a:hover { opacity: 0.7; }
   .container { padding: 1.5rem; }
   .navbar { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
   .hero { min-height: 60vh; }
-  .hero-title { font-size: 2.8rem; }
+  .hero-title { font-size: clamp(1.6rem, 8vw, 2.8rem); }
   .line.right { justify-content: flex-start; }
   .hero-subtitle { align-self: flex-start; text-align: left; margin-top: 2rem; }
   .projects-section { padding: 6rem 0 2rem; }
-  .section-title { font-size: 2.2rem; margin-bottom: 3rem; }
+  .section-title { font-size: 1.1rem; margin-bottom: 3rem; }
   .projects-grid { grid-template-columns: 1fr; gap: 3rem; }
   .project-card:nth-child(even) { margin-top: 0; }
   .footer { flex-direction: column; align-items: flex-start; gap: 2rem; }
@@ -259,10 +257,10 @@ a:hover { opacity: 0.7; }
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-logo">
-      <a href="/">© coded by you</a>
+      <a href="/">© coded by jinsil</a>
     </div>
     <div class="navbar-links">
-      <a href="#about">about</a>
+      <a href="about.html">about</a>
       <a href="#projects">projects</a>
       <a href="#contact">contact</a>
     </div>
@@ -282,7 +280,7 @@ a:hover { opacity: 0.7; }
 
   <!-- Projects -->
   <section class="projects-section" id="projects">
-    <h2 class="section-title">Selected Works / 갤러리</h2>
+    <h2 class="section-title">Works</h2>
     <div class="projects-grid">
 
       <!-- 1. NAVER Blog -->
@@ -305,7 +303,7 @@ a:hover { opacity: 0.7; }
 
       <!-- 2. Bohol Travel App -->
       <div class="project-card">
-        <a href="/bohol_itinerary.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+        <a href="bohol_itinerary.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
           <div class="project-image-placeholder">
             <img src="Bohol.png" alt="Bohol Travel App" class="project-image-preview">
           </div>
@@ -316,14 +314,14 @@ a:hover { opacity: 0.7; }
         </a>
       </div>
 
-      <!-- 3. Yutube -->
+      <!-- 3. Youtube -->
       <div class="project-card">
         <a href="https://youtube.com/@jinsilkim9348?si=pl27_ejE8hdiBRf-" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
           <div class="project-image-placeholder">
-            <img src="https://yt3.googleusercontent.com/ytc/AIdro_nSwFP5uG3HCA0nCzNRyMbBYCsU3OnDtJ1yyAk7LZo=s900-c-k-c0x00ffffff-no-rj" alt="Yutube" class="project-image-preview">
+            <img src="youtube-thumb.png" alt="Youtube" class="project-image-preview">
           </div>
           <div class="project-info">
-            <h3>Yutube</h3>
+            <h3>Youtube</h3>
             <p>since 2025</p>
           </div>
         </a>
@@ -331,12 +329,25 @@ a:hover { opacity: 0.7; }
 
       <!-- 4. 전단지상품카드생성기 -->
       <div class="project-card">
-        <a href="/card-maker.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+        <a href="card-maker.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
           <div class="project-image-placeholder">
             <img src="CardMaker.png" alt="전단지상품카드생성기" class="project-image-preview">
           </div>
           <div class="project-info">
             <h3>전단지상품카드생성기</h3>
+            <p>2026</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 5. 상품 쇼츠 제작 -->
+      <div class="project-card">
+        <a href="shorts-gallery.html" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <img src="shorts-thumb.svg" alt="상품 쇼츠 제작" class="project-image-preview">
+          </div>
+          <div class="project-info">
+            <h3>상품 쇼츠 제작</h3>
             <p>2026</p>
           </div>
         </a>
@@ -348,7 +359,7 @@ a:hover { opacity: 0.7; }
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-left">
-      <p>상상하고 창조합니다.</p>
+      <p>경험하고 창조합니다.</p>
       <p class="version">2026 © Edition</p>
     </div>
     <div class="footer-socials">
@@ -360,10 +371,10 @@ a:hover { opacity: 0.7; }
 
 </div><!-- /container -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-gsap.registerPlugin(ScrollTrigger);
-
-/* ── Hero text explode animation ── */
+/* ── Hero text: 글자를 먼저 DOM에 삽입해 텍스트가 보이는 상태로 시작 ── */
 const textLeft  = '일상의 모든 순간에서';
 const textRight = '영감을 얻는 크리에이터';
 
@@ -380,7 +391,14 @@ function buildChars(text, containerId) {
 buildChars(textLeft,  'line1');
 buildChars(textRight, 'line2');
 
-const chars = gsap.utils.toArray('.char');
+/* GSAP 로드 실패 시 텍스트·자막 그냥 표시 */
+if (typeof gsap === 'undefined') {
+  document.querySelector('.hero-subtitle').style.opacity  = '1';
+  document.querySelector('.hero-subtitle').style.transform = 'none';
+} else {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const chars = gsap.utils.toArray('.char');
 const tl = gsap.timeline();
 
 gsap.set(chars, {
@@ -426,6 +444,7 @@ projectCards.forEach((card, index) => {
     delay: window.innerWidth > 768 && index % 2 !== 0 ? 0.2 : 0
   });
 });
+} // end if gsap
 </script>
 </body>
 </html>

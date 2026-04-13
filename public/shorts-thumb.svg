@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#f09433"/>
+      <stop offset="25%"  stop-color="#e6683c"/>
+      <stop offset="50%"  stop-color="#dc2743"/>
+      <stop offset="75%"  stop-color="#cc2366"/>
+      <stop offset="100%" stop-color="#bc1888"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#0a0a0a"/>
+
+  <!-- ── INSTAGRAM  x=200..280, icon center (240,210) ── -->
+  <rect x="200" y="170" width="80" height="80" rx="18" fill="url(#ig-grad)"/>
+  <!-- outer camera border -->
+  <rect x="213" y="183" width="54" height="54" rx="10"
+        fill="none" stroke="white" stroke-width="3.5"/>
+  <!-- lens circle -->
+  <circle cx="240" cy="210" r="13.5"
+          fill="none" stroke="white" stroke-width="3.5"/>
+  <!-- viewfinder dot -->
+  <circle cx="258" cy="188" r="5" fill="white"/>
+
+  <!-- ── YOUTUBE  x=360..440, icon center (400,210) ── -->
+  <rect x="360" y="170" width="80" height="80" rx="14" fill="#FF0000"/>
+  <!-- play triangle -->
+  <polygon points="387,192 387,228 423,210" fill="white"/>
+
+  <!-- ── TIKTOK  x=520..600, icon center (560,210) ── -->
+  <rect x="520" y="170" width="80" height="80" rx="14" fill="#010101"/>
+  <!-- note shape: circle(557,226,r10) + stem rect + flag arc -->
+  <!-- cyan shadow offset (-2.5, +2.5) -->
+  <g transform="translate(-2.5,2.5)">
+    <circle cx="557" cy="226" r="10" fill="#20D9D2"/>
+    <rect x="565" y="193" width="7" height="43" fill="#20D9D2"/>
+    <path d="M572,193 Q590,193 590,207 Q590,218 572,218" fill="#20D9D2"/>
+  </g>
+  <!-- red shadow offset (+2.5, -2.5) -->
+  <g transform="translate(2.5,-2.5)">
+    <circle cx="557" cy="226" r="10" fill="#EE1D52"/>
+    <rect x="565" y="193" width="7" height="43" fill="#EE1D52"/>
+    <path d="M572,193 Q590,193 590,207 Q590,218 572,218" fill="#EE1D52"/>
+  </g>
+  <!-- white main layer -->
+  <circle cx="557" cy="226" r="10" fill="white"/>
+  <rect x="565" y="193" width="7" height="43" fill="white"/>
+  <path d="M572,193 Q590,193 590,207 Q590,218 572,218" fill="white"/>
+
+  <!-- "Shorts" label -->
+  <text x="400" y="298"
+        font-family="Outfit, Arial, sans-serif"
+        font-size="17"
+        font-weight="600"
+        fill="rgba(255,255,255,0.6)"
+        text-anchor="middle"
+        letter-spacing="6">SHORTS</text>
+</svg>
