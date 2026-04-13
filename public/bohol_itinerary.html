@@ -1070,6 +1070,7 @@
     banner.innerHTML = `
       <div class="banner-left">🔓 편집 모드 활성화 중</div>
       <div class="banner-right">
+        <button class="banner-btn" id="setTokenBtn" style="background:#64748b;color:#fff;border:none;">🔑 토큰 설정</button>
         <button class="banner-btn save" id="saveGithubBtn">☁️ GitHub에 저장</button>
         <button class="banner-btn exit" id="exitEditBtn">✕ 종료</button>
       </div>`;
@@ -1077,6 +1078,7 @@
     /* push content down */
     document.body.style.paddingTop = (banner.offsetHeight + 4) + 'px';
 
+    document.getElementById('setTokenBtn').addEventListener('click', () => openTokenModal(() => {}));
     document.getElementById('saveGithubBtn').addEventListener('click', onSaveClick);
     document.getElementById('exitEditBtn').addEventListener('click', exitEditMode);
 
@@ -1092,7 +1094,7 @@
 
     const confirm = () => {
       const t = tokenInput.value.trim();
-      if (!t || !t.startsWith('ghp_')) {
+      if (!t || (!t.startsWith('ghp_') && !t.startsWith('github_pat_'))) {
         tokenInput.classList.add('error');
         setTimeout(() => tokenInput.classList.remove('error'), 400);
         return;
