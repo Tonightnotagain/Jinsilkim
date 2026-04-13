@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Jua&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-color: #050505;
+  --text-main: #fcfcfc;
+  --text-muted: #888888;
+  --accent: #ffffff;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+  background-color: #050505;
+  background-image: url('background.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--text-main);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+a:hover { opacity: 0.7; }
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  text-transform: lowercase;
+}
+.navbar-links { display: flex; gap: 2rem; }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 70vh;
+  position: relative;
+  perspective: 1500px;
+  overflow: visible;
+}
+
+.hero-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.line { display: flex; flex-wrap: wrap; }
+.line.right { justify-content: flex-end; }
+.char { will-change: transform, opacity; display: inline-block; }
+
+.hero-subtitle {
+  align-self: flex-end;
+  text-align: right;
+  max-width: 500px;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* ── Projects ─────────────────────────────────────────────── */
+.projects-section {
+  padding: 10rem 0 4rem;
+  width: 100%;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-family: 'Jua', sans-serif;
+  margin-bottom: 5rem;
+  text-transform: none;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+}
+
+.project-card:nth-child(even) { margin-top: 8rem; }
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  cursor: pointer;
+  will-change: transform, opacity;
+}
+
+.project-image-placeholder {
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  background-color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.project-image-placeholder::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.project-image-placeholder span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-image-placeholder { transform: scale(0.97); }
+.project-card:hover .project-image-placeholder span { opacity: 1; }
+
+.project-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1.5rem;
+}
+
+.project-info h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.project-info p {
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.project-iframe-preview {
+  position: absolute;
+  top: 0; left: 0;
+  width: 200%; height: 200%;
+  border: none;
+  pointer-events: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+}
+
+.project-image-preview {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-image-preview {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2rem 0 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: auto;
+}
+
+.footer-left p { font-size: 0.9rem; color: var(--text-muted); }
+.version { margin-top: 0.5rem; font-size: 0.8rem; font-family: 'Outfit', sans-serif; }
+
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .container { padding: 1.5rem; }
+  .navbar { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  .hero { min-height: 60vh; }
+  .hero-title { font-size: clamp(1.6rem, 8vw, 2.8rem); }
+  .line.right { justify-content: flex-start; }
+  .hero-subtitle { align-self: flex-start; text-align: left; margin-top: 2rem; }
+  .projects-section { padding: 6rem 0 2rem; }
+  .section-title { font-size: 1.1rem; margin-bottom: 3rem; }
+  .projects-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .project-card:nth-child(even) { margin-top: 0; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="/">© coded by jinsil</a>
+    </div>
+    <div class="navbar-links">
+      <a href="about.html">about</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <h1 class="hero-title">
+      <div class="line" id="line1"></div>
+      <div class="line right" id="line2"></div>
+    </h1>
+    <div class="hero-subtitle">
+      <p>A creator with a passion for innovation and cutting-edge design.</p>
+      <p>Believing that every moment holds transformative inspiration.</p>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="projects-section" id="projects">
+    <h2 class="section-title">Works</h2>
+    <div class="projects-grid">
+
+      <!-- 1. NAVER Blog -->
+      <div class="project-card">
+        <a href="https://blog.naver.com/sodeepka" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <iframe
+              src="https://m.blog.naver.com/sodeepka"
+              title="NAVER Blog"
+              class="project-iframe-preview"
+              scrolling="no"
+            ></iframe>
+          </div>
+          <div class="project-info">
+            <h3>NAVER Blog</h3>
+            <p>Since 2025</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 2. Bohol Travel App -->
+      <div class="project-card">
+        <a href="bohol_itinerary.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <img src="Bohol.png" alt="Bohol Travel App" class="project-image-preview">
+          </div>
+          <div class="project-info">
+            <h3>Bohol Travel App</h3>
+            <p>2026</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 3. Youtube -->
+      <div class="project-card">
+        <a href="https://youtube.com/@jinsilkim9348?si=pl27_ejE8hdiBRf-" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <img src="youtube-thumb.png" alt="Youtube" class="project-image-preview">
+          </div>
+          <div class="project-info">
+            <h3>Youtube</h3>
+            <p>since 2025</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 4. 전단지상품카드생성기 -->
+      <div class="project-card">
+        <a href="card-maker.html" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <img src="CardMaker.png" alt="전단지상품카드생성기" class="project-image-preview">
+          </div>
+          <div class="project-info">
+            <h3>전단지상품카드생성기</h3>
+            <p>2026</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- 5. 상품 쇼츠 제작 -->
+      <div class="project-card">
+        <a href="shorts-gallery.html" style="display:block;text-decoration:none;color:inherit">
+          <div class="project-image-placeholder">
+            <img src="shorts-thumb.svg" alt="상품 쇼츠 제작" class="project-image-preview">
+          </div>
+          <div class="project-info">
+            <h3>상품 쇼츠 제작</h3>
+            <p>2026</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>경험하고 창조합니다.</p>
+      <p class="version">2026 © Edition</p>
+    </div>
+    <div class="footer-socials">
+      <a href="#instagram">Instagram</a>
+      <a href="#linkedin">LinkedIn</a>
+      <a href="#github">GitHub</a>
+    </div>
+  </footer>
+
+</div><!-- /container -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ── Hero text: 글자를 먼저 DOM에 삽입해 텍스트가 보이는 상태로 시작 ── */
+const textLeft  = '일상의 모든 순간에서';
+const textRight = '영감을 얻는 크리에이터';
+
+function buildChars(text, containerId) {
+  const el = document.getElementById(containerId);
+  text.split('').forEach(ch => {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = ch === ' ' ? '\u00A0' : ch;
+    el.appendChild(span);
+  });
+}
+
+buildChars(textLeft,  'line1');
+buildChars(textRight, 'line2');
+
+/* GSAP 로드 실패 시 텍스트·자막 그냥 표시 */
+if (typeof gsap === 'undefined') {
+  document.querySelector('.hero-subtitle').style.opacity  = '1';
+  document.querySelector('.hero-subtitle').style.transform = 'none';
+} else {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const chars = gsap.utils.toArray('.char');
+const tl = gsap.timeline();
+
+gsap.set(chars, {
+  x: () => gsap.utils.random(-1000, 1000),
+  y: () => gsap.utils.random(-1000, 1000),
+  z: () => gsap.utils.random(-1000, 1000),
+  rotationX: () => gsap.utils.random(-720, 720),
+  rotationY: () => gsap.utils.random(-720, 720),
+  rotationZ: () => gsap.utils.random(-720, 720),
+  opacity: 0,
+  scale: () => gsap.utils.random(0.5, 4)
+});
+
+tl.to(chars, {
+  x: 0, y: 0, z: 0,
+  rotationX: 0, rotationY: 0, rotationZ: 0,
+  opacity: 1, scale: 1,
+  duration: 2.5,
+  ease: 'power4.out',
+  stagger: { amount: 1.5, from: 'random' }
+});
+
+tl.to('.hero-subtitle', {
+  opacity: 1,
+  y: 0,
+  duration: 1,
+  ease: 'power2.out'
+}, '-=1.5');
+
+/* ── Project cards scroll animation ── */
+const projectCards = gsap.utils.toArray('.project-card');
+projectCards.forEach((card, index) => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: 'top 85%',
+      toggleActions: 'play none none reverse'
+    },
+    y: 100,
+    opacity: 0,
+    duration: 1.2,
+    ease: 'power3.out',
+    delay: window.innerWidth > 768 && index % 2 !== 0 ? 0.2 : 0
+  });
+});
+} // end if gsap
+</script>
+</body>
+</html>
