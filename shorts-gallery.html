@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 쇼츠 모음 | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Jua&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+  background: linear-gradient(160deg, #87CEEB 0%, #c8e9f8 50%, #E0F4FF 100%);
+  min-height: 100vh;
+  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Page wrapper ── */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 3rem 5rem;
+}
+
+/* ── Back button ── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(26,26,46,0.65);
+  transition: color 0.2s ease, gap 0.2s ease;
+  margin-bottom: 3rem;
+}
+.back-btn:hover {
+  color: #1a1a2e;
+  gap: 0.75rem;
+}
+.back-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ── Header ── */
+.page-header {
+  margin-bottom: 3.5rem;
+}
+.page-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+.page-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  color: rgba(26,26,46,0.55);
+  letter-spacing: 0.01em;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card ── */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.3s cubic-bezier(0.16,1,0.3,1);
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+/* 9:16 thumbnail */
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #f4f4f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.thumb-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb-icon svg {
+  width: 32px;
+  height: 32px;
+}
+.thumb-number {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(100,100,120,0.6);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* platform badge */
+.platform-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  color: white;
+}
+.badge-youtube   { background: #FF0000; }
+.badge-instagram { background: linear-gradient(135deg,#f09433,#dc2743,#bc1888); }
+.badge-tiktok    { background: #010101; }
+
+/* card body */
+.card-body {
+  padding: 1rem 1.1rem 1.2rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.card-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  color: #1a1a2e;
+}
+
+/* ── Platform icon SVGs ── */
+.icon-youtube path  { fill: #FF0000; }
+.icon-youtube polygon { fill: white; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .page { padding: 1.75rem 1.25rem 4rem; }
+  .grid { grid-template-columns: 1fr; }
+  .card-thumb { aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Back -->
+  <a href="index-standalone.html" class="back-btn">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    포트폴리오로 돌아가기
+  </a>
+
+  <!-- Header -->
+  <header class="page-header">
+    <h1 class="page-title">📱 상품 쇼츠 모음</h1>
+    <p class="page-subtitle">인스타그램 · 유튜브 · 틱톡 쇼츠 콘텐츠</p>
+  </header>
+
+  <!-- Grid — populated by JS -->
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────
+   쇼츠 데이터 — 이 배열만 수정하면 카드가 자동으로 생성됩니다.
+───────────────────────────────────────────────────────── */
+const shorts = [
+  { title: "상품 쇼츠 1", platform: "youtube",   url: "https://youtube.com/@jinsilkim9348" },
+  { title: "상품 쇼츠 2", platform: "instagram", url: "#" },
+  { title: "상품 쇼츠 3", platform: "tiktok",    url: "#" },
+];
+
+/* ── Platform icon SVGs ── */
+const icons = {
+  youtube: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="56" height="56" rx="14" fill="#FF0000"/>
+    <polygon points="22,17 22,39 42,28" fill="white"/>
+  </svg>`,
+
+  instagram: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="ig2" x1="0" y1="1" x2="1" y2="0" gradientUnits="objectBoundingBox">
+        <stop offset="0%"   stop-color="#f09433"/>
+        <stop offset="50%"  stop-color="#dc2743"/>
+        <stop offset="100%" stop-color="#bc1888"/>
+      </linearGradient>
+    </defs>
+    <rect width="56" height="56" rx="14" fill="url(#ig2)"/>
+    <rect x="10" y="10" width="36" height="36" rx="8" fill="none" stroke="white" stroke-width="2.5"/>
+    <circle cx="28" cy="28" r="9" fill="none" stroke="white" stroke-width="2.5"/>
+    <circle cx="40" cy="16" r="3" fill="white"/>
+  </svg>`,
+
+  tiktok: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="56" height="56" rx="14" fill="#010101"/>
+    <!-- cyan shadow -->
+    <g transform="translate(-1.5,1.5)">
+      <circle cx="24" cy="36" r="7" fill="#20D9D2"/>
+      <rect x="30" y="14" width="5" height="29" fill="#20D9D2"/>
+      <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="#20D9D2"/>
+    </g>
+    <!-- red shadow -->
+    <g transform="translate(1.5,-1.5)">
+      <circle cx="24" cy="36" r="7" fill="#EE1D52"/>
+      <rect x="30" y="14" width="5" height="29" fill="#EE1D52"/>
+      <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="#EE1D52"/>
+    </g>
+    <!-- white main -->
+    <circle cx="24" cy="36" r="7" fill="white"/>
+    <rect x="30" y="14" width="5" height="29" fill="white"/>
+    <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="white"/>
+  </svg>`,
+};
+
+const badgeLabel = { youtube: 'YouTube', instagram: 'Instagram', tiktok: 'TikTok' };
+
+/* ── Render ── */
+const grid = document.getElementById('grid');
+
+shorts.forEach((item, i) => {
+  const a = document.createElement('a');
+  a.href   = item.url;
+  a.target = '_blank';
+  a.rel    = 'noopener noreferrer';
+  a.className = 'card';
+
+  a.innerHTML = `
+    <div class="card-thumb">
+      <div class="thumb-icon">${icons[item.platform] || ''}</div>
+      <span class="thumb-number">#${String(i + 1).padStart(2, '0')}</span>
+      <span class="platform-badge badge-${item.platform}">${badgeLabel[item.platform]}</span>
+    </div>
+    <div class="card-body">
+      <span class="card-title">${item.title}</span>
+    </div>
+  `;
+
+  grid.appendChild(a);
+});
+</script>
+</body>
+</html>
