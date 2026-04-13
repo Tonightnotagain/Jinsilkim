@@ -1149,6 +1149,14 @@
 
     const token = getToken();
 
+    /* No token → open setup modal instead of sending a broken request */
+    if (!token) {
+      saveBtn.textContent = '☁️ GitHub에 저장';
+      saveBtn.disabled = false;
+      openTokenModal(() => saveToGithub());
+      return;
+    }
+
     try {
       /* 1. GET current file SHA (from gh-pages branch) — no-store to bypass cache */
       const shaRes = await fetch(
