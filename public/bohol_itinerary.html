@@ -1132,13 +1132,19 @@
     const token = getToken();
 
     try {
-      /* 1. GET current file SHA (from gh-pages branch) */
+      /* 1. GET current file SHA (from gh-pages branch) — no-store to bypass cache */
       const shaRes = await fetch(
-        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}`,
-        { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } }
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}&_=${Date.now()}`,
+        {
+          cache: 'no-store',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept':        'application/vnd.github+json',
+            'Cache-Control': 'no-cache'
+          }
+        }
       );
       if (shaRes.status === 401) {
-        /* token invalid — clear stored token and ask again */
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         throw new Error('토큰 인증 실패 (401). 토큰을 다시 설정해주세요.');
       }
