@@ -113,6 +113,25 @@ a {
   position: relative;
   overflow: hidden;
 }
+
+/* real thumbnail image (YouTube etc.) */
+.thumb-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* fallback placeholder when no image */
+.thumb-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
 .thumb-icon {
   width: 56px;
   height: 56px;
@@ -138,18 +157,23 @@ a {
   position: absolute;
   top: 12px;
   right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-family: 'Outfit', sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 3px 8px;
+  padding: 4px 8px 4px 5px;
   border-radius: 20px;
   color: white;
+  backdrop-filter: blur(4px);
 }
-.badge-youtube   { background: #FF0000; }
-.badge-instagram { background: linear-gradient(135deg,#f09433,#dc2743,#bc1888); }
-.badge-tiktok    { background: #010101; }
+.badge-youtube   { background: rgba(255,0,0,0.88); }
+.badge-instagram { background: linear-gradient(135deg,rgba(240,148,51,0.92),rgba(220,39,67,0.92),rgba(188,24,136,0.92)); }
+.badge-tiktok    { background: rgba(1,1,1,0.82); }
+.badge-icon { width: 13px; height: 13px; flex-shrink: 0; }
 
 /* card body */
 .card-body {
@@ -167,9 +191,7 @@ a {
   color: #1a1a2e;
 }
 
-/* ── Platform icon SVGs ── */
-.icon-youtube path  { fill: #FF0000; }
-.icon-youtube polygon { fill: white; }
+/* ── Responsive ── */
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
@@ -209,18 +231,33 @@ a {
    쇼츠 데이터 — 이 배열만 수정하면 카드가 자동으로 생성됩니다.
 ───────────────────────────────────────────────────────── */
 const shorts = [
-  { title: "상품 쇼츠 1", platform: "youtube",   url: "https://youtube.com/@jinsilkim9348" },
-  { title: "상품 쇼츠 2", platform: "instagram", url: "#" },
-  { title: "상품 쇼츠 3", platform: "tiktok",    url: "#" },
+  { title: "상품 쇼츠 1", platform: "youtube",   url: "https://youtube.com/shorts/6lWRJyH3TZU?feature=share" },
+  { title: "상품 쇼츠 2", platform: "youtube",   url: "https://youtube.com/shorts/mJRxH4H_yO0?feature=share" },
+  { title: "상품 쇼츠 3", platform: "instagram", url: "#" },
+  { title: "상품 쇼츠 4", platform: "tiktok",    url: "#" },
 ];
 
-/* ── Platform icon SVGs ── */
-const icons = {
+/* ── YouTube 영상 ID 추출 ── */
+function getYouTubeId(url) {
+  const m = url.match(/(?:shorts\/|v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+/* ── 플랫폼별 썸네일 URL ── */
+function getThumbnail(item) {
+  if (item.platform === 'youtube') {
+    const id = getYouTubeId(item.url);
+    if (id) return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  }
+  return null;
+}
+
+/* ── 카드 썸네일 영역 HTML ── */
+const placeholderIcons = {
   youtube: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="56" height="56" rx="14" fill="#FF0000"/>
     <polygon points="22,17 22,39 42,28" fill="white"/>
   </svg>`,
-
   instagram: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="ig2" x1="0" y1="1" x2="1" y2="0" gradientUnits="objectBoundingBox">
@@ -234,25 +271,39 @@ const icons = {
     <circle cx="28" cy="28" r="9" fill="none" stroke="white" stroke-width="2.5"/>
     <circle cx="40" cy="16" r="3" fill="white"/>
   </svg>`,
-
   tiktok: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="56" height="56" rx="14" fill="#010101"/>
-    <!-- cyan shadow -->
     <g transform="translate(-1.5,1.5)">
       <circle cx="24" cy="36" r="7" fill="#20D9D2"/>
       <rect x="30" y="14" width="5" height="29" fill="#20D9D2"/>
       <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="#20D9D2"/>
     </g>
-    <!-- red shadow -->
     <g transform="translate(1.5,-1.5)">
       <circle cx="24" cy="36" r="7" fill="#EE1D52"/>
       <rect x="30" y="14" width="5" height="29" fill="#EE1D52"/>
       <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="#EE1D52"/>
     </g>
-    <!-- white main -->
     <circle cx="24" cy="36" r="7" fill="white"/>
     <rect x="30" y="14" width="5" height="29" fill="white"/>
     <path d="M35,14 Q46,14 46,23 Q46,30 35,30" fill="white"/>
+  </svg>`,
+};
+
+/* ── 배지용 소형 아이콘 ── */
+const badgeIcons = {
+  youtube: `<svg class="badge-icon" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="13" height="13" rx="3" fill="white" fill-opacity="0.25"/>
+    <polygon points="5,3.5 5,9.5 10,6.5" fill="white"/>
+  </svg>`,
+  instagram: `<svg class="badge-icon" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="11" height="11" rx="3" fill="none" stroke="white" stroke-width="1.3"/>
+    <circle cx="6.5" cy="6.5" r="2.8" fill="none" stroke="white" stroke-width="1.3"/>
+    <circle cx="9.8" cy="3.2" r="1" fill="white"/>
+  </svg>`,
+  tiktok: `<svg class="badge-icon" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="5" cy="8.5" r="2.2" fill="white"/>
+    <rect x="6.8" y="2" width="1.8" height="8" fill="white"/>
+    <path d="M8.6,2 Q12,2 12,5.2 Q12,7.5 8.6,7.5" fill="white"/>
   </svg>`,
 };
 
@@ -262,17 +313,32 @@ const badgeLabel = { youtube: 'YouTube', instagram: 'Instagram', tiktok: 'TikTok
 const grid = document.getElementById('grid');
 
 shorts.forEach((item, i) => {
-  const a = document.createElement('a');
-  a.href   = item.url;
-  a.target = '_blank';
-  a.rel    = 'noopener noreferrer';
-  a.className = 'card';
+  const thumb = getThumbnail(item);
+  const num   = String(i + 1).padStart(2, '0');
 
+  const thumbContent = thumb
+    ? `<img class="thumb-img" src="${thumb}" alt="${item.title}"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+       <div class="thumb-placeholder" style="display:none;">
+         <div class="thumb-icon">${placeholderIcons[item.platform] || ''}</div>
+         <span class="thumb-number">#${num}</span>
+       </div>`
+    : `<div class="thumb-placeholder">
+         <div class="thumb-icon">${placeholderIcons[item.platform] || ''}</div>
+         <span class="thumb-number">#${num}</span>
+       </div>`;
+
+  const a = document.createElement('a');
+  a.href      = item.url;
+  a.target    = '_blank';
+  a.rel       = 'noopener noreferrer';
+  a.className = 'card';
   a.innerHTML = `
     <div class="card-thumb">
-      <div class="thumb-icon">${icons[item.platform] || ''}</div>
-      <span class="thumb-number">#${String(i + 1).padStart(2, '0')}</span>
-      <span class="platform-badge badge-${item.platform}">${badgeLabel[item.platform]}</span>
+      ${thumbContent}
+      <span class="platform-badge badge-${item.platform}">
+        ${badgeIcons[item.platform] || ''}${badgeLabel[item.platform]}
+      </span>
     </div>
     <div class="card-body">
       <span class="card-title">${item.title}</span>
