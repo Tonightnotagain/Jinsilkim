@@ -11,11 +11,11 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg:       #F8F7F4;
-  --navy:     #1a1a2e;
-  --gold:     #C9A84C;
-  --muted:    #8a8070;
-  --card-bg:  #ffffff;
+  --bg:      #F8F7F4;
+  --navy:    #1a1a2e;
+  --gold:    #C9A84C;
+  --muted:   #8a8070;
+  --card-bg: #ffffff;
 }
 
 body {
@@ -25,192 +25,323 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
-
 a { color: inherit; text-decoration: none; }
 
 /* ── Page wrapper ── */
-.page {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2.5rem 3rem 6rem;
-}
+.page { max-width: 1280px; margin: 0 auto; padding: 2.5rem 3rem 8rem; }
 
 /* ── Back button ── */
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.88rem;
-  color: var(--muted);
-  transition: color 0.2s, gap 0.2s;
-  margin-bottom: 2.5rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.88rem; color: var(--muted);
+  transition: color 0.2s, gap 0.2s; margin-bottom: 2.5rem;
 }
 .back-btn:hover { color: var(--navy); gap: 0.75rem; }
 .back-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 /* ── Header ── */
 .page-header { margin-bottom: 3rem; }
-
 .page-title {
-  font-family: 'Playfair Display', 'Noto Sans KR', serif;
+  font-family: 'Playfair Display', serif;
   font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: var(--navy);
-  margin-bottom: 0.75rem;
+  font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+  color: var(--navy); margin-bottom: 0.75rem;
 }
-
 .page-subtitle {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-  margin-bottom: 1.75rem;
+  font-size: 0.95rem; color: var(--muted);
+  letter-spacing: 0.02em; margin-bottom: 1.75rem;
 }
-
-/* gold divider */
 .gold-line {
-  width: 100%;
-  height: 1px;
+  width: 100%; height: 1px;
   background: linear-gradient(90deg, var(--gold) 0%, rgba(201,168,76,0.15) 60%, transparent 100%);
 }
 
 /* ── Grid ── */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin-top: 3rem;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem; margin-top: 3rem;
 }
 
 /* ── Card ── */
 .card {
-  border-radius: 8px;
-  overflow: hidden;
+  border-radius: 8px; overflow: hidden;
   background: var(--card-bg);
   box-shadow: 0 2px 12px rgba(26,26,46,0.07);
-  display: block;
-  position: relative;
-  opacity: 0;
-  transform: translateY(28px);
+  display: block; position: relative;
+  opacity: 0; transform: translateY(28px);
   animation: fadeInUp 0.55s ease forwards;
+  transition: box-shadow 0.35s ease;
 }
-
-.card-img-wrap {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 3 / 4;
-}
-
+.card:hover { box-shadow: 0 12px 32px rgba(26,26,46,0.18); }
+.card-img-wrap { position: relative; overflow: hidden; aspect-ratio: 3/4; }
 .card-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
   filter: brightness(0.85) saturate(0.9);
   transition: filter 0.35s ease, transform 0.35s ease;
 }
-
-/* hover overlay */
+.card:hover .card-img-wrap img { filter: brightness(1) saturate(1.1); transform: scale(1.06); }
 .card-overlay {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(26,26,46,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.35s ease;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.35s ease;
 }
 .card-overlay span {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
+  font-size: 0.95rem; font-weight: 600; color: #fff;
   letter-spacing: 0.06em;
-  transform: translateY(6px);
-  transition: transform 0.35s ease;
-}
-
-.card:hover .card-img-wrap img {
-  filter: brightness(1) saturate(1.1);
-  transform: scale(1.06);
-}
-.card:hover {
-  box-shadow: 0 12px 32px rgba(26,26,46,0.18);
+  transform: translateY(6px); transition: transform 0.35s ease;
 }
 .card:hover .card-overlay { opacity: 1; }
 .card:hover .card-overlay span { transform: translateY(0); }
-
-/* card label */
 .card-label {
   padding: 0.7rem 0.9rem 0.8rem;
-  border-top: 2px solid transparent;
-  transition: border-color 0.35s ease;
+  border-top: 2px solid transparent; transition: border-color 0.35s;
 }
 .card:hover .card-label { border-color: var(--gold); }
-
 .card-title {
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--navy);
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.82rem; font-weight: 500; color: var(--navy);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-/* ── Fade-in animation ── */
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0); }
+/* ══════════════════════════════════════════
+   ADMIN UI
+══════════════════════════════════════════ */
+
+/* ── Floating admin button ── */
+.admin-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 900;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--navy); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  opacity: 0.55; transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
+.admin-fab:hover { opacity: 1; transform: scale(1.08); background: #2a2a4a; }
+.admin-fab svg { width: 22px; height: 22px; fill: white; }
+
+/* ── Password modal ── */
+.pw-modal {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(26,26,46,0.55); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s;
+}
+.pw-modal.hidden { display: none; }
+.pw-box {
+  background: #fff; border-radius: 14px;
+  padding: 2.2rem 2.4rem; width: 320px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.pw-box h3 {
+  font-family: 'Outfit', sans-serif; font-size: 1.05rem;
+  font-weight: 600; color: var(--navy); text-align: center;
+}
+.pw-box p { font-size: 0.8rem; color: var(--muted); text-align: center; }
+.pw-input {
+  width: 100%; padding: 0.7rem 1rem; border-radius: 8px;
+  border: 1.5px solid #ddd; font-size: 1.1rem;
+  font-family: inherit; text-align: center; letter-spacing: 0.3em;
+  outline: none; transition: border-color 0.2s;
+}
+.pw-input:focus { border-color: var(--navy); }
+.pw-input.error { border-color: #e05; animation: shake 0.3s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.pw-actions { display: flex; gap: 0.6rem; }
+.btn-confirm {
+  flex: 1; padding: 0.7rem; border-radius: 8px; border: none;
+  background: var(--navy); color: white; font-family: inherit;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-confirm:hover { background: #2a2a4a; }
+.btn-cancel {
+  padding: 0.7rem 1rem; border-radius: 8px;
+  border: 1.5px solid #ddd; background: none;
+  font-family: inherit; font-size: 0.9rem; cursor: pointer;
+  color: var(--muted); transition: border-color 0.2s;
+}
+.btn-cancel:hover { border-color: var(--navy); color: var(--navy); }
+
+/* ── Admin panel (right drawer) ── */
+.admin-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 950;
+  width: 400px; max-width: 100vw;
+  background: #fff;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.16,1,0.3,1);
+}
+.admin-panel.open { transform: translateX(0); }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.4rem;
+  background: var(--navy); color: white; flex-shrink: 0;
+}
+.panel-header span { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em; }
+.panel-close {
+  background: none; border: none; color: white; cursor: pointer;
+  font-size: 1.4rem; line-height: 1; opacity: 0.7; transition: opacity 0.2s;
+  padding: 0 4px;
+}
+.panel-close:hover { opacity: 1; }
+
+.panel-body { flex: 1; overflow-y: auto; padding: 1.2rem; }
+
+/* add item button */
+.btn-add-item {
+  width: 100%; padding: 0.85rem;
+  border: 2px dashed #ccc; border-radius: 8px;
+  background: none; cursor: pointer;
+  font-family: inherit; font-size: 0.9rem; color: var(--muted);
+  transition: border-color 0.2s, color 0.2s; margin-bottom: 1rem;
+}
+.btn-add-item:hover { border-color: var(--gold); color: var(--navy); }
+
+/* item row */
+.item-row {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  padding: 0.85rem; border-radius: 8px;
+  background: #f9f9f7; margin-bottom: 0.6rem;
+  border: 1.5px solid #eee;
+}
+.item-thumb {
+  width: 60px; height: 80px; border-radius: 5px;
+  overflow: hidden; flex-shrink: 0; cursor: pointer;
+  position: relative; background: #e8e4de;
+}
+.item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.item-thumb-hint {
+  position: absolute; inset: 0;
+  background: rgba(26,26,46,0.6);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.2s; border-radius: 5px;
+  font-size: 0.55rem; color: white; text-align: center;
+  padding: 4px; line-height: 1.3;
+}
+.item-thumb:hover .item-thumb-hint { opacity: 1; }
+
+.item-fields { flex: 1; display: flex; flex-direction: column; gap: 0.45rem; }
+.item-input {
+  width: 100%; padding: 0.48rem 0.7rem; border-radius: 6px;
+  border: 1.5px solid #ddd; font-family: inherit; font-size: 0.82rem;
+  color: var(--navy); outline: none; transition: border-color 0.2s;
+  background: white;
+}
+.item-input:focus { border-color: var(--navy); }
+.item-input::placeholder { color: #bbb; }
+.item-del {
+  background: none; border: none; cursor: pointer;
+  color: #ccc; font-size: 1.2rem; line-height: 1;
+  transition: color 0.2s; flex-shrink: 0; padding: 2px;
+  align-self: center;
+}
+.item-del:hover { color: #e05; }
+
+/* panel footer */
+.panel-footer {
+  padding: 1rem 1.2rem; border-top: 1px solid #eee;
+  flex-shrink: 0; display: flex; flex-direction: column; gap: 0.5rem;
+}
+.btn-save {
+  width: 100%; padding: 0.85rem; border-radius: 8px; border: none;
+  background: var(--gold); color: white; font-family: inherit;
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-save:hover { background: #b8922e; }
+.btn-save:active { transform: scale(0.98); }
+.btn-logout {
+  width: 100%; padding: 0.6rem; border-radius: 8px;
+  border: 1.5px solid #ddd; background: none;
+  font-family: inherit; font-size: 0.82rem; color: var(--muted);
+  cursor: pointer; transition: border-color 0.2s;
+}
+.btn-logout:hover { border-color: var(--navy); color: var(--navy); }
+.save-note { font-size: 0.72rem; color: var(--muted); text-align: center; }
 
 /* ── Responsive ── */
-@media (max-width: 1024px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
-}
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px) {
-  .page { padding: 1.75rem 1.25rem 4rem; }
+  .page { padding: 1.75rem 1.25rem 6rem; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin-top: 2rem; }
   .page-title { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .admin-panel { width: 100vw; }
+  .admin-fab { bottom: 20px; right: 20px; }
 }
-@media (max-width: 380px) {
-  .grid { grid-template-columns: 1fr; }
-}
+@media (max-width: 380px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- Back -->
   <a href="index.html" class="back-btn">
-    <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 15 15" fill="none">
       <path d="M9.5 3L5 7.5L9.5 12" stroke="currentColor" stroke-width="1.7"
             stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     포트폴리오로 돌아가기
   </a>
 
-  <!-- Header -->
   <header class="page-header">
     <h1 class="page-title">Shopping Detail Pages</h1>
     <p class="page-subtitle">쇼핑몰 상세페이지 작업물 모음 &middot; 2026</p>
     <div class="gold-line"></div>
   </header>
 
-  <!-- Grid — JS로 생성 -->
   <div class="grid" id="grid"></div>
-
 </div>
 
+<!-- Floating admin button -->
+<button class="admin-fab" id="adminFab" title="관리자 설정">
+  <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+</button>
+
+<!-- Password modal -->
+<div class="pw-modal hidden" id="pwModal">
+  <div class="pw-box">
+    <h3>관리자 로그인</h3>
+    <p>비밀번호를 입력해주세요</p>
+    <input class="pw-input" id="pwInput" type="password" placeholder="••••" maxlength="20">
+    <div class="pw-actions">
+      <button class="btn-cancel" id="pwCancel">취소</button>
+      <button class="btn-confirm" id="pwConfirm">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin panel -->
+<div class="admin-panel" id="adminPanel">
+  <div class="panel-header">
+    <span>관리자 설정</span>
+    <button class="panel-close" id="panelClose">✕</button>
+  </div>
+  <div class="panel-body">
+    <button class="btn-add-item" id="btnAddItem">＋ 이미지 추가</button>
+    <div id="itemList"></div>
+  </div>
+  <div class="panel-footer">
+    <p class="save-note">저장하면 이 브라우저에 영구 보관됩니다.</p>
+    <button class="btn-save" id="btnSave">저장하기</button>
+    <button class="btn-logout" id="btnLogout">로그아웃</button>
+  </div>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="fileInput" accept="image/*" style="display:none">
+
 <script>
-/* ──────────────────────────────────────────────────────────
-   작업물 데이터 — img, url 만 교체하면 카드가 자동으로 업데이트됩니다.
-────────────────────────────────────────────────────────── */
-const works = [
+/* ═══════════════════════════════════════════════════
+   기본 작업물 데이터 (localStorage에 저장된 데이터가 있으면 덮어씀)
+═══════════════════════════════════════════════════ */
+const DEFAULT_WORKS = [
   { title: "상품명 A 상세페이지", img: "detail-placeholder.svg", url: "#" },
   { title: "상품명 B 상세페이지", img: "detail-placeholder.svg", url: "#" },
   { title: "상품명 C 상세페이지", img: "detail-placeholder.svg", url: "#" },
@@ -223,28 +354,217 @@ const works = [
   { title: "상품명 J 상세페이지", img: "detail-placeholder.svg", url: "#" },
 ];
 
-const grid = document.getElementById('grid');
+const STORAGE_KEY = 'detail_gallery_works';
+const ADMIN_PW    = '1013';
 
-works.forEach((item, i) => {
-  const a = document.createElement('a');
-  a.href   = item.url;
-  a.target = '_blank';
-  a.rel    = 'noopener noreferrer';
-  a.className = 'card';
-  a.style.animationDelay = `${i * 0.07}s`;
+/* ── Load / Save ── */
+function loadWorks() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_WORKS));
+  } catch { return JSON.parse(JSON.stringify(DEFAULT_WORKS)); }
+}
+function saveWorks(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
 
-  a.innerHTML = `
-    <div class="card-img-wrap">
-      <img src="${item.img}" alt="${item.title}" loading="lazy">
-      <div class="card-overlay"><span>View &rarr;</span></div>
-    </div>
-    <div class="card-label">
-      <p class="card-title">${item.title}</p>
-    </div>
-  `;
+/* ── Render gallery grid ── */
+function renderGrid(works) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  works.forEach((item, i) => {
+    const a = document.createElement('a');
+    a.href      = item.url || '#';
+    a.target    = '_blank';
+    a.rel       = 'noopener noreferrer';
+    a.className = 'card';
+    a.style.animationDelay = `${i * 0.07}s`;
+    a.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${item.img}" alt="${item.title}" loading="lazy">
+        <div class="card-overlay"><span>View &rarr;</span></div>
+      </div>
+      <div class="card-label">
+        <p class="card-title">${item.title}</p>
+      </div>`;
+    grid.appendChild(a);
+  });
+}
 
-  grid.appendChild(a);
+/* ── Image compression via canvas ── */
+function compressImage(file, maxPx = 900, quality = 0.82) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxPx || height > maxPx) {
+          const ratio = Math.min(maxPx / width, maxPx / height);
+          width  = Math.round(width  * ratio);
+          height = Math.round(height * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   ADMIN LOGIC
+═══════════════════════════════════════════════════ */
+let isLoggedIn  = false;
+let adminWorks  = [];       // working copy while panel is open
+let uploadTarget = null;    // index of item pending image upload
+
+const adminFab   = document.getElementById('adminFab');
+const pwModal    = document.getElementById('pwModal');
+const pwInput    = document.getElementById('pwInput');
+const pwConfirm  = document.getElementById('pwConfirm');
+const pwCancel   = document.getElementById('pwCancel');
+const adminPanel = document.getElementById('adminPanel');
+const panelClose = document.getElementById('panelClose');
+const itemList   = document.getElementById('itemList');
+const btnAddItem = document.getElementById('btnAddItem');
+const btnSave    = document.getElementById('btnSave');
+const btnLogout  = document.getElementById('btnLogout');
+const fileInput  = document.getElementById('fileInput');
+
+/* ── Open password modal ── */
+adminFab.addEventListener('click', () => {
+  if (isLoggedIn) {
+    openPanel();
+  } else {
+    pwInput.value = '';
+    pwInput.classList.remove('error');
+    pwModal.classList.remove('hidden');
+    setTimeout(() => pwInput.focus(), 50);
+  }
 });
+
+/* ── Password check ── */
+function checkPassword() {
+  if (pwInput.value === ADMIN_PW) {
+    isLoggedIn = true;
+    pwModal.classList.add('hidden');
+    openPanel();
+  } else {
+    pwInput.value = '';
+    pwInput.classList.add('error');
+    setTimeout(() => pwInput.classList.remove('error'), 400);
+    pwInput.focus();
+  }
+}
+pwConfirm.addEventListener('click', checkPassword);
+pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+pwCancel.addEventListener('click', () => pwModal.classList.add('hidden'));
+pwModal.addEventListener('click', e => { if (e.target === pwModal) pwModal.classList.add('hidden'); });
+
+/* ── Open / Close panel ── */
+function openPanel() {
+  adminWorks = JSON.parse(JSON.stringify(loadWorks()));
+  renderItemList();
+  adminPanel.classList.add('open');
+}
+panelClose.addEventListener('click', () => adminPanel.classList.remove('open'));
+btnLogout.addEventListener('click', () => {
+  isLoggedIn = false;
+  adminPanel.classList.remove('open');
+});
+
+/* ── Render item list in panel ── */
+function renderItemList() {
+  itemList.innerHTML = '';
+  adminWorks.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <div class="item-thumb" data-idx="${i}">
+        <img src="${item.img}" alt="">
+        <div class="item-thumb-hint">클릭하여<br>이미지 교체</div>
+      </div>
+      <div class="item-fields">
+        <input class="item-input" type="text"  placeholder="제목" value="${item.title || ''}" data-idx="${i}" data-field="title">
+        <input class="item-input" type="url"   placeholder="링크 URL (https://...)" value="${item.url === '#' ? '' : (item.url || '')}" data-idx="${i}" data-field="url">
+      </div>
+      <button class="item-del" data-idx="${i}" title="삭제">✕</button>`;
+    itemList.appendChild(row);
+  });
+
+  /* thumbnail click → upload */
+  itemList.querySelectorAll('.item-thumb').forEach(el => {
+    el.addEventListener('click', () => {
+      uploadTarget = parseInt(el.dataset.idx);
+      fileInput.value = '';
+      fileInput.click();
+    });
+  });
+
+  /* field change */
+  itemList.querySelectorAll('.item-input').forEach(el => {
+    el.addEventListener('input', () => {
+      const idx   = parseInt(el.dataset.idx);
+      const field = el.dataset.field;
+      adminWorks[idx][field] = el.value || (field === 'url' ? '#' : '');
+    });
+  });
+
+  /* delete */
+  itemList.querySelectorAll('.item-del').forEach(el => {
+    el.addEventListener('click', () => {
+      adminWorks.splice(parseInt(el.dataset.idx), 1);
+      renderItemList();
+    });
+  });
+}
+
+/* ── Add item ── */
+btnAddItem.addEventListener('click', () => {
+  uploadTarget = adminWorks.length;
+  adminWorks.push({ title: '', img: 'detail-placeholder.svg', url: '#' });
+  renderItemList();
+  /* auto-open file picker for new item */
+  fileInput.value = '';
+  fileInput.click();
+  /* scroll to bottom */
+  setTimeout(() => itemList.lastElementChild?.scrollIntoView({ behavior: 'smooth' }), 50);
+});
+
+/* ── File upload & compress ── */
+fileInput.addEventListener('change', async () => {
+  const file = fileInput.files[0];
+  if (!file || uploadTarget === null) return;
+  const dataUrl = await compressImage(file);
+  if (uploadTarget < adminWorks.length) {
+    adminWorks[uploadTarget].img = dataUrl;
+    renderItemList();
+  }
+  uploadTarget = null;
+});
+
+/* ── Save ── */
+btnSave.addEventListener('click', () => {
+  /* fill blank titles */
+  adminWorks.forEach((item, i) => {
+    if (!item.title) item.title = `상세페이지 ${i + 1}`;
+    if (!item.url)   item.url   = '#';
+  });
+  saveWorks(adminWorks);
+  renderGrid(adminWorks);
+  adminPanel.classList.remove('open');
+
+  /* brief feedback on FAB */
+  adminFab.style.background = '#2a7a4a';
+  setTimeout(() => adminFab.style.background = '', 1200);
+});
+
+/* ── Init ── */
+renderGrid(loadWorks());
 </script>
 </body>
 </html>
