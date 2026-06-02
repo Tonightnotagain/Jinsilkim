@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fdf6f0"/>
+      <stop offset="100%" style="stop-color:#f5ede8"/>
+    </linearGradient>
+    <linearGradient id="pink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4a7b0"/>
+      <stop offset="100%" style="stop-color:#e8849a"/>
+    </linearGradient>
+    <linearGradient id="tumbler-body" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f9cdd6"/>
+      <stop offset="40%" style="stop-color:#fde8ed"/>
+      <stop offset="100%" style="stop-color:#f4b8c4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- BG -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Soft blobs -->
+  <circle cx="100" cy="100" r="180" fill="#f4a7b0" opacity="0.08"/>
+  <circle cx="700" cy="420" r="150" fill="#f4a7b0" opacity="0.1"/>
+  <circle cx="650" cy="80" r="100" fill="#b8d4e8" opacity="0.08"/>
+
+  <!-- Tumbler shape (right side) -->
+  <g transform="translate(530, 60)">
+    <!-- Cap -->
+    <rect x="55" y="0" width="90" height="22" rx="8" fill="#e8a0b0"/>
+    <!-- Lid ring -->
+    <rect x="50" y="18" width="100" height="12" rx="4" fill="#d990a5"/>
+    <!-- Body -->
+    <rect x="40" y="28" width="120" height="310" rx="16" fill="url(#tumbler-body)"/>
+    <!-- Shine -->
+    <rect x="52" y="38" width="20" height="260" rx="10" fill="rgba(255,255,255,0.35)"/>
+    <!-- Label area -->
+    <rect x="55" y="120" width="90" height="100" rx="8" fill="rgba(255,255,255,0.5)"/>
+    <text x="100" y="162" font-family="Georgia, serif" font-size="11" fill="#c97a8a" text-anchor="middle" font-weight="700">naEggushop</text>
+    <text x="100" y="178" font-family="Arial, sans-serif" font-size="8" fill="#d4909a" text-anchor="middle">MINI TUMBLER</text>
+    <!-- Bottom -->
+    <ellipse cx="100" cy="340" rx="60" ry="10" fill="#d990a5" opacity="0.5"/>
+  </g>
+
+  <!-- Left content -->
+  <!-- Top badge -->
+  <rect x="60" y="55" width="120" height="26" rx="13" fill="#f4a7b0" opacity="0.25"/>
+  <text x="120" y="73" font-family="Arial, sans-serif" font-size="12" fill="#c97a8a" text-anchor="middle" font-weight="600">naEggushop</text>
+
+  <!-- Title -->
+  <text x="60" y="140" font-family="Georgia, 'Noto Serif KR', serif" font-size="46" font-weight="700" fill="#3a2a2e" letter-spacing="-1">MINI</text>
+  <text x="60" y="194" font-family="Georgia, 'Noto Serif KR', serif" font-size="46" font-weight="700" fill="#3a2a2e" letter-spacing="-1">TUMBLER</text>
+
+  <!-- Subtitle -->
+  <text x="60" y="228" font-family="Arial, sans-serif" font-size="14" fill="#c97a8a">가볍고, 작고, 사랑스럽게</text>
+
+  <!-- Divider -->
+  <rect x="60" y="248" width="50" height="2" rx="1" fill="#f4a7b0"/>
+
+  <!-- Feature pills -->
+  <rect x="60" y="268" width="94" height="26" rx="13" fill="#f4a7b0" opacity="0.18"/>
+  <text x="107" y="286" font-family="Arial, sans-serif" font-size="11" fill="#c97a8a" text-anchor="middle">12h 보온보냉</text>
+
+  <rect x="163" y="268" width="80" height="26" rx="13" fill="#f4a7b0" opacity="0.18"/>
+  <text x="203" y="286" font-family="Arial, sans-serif" font-size="11" fill="#c97a8a" text-anchor="middle">304 스텐</text>
+
+  <rect x="60" y="302" width="80" height="26" rx="13" fill="#f4a7b0" opacity="0.18"/>
+  <text x="100" y="320" font-family="Arial, sans-serif" font-size="11" fill="#c97a8a" text-anchor="middle">초경량</text>
+
+  <rect x="149" y="302" width="94" height="26" rx="13" fill="#f4a7b0" opacity="0.18"/>
+  <text x="196" y="320" font-family="Arial, sans-serif" font-size="11" fill="#c97a8a" text-anchor="middle">5가지 컬러</text>
+
+  <!-- Color dots -->
+  <text x="60" y="368" font-family="Arial, sans-serif" font-size="11" fill="#bbb">COLOR</text>
+  <circle cx="68" cy="392" r="12" fill="#f9cdd6" stroke="#fff" stroke-width="2"/>
+  <circle cx="96" cy="392" r="12" fill="#b8d4e8" stroke="#fff" stroke-width="2"/>
+  <circle cx="124" cy="392" r="12" fill="#c8e0c4" stroke="#fff" stroke-width="2"/>
+  <circle cx="152" cy="392" r="12" fill="#f0e0b8" stroke="#fff" stroke-width="2"/>
+  <circle cx="180" cy="392" r="12" fill="#d4c4e0" stroke="#fff" stroke-width="2"/>
+
+  <!-- Year + category -->
+  <text x="60" y="458" font-family="Arial, sans-serif" font-size="12" fill="#ccc">2026 · 상품 홈페이지 · 상세페이지</text>
+</svg>
