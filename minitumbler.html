@@ -117,6 +117,71 @@
       width: 100%; border-radius: 20px;
       box-shadow: 0 24px 60px rgba(232,132,154,0.25), 0 6px 18px rgba(0,0,0,0.06);
     }
+    /* ── Detail modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      align-items: flex-start; justify-content: center;
+      overflow-y: auto;
+      padding: 40px 16px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      position: relative;
+      width: 100%; max-width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-header-title { font-size: 14px; font-weight: 700; color: var(--pink); }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: rgba(232,132,154,0.12);
+      color: var(--pink); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(232,132,154,0.25); }
+
+    .modal-img { display: block; width: 100%; height: auto; }
+
+    /* 상세페이지 보기 버튼 */
+    .detail-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff;
+      color: var(--pink);
+      border: 2px solid var(--pink-lt);
+      font-family: inherit; font-size: 14px; font-weight: 700;
+      padding: 11px 22px; border-radius: 24px;
+      cursor: pointer; margin-top: 20px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .detail-btn:hover {
+      background: var(--pink); color: #fff;
+      border-color: var(--pink);
+      transform: scale(1.04);
+    }
+
     /* Floating badge on tumbler */
     .tumbler-badge {
       position: absolute; top: -16px; right: -20px;
@@ -283,6 +348,7 @@
       <div class="swatch" style="background:#f0e0b8;" title="옐로우"></div>
       <div class="swatch" style="background:#d4c4e0;" title="라벤더"></div>
     </div>
+    <button class="detail-btn" onclick="openModal()">🛍 상세페이지 보기</button>
   </div>
   <div class="hero-right">
     <div class="tumbler-visual">
@@ -445,7 +511,31 @@
   </div>
 </div>
 
+<!-- 상세페이지 모달 -->
+<div class="modal-overlay" id="detail-modal" onclick="closeModalOnBg(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-header-title">🛍 상세페이지 — MINI TUMBLER</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <img class="modal-img" src="상세페이지 (미니텀블러).png" alt="미니텀블러 상세페이지" />
+  </div>
+</div>
+
 <script>
+  function openModal() {
+    document.getElementById('detail-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('detail-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOnBg(e) {
+    if (e.target === document.getElementById('detail-modal')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
   const frame = document.getElementById('site-frame');
   const fallback = document.getElementById('fallback');
   frame.addEventListener('error', showFallback);
