@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUNNY SLIME Branding — Jinsil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      background: #050505;
+      color: #fcfcfc;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Top bar */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #fff; }
+    .back-link::before { content: '←'; }
+
+    .top-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.05em;
+    }
+
+    .visit-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #ff65d9;
+      color: #000;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .visit-btn:hover { opacity: 0.88; transform: scale(1.04); }
+
+    /* Hero section */
+    .hero {
+      padding: 100px 32px 60px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,101,217,0.4);
+      color: #ff65d9;
+    }
+
+    .tag.dark {
+      border-color: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    h1 span { color: #ff65d9; }
+
+    .hero-desc {
+      font-size: 16px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 4px;
+    }
+
+    .meta-item span {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+    }
+
+    /* Preview iframe section */
+    .preview-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 16px;
+    }
+
+    .browser-frame {
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    }
+
+    .browser-chrome {
+      background: #1a1a1a;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .dots {
+      display: flex; gap: 6px;
+    }
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot.red   { background: #ff5f57; }
+    .dot.yellow{ background: #febc2e; }
+    .dot.green { background: #28c840; }
+
+    .url-bar {
+      flex: 1;
+      background: #111;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      font-family: 'Outfit', monospace;
+    }
+
+    .iframe-wrap {
+      position: relative;
+      width: 100%;
+      height: 640px;
+      overflow: hidden;
+    }
+
+    .iframe-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Fallback overlay (shown if iframe blocked) */
+    .iframe-fallback {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .fallback-icon { font-size: 48px; }
+    .fallback-msg { color: rgba(255,255,255,0.4); font-size: 14px; line-height: 1.6; }
+
+    .open-site-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ff65d9;
+      color: #000;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 24px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .open-site-btn:hover { opacity: 0.85; }
+
+    /* Pink glow accent */
+    .glow-accent {
+      position: fixed;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,101,217,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="glow-accent"></div>
+
+<div class="top-bar">
+  <a class="back-link" href="index.html">포트폴리오</a>
+  <div class="top-title">FUNNY SLIME Branding</div>
+  <a class="visit-btn" href="https://funnyslime.my.canva.site/" target="_blank" rel="noopener">
+    사이트 방문 ↗
+  </a>
+</div>
+
+<section class="hero">
+  <div class="tags">
+    <span class="tag">브랜딩</span>
+    <span class="tag dark">로고 디자인</span>
+    <span class="tag dark">웹사이트</span>
+    <span class="tag dark">키즈카페</span>
+  </div>
+
+  <h1>FUNNY<br><span>SLIME</span></h1>
+
+  <p class="hero-desc">
+    슬라임 키즈카페 브랜드 아이덴티티 디자인 프로젝트.<br>
+    로고부터 브랜딩 자료, 바이럴 영상 제작까지 아우르는 통합 디자인 작업을 Canva로 제작한 포트폴리오 웹사이트입니다.
+  </p>
+
+  <div class="meta-row">
+    <div class="meta-item">
+      <label>연도</label>
+      <span>2026</span>
+    </div>
+    <div class="meta-item">
+      <label>툴</label>
+      <span>Canva</span>
+    </div>
+    <div class="meta-item">
+      <label>분야</label>
+      <span>브랜딩 · 시각 디자인</span>
+    </div>
+  </div>
+</section>
+
+<section class="preview-section">
+  <div class="preview-label">Live Preview</div>
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="dots">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+      </div>
+      <div class="url-bar">funnyslime.my.canva.site</div>
+    </div>
+    <div class="iframe-wrap">
+      <iframe
+        src="https://funnyslime.my.canva.site/"
+        title="FUNNY SLIME Branding Site"
+        id="site-frame"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-forms"
+      ></iframe>
+      <div class="iframe-fallback" id="fallback">
+        <div class="fallback-icon">🎨</div>
+        <div class="fallback-msg">
+          외부 사이트 미리보기는<br>보안 정책으로 직접 열어야 해요.
+        </div>
+        <a class="open-site-btn" href="https://funnyslime.my.canva.site/" target="_blank" rel="noopener">
+          사이트 열기 ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // If iframe fails to load (X-Frame-Options blocked), show fallback
+  const frame    = document.getElementById('site-frame');
+  const fallback = document.getElementById('fallback');
+
+  frame.addEventListener('error', showFallback);
+
+  // Canva often blocks iframes — show fallback after timeout if blank
+  setTimeout(() => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      if (!doc || doc.body.innerHTML === '') showFallback();
+    } catch(e) {
+      showFallback(); // cross-origin block
+    }
+  }, 3000);
+
+  function showFallback() {
+    frame.style.display = 'none';
+    fallback.style.display = 'flex';
+  }
+</script>
+</body>
+</html>
