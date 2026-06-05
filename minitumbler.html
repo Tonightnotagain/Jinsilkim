@@ -111,11 +111,16 @@
       padding-bottom: 0;
     }
     .tumbler-visual {
-      position: relative; width: 200px;
+      position: relative; width: 220px;
     }
     .tumbler-img {
       width: 100%; border-radius: 20px;
       box-shadow: 0 24px 60px rgba(232,132,154,0.25), 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .tumbler-video {
+      width: 100%; border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(232,132,154,0.25), 0 6px 18px rgba(0,0,0,0.06);
+      display: block;
     }
     /* ── Detail modal ── */
     .modal-overlay {
@@ -353,38 +358,9 @@
   <div class="hero-right">
     <div class="tumbler-visual">
       <div class="tumbler-badge"><span>200ml</span>딱 좋은 용량</div>
-      <svg viewBox="0 0 200 420" width="200" height="420" class="tumbler-img">
-        <defs>
-          <linearGradient id="tb" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#f4b8c4"/>
-            <stop offset="35%" style="stop-color:#fde8ed"/>
-            <stop offset="100%" style="stop-color:#eda0b8"/>
-          </linearGradient>
-          <linearGradient id="tc" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#d990a5"/>
-            <stop offset="100%" style="stop-color:#e8a0b8"/>
-          </linearGradient>
-        </defs>
-        <!-- Shadow -->
-        <ellipse cx="100" cy="415" rx="55" ry="8" fill="rgba(232,132,154,0.18)"/>
-        <!-- Cap -->
-        <rect x="68" y="4" width="64" height="28" rx="12" fill="url(#tc)"/>
-        <!-- Lid -->
-        <rect x="62" y="28" width="76" height="16" rx="6" fill="#d090a8"/>
-        <!-- Body -->
-        <rect x="50" y="42" width="100" height="354" rx="18" fill="url(#tb)"/>
-        <!-- Shine -->
-        <rect x="62" y="56" width="16" height="300" rx="8" fill="rgba(255,255,255,0.32)"/>
-        <!-- Label -->
-        <rect x="62" y="150" width="76" height="110" rx="10" fill="rgba(255,255,255,0.55)"/>
-        <text x="100" y="196" font-family="Georgia,serif" font-size="9" fill="#c97a8a" text-anchor="middle" font-weight="700">naEggushop</text>
-        <text x="100" y="212" font-family="Arial,sans-serif" font-size="7" fill="#d4909a" text-anchor="middle">MINI TUMBLER</text>
-        <!-- Stars deco -->
-        <text x="138" y="120" font-size="14" fill="rgba(232,132,154,0.5)">✦</text>
-        <text x="55"  y="280" font-size="10" fill="rgba(232,132,154,0.35)">✦</text>
-        <!-- Bottom -->
-        <ellipse cx="100" cy="396" rx="50" ry="9" fill="#d090a8" opacity="0.5"/>
-      </svg>
+      <video class="tumbler-video" autoplay muted loop playsinline>
+        <source src="tumbler-ad.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 </div>
