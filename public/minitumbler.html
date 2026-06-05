@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MINI TUMBLER — naEggushop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:    #e8849a;
+      --pink-lt: #f4a7b0;
+      --bg:      #fdf6f2;
+      --bg2:     #fff9f7;
+      --text:    #2e1e22;
+      --muted:   #9a8085;
+      --border:  rgba(232,132,154,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(253,246,242,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      color: var(--muted); text-decoration: none; font-size: 13px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--pink); }
+    .back-link::before { content: '← '; }
+
+    .top-title { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; }
+
+    .visit-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--pink); color: #fff;
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      padding: 8px 18px; border-radius: 20px; border: none;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .visit-btn:hover { opacity: 0.85; transform: scale(1.04); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 100px 32px 0;
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+
+    .hero-left { padding-bottom: 60px; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(232,132,154,0.14);
+      color: var(--pink); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(42px, 6vw, 68px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    h1 .accent { color: var(--pink); }
+
+    .hero-sub {
+      font-size: 16px; color: var(--muted); margin-bottom: 28px; line-height: 1.6;
+    }
+
+    .divider { width: 48px; height: 2px; background: var(--pink-lt); border-radius: 1px; margin-bottom: 28px; }
+
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .ftag {
+      font-size: 12px; font-weight: 500;
+      padding: 6px 14px; border-radius: 20px;
+      background: rgba(232,132,154,0.1);
+      color: var(--pink); border: 1px solid var(--border);
+    }
+
+    .meta-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .meta-item label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #c0a8ac; margin-bottom: 3px; }
+    .meta-item span  { font-size: 14px; color: var(--text); font-weight: 500; }
+
+    /* Color swatches */
+    .colors { display: flex; gap: 8px; align-items: center; margin-top: 24px; }
+    .colors label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #c0a8ac; margin-right: 4px; }
+    .swatch {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    /* Hero right: tumbler illustration */
+    .hero-right {
+      display: flex; justify-content: center; align-items: flex-end;
+      padding-bottom: 0;
+    }
+    .tumbler-visual {
+      position: relative; width: 220px;
+    }
+    .tumbler-img {
+      width: 100%; border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(232,132,154,0.25), 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .tumbler-video {
+      width: 100%; border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(232,132,154,0.25), 0 6px 18px rgba(0,0,0,0.06);
+      display: block;
+    }
+    /* ── Detail modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      align-items: flex-start; justify-content: center;
+      overflow-y: auto;
+      padding: 40px 16px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      position: relative;
+      width: 100%; max-width: 480px;
+      margin: auto;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-header-title { font-size: 14px; font-weight: 700; color: var(--pink); }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: rgba(232,132,154,0.12);
+      color: var(--pink); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(232,132,154,0.25); }
+
+    .modal-img { display: block; width: 100%; height: auto; }
+
+    /* 상세페이지 보기 버튼 */
+    .detail-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff;
+      color: var(--pink);
+      border: 2px solid var(--pink-lt);
+      font-family: inherit; font-size: 14px; font-weight: 700;
+      padding: 11px 22px; border-radius: 24px;
+      cursor: pointer; margin-top: 20px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .detail-btn:hover {
+      background: var(--pink); color: #fff;
+      border-color: var(--pink);
+      transform: scale(1.04);
+    }
+
+    /* Floating badge on tumbler */
+    .tumbler-badge {
+      position: absolute; top: -16px; right: -20px;
+      background: #fff; border-radius: 16px;
+      padding: 10px 16px;
+      box-shadow: 0 8px 24px rgba(232,132,154,0.2);
+      font-size: 12px; font-weight: 600; color: var(--pink);
+      white-space: nowrap;
+    }
+    .tumbler-badge span { font-size: 18px; font-weight: 800; display: block; }
+
+    /* ── Section layout ── */
+    .section { max-width: 1040px; margin: 0 auto; padding: 64px 32px; }
+    .section-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(24px, 3vw, 36px); margin-bottom: 40px;
+      color: var(--text);
+    }
+
+    /* ── Features grid ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg2); border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(232,132,154,0.12); }
+    .feature-icon { font-size: 28px; margin-bottom: 14px; }
+    .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .feature-card p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Spec table ── */
+    .spec-wrap { background: var(--bg2); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+    .spec-row {
+      display: grid; grid-template-columns: 180px 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-key {
+      padding: 16px 24px;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      background: rgba(232,132,154,0.05);
+      border-right: 1px solid var(--border);
+    }
+    .spec-val {
+      padding: 16px 24px;
+      font-size: 13px; color: var(--text);
+    }
+    .spec-badge {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 10px;
+      background: rgba(232,132,154,0.12); color: var(--pink);
+      margin-left: 8px;
+    }
+
+    /* ── Sticker section ── */
+    .sticker-section {
+      background: linear-gradient(135deg, #fff5f7 0%, #fdf0f4 100%);
+      border-radius: 20px; padding: 40px;
+      border: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    }
+    .sticker-left h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+    .sticker-left p  { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .sticker-types { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .sticker-type {
+      padding: 7px 16px; border-radius: 20px;
+      background: rgba(232,132,154,0.12);
+      color: var(--pink); font-size: 12px; font-weight: 600;
+    }
+    .sticker-right { display: flex; justify-content: center; align-items: center; font-size: 72px; }
+
+    /* ── Preview section ── */
+    .preview-section { background: #fff; border-top: 1px solid var(--border); }
+    .preview-inner { max-width: 1040px; margin: 0 auto; padding: 64px 32px; }
+
+    .browser-frame {
+      background: #f5f5f5; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    .browser-chrome {
+      background: #e8e8e8; padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .dots { display: flex; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+    .url-bar {
+      flex: 1; background: #fff; border-radius: 6px;
+      padding: 5px 12px; font-size: 12px; color: #888; font-family: monospace;
+    }
+    .iframe-wrap { position: relative; width: 100%; height: 620px; overflow: hidden; }
+    .iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .iframe-fallback {
+      display: none; position: absolute; inset: 0;
+      background: linear-gradient(135deg, #fdf6f2 0%, #fff5f7 100%);
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px; text-align: center;
+    }
+    .fallback-icon { font-size: 52px; }
+    .fallback-msg { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .open-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--pink); color: #fff;
+      font-weight: 700; font-size: 14px;
+      padding: 12px 28px; border-radius: 24px;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .open-btn:hover { opacity: 0.85; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; }
+      .hero-right { display: none; }
+      .sticker-section { grid-template-columns: 1fr; }
+      .sticker-right { display: none; }
+      .spec-row { grid-template-columns: 130px 1fr; }
+      .top-bar { padding: 12px 18px; }
+      .visit-btn { padding: 7px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <a class="back-link" href="index.html">포트폴리오</a>
+  <div class="top-title">MINI TUMBLER · naEggushop</div>
+  <a class="visit-btn" href="https://funnyslime.my.canva.site/minitumbler" target="_blank" rel="noopener">홈페이지 방문 ↗</a>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="badge">naEggushop · Product Page</div>
+    <h1>MINI<br><span class="accent">TUMBLER</span></h1>
+    <p class="hero-sub">가볍고, 작고, 사랑스럽게<br>당신의 하루를 더 귀엽게</p>
+    <div class="divider"></div>
+    <div class="feature-tags">
+      <span class="ftag">🌸 5가지 파스텔 컬러</span>
+      <span class="ftag">🧊 12h 보온보냉</span>
+      <span class="ftag">✨ 초경량 미니사이즈</span>
+      <span class="ftag">🔩 304 스테인리스</span>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><label>카테고리</label><span>상품 홈페이지 · 상세페이지</span></div>
+      <div class="meta-item"><label>툴</label><span>Canva</span></div>
+      <div class="meta-item"><label>연도</label><span>2026</span></div>
+    </div>
+    <div class="colors">
+      <label>Color</label>
+      <div class="swatch" style="background:#f9cdd6;" title="핑크"></div>
+      <div class="swatch" style="background:#b8d4e8;" title="블루"></div>
+      <div class="swatch" style="background:#c8e0c4;" title="그린"></div>
+      <div class="swatch" style="background:#f0e0b8;" title="옐로우"></div>
+      <div class="swatch" style="background:#d4c4e0;" title="라벤더"></div>
+    </div>
+    <button class="detail-btn" onclick="openModal()">🛍 상세페이지 보기</button>
+  </div>
+  <div class="hero-right">
+    <div class="tumbler-visual">
+      <div class="tumbler-badge"><span>200ml</span>딱 좋은 용량</div>
+      <video class="tumbler-video" autoplay muted loop playsinline>
+        <source src="tumbler-ad.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="section">
+  <div class="section-label">Product Features</div>
+  <div class="section-title">제품 주요 특징</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧊</div>
+      <h3>12시간 완벽 보온보냉</h3>
+      <p>뜨거운 건 75°C, 차가운 건 4°C 유지.<br>하루 종일 처음 온도 그대로.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌸</div>
+      <h3>초경량 미니 사이즈</h3>
+      <p>주머니에 쏙 들어가는 크기.<br>어른도 아이도 부담 없이 들고 다니는 무게.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔩</div>
+      <h3>304 스테인리스 내부</h3>
+      <p>안전하고 위생적인 소재 사용.<br>음료 맛을 변질시키지 않아요.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🫧</div>
+      <h3>완벽 분리 세척</h3>
+      <p>뚜껑부터 본체까지 완전 분리.<br>구석구석 깨끗하게 세척 가능.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <h3>5가지 파스텔 컬러</h3>
+      <p>핑크·블루·그린·옐로우·라벤더.<br>취향에 맞게 골라봐요.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✨</div>
+      <h3>200ml 딱 좋은 용량</h3>
+      <p>너무 많지도, 적지도 않은 용량.<br>에스프레소부터 주스까지 딱 맞아요.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Spec -->
+<div class="section" style="padding-top:0">
+  <div class="section-label">Specifications</div>
+  <div class="section-title">제품 스펙</div>
+  <div class="spec-wrap">
+    <div class="spec-row">
+      <div class="spec-key">용량</div>
+      <div class="spec-val">200ml <span class="spec-badge">딱 좋은 사이즈</span></div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">소재</div>
+      <div class="spec-val">304 스테인리스 스틸 (내부) <span class="spec-badge">안전</span></div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">보온 유지</div>
+      <div class="spec-val">75°C / 12시간</div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">보냉 유지</div>
+      <div class="spec-val">4°C / 12시간</div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">컬러</div>
+      <div class="spec-val">핑크 · 블루 · 그린 · 옐로우 · 라벤더 (5가지)</div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">특징</div>
+      <div class="spec-val">초경량 · 완전 분리 세척 · 미니 사이즈</div>
+    </div>
+    <div class="spec-row">
+      <div class="spec-key">대상</div>
+      <div class="spec-val">어린이 · 성인 모두 사용 가능</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sticker customizing -->
+<div class="section" style="padding-top:0">
+  <div class="sticker-section">
+    <div class="sticker-left">
+      <h3>나만의 텀블러 만들기 🎀</h3>
+      <p>개성 있는 스티커로 세상에 하나뿐인<br>나만의 미니 텀블러를 완성해봐요.<br>이니셜, 캐릭터, 팝아트 스티커로 자유롭게!</p>
+      <div class="sticker-types">
+        <span class="sticker-type">이니셜 스티커</span>
+        <span class="sticker-type">캐릭터 스티커</span>
+        <span class="sticker-type">팝아트 스티커</span>
+      </div>
+    </div>
+    <div class="sticker-right">🎀</div>
+  </div>
+</div>
+
+<!-- Live Preview -->
+<div class="preview-section">
+  <div class="preview-inner">
+    <div class="section-label">Live Preview</div>
+    <div class="section-title" style="margin-bottom:20px">상품 홈페이지</div>
+    <div class="browser-frame">
+      <div class="browser-chrome">
+        <div class="dots">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        </div>
+        <div class="url-bar">funnyslime.my.canva.site/minitumbler</div>
+      </div>
+      <div class="iframe-wrap">
+        <iframe
+          src="https://funnyslime.my.canva.site/minitumbler"
+          title="MINI TUMBLER 상품 홈페이지"
+          id="site-frame"
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+        ></iframe>
+        <div class="iframe-fallback" id="fallback">
+          <div class="fallback-icon">🌸</div>
+          <div class="fallback-msg">외부 사이트는 보안 정책으로<br>미리보기가 제한될 수 있어요.</div>
+          <a class="open-btn" href="https://funnyslime.my.canva.site/minitumbler" target="_blank" rel="noopener">
+            홈페이지 열기 ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 상세페이지 모달 -->
+<div class="modal-overlay" id="detail-modal" onclick="closeModalOnBg(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-header-title">🛍 상세페이지 — MINI TUMBLER</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <img class="modal-img" src="상세페이지 (미니텀블러).png" alt="미니텀블러 상세페이지" />
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('detail-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('detail-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOnBg(e) {
+    if (e.target === document.getElementById('detail-modal')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  const frame = document.getElementById('site-frame');
+  const fallback = document.getElementById('fallback');
+  frame.addEventListener('error', showFallback);
+  setTimeout(() => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      if (!doc || doc.body.innerHTML === '') showFallback();
+    } catch(e) { showFallback(); }
+  }, 3000);
+  function showFallback() {
+    frame.style.display = 'none';
+    fallback.style.display = 'flex';
+  }
+</script>
+</body>
+</html>
