@@ -263,13 +263,13 @@ a:hover { opacity: 0.7; }
 
 
 /* ════════════════════════════════════════════════════════════
-   PROJECT MODAL — canva-site.html 디자인 기반 다크 테마
+   PROJECT MODAL — 라이트 테마 (흰 바탕 · 검은 글씨)
 ════════════════════════════════════════════════════════════ */
 
 .pm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.88);
+  background: rgba(5, 5, 5, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 9999;
@@ -288,8 +288,8 @@ a:hover { opacity: 0.7; }
 }
 
 .pm-modal {
-  background: #0c0c0c;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
   width: 100%;
   max-width: 660px;
   max-height: 88vh;
@@ -307,9 +307,9 @@ a:hover { opacity: 0.7; }
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.06);
   border: none;
-  color: rgba(255,255,255,0.5);
+  color: rgba(0,0,0,0.4);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -323,19 +323,19 @@ a:hover { opacity: 0.7; }
   font-family: 'Outfit', sans-serif;
 }
 .pm-close:hover {
-  background: rgba(255,255,255,0.14);
-  color: #fff;
+  background: rgba(0,0,0,0.12);
+  color: #111;
 }
 
-/* ── 상단 헤더 영역 (canva-site 상단 구조 반영) ── */
+/* ── 상단 헤더 영역 ── */
 .pm-header {
   padding: 44px 44px 28px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 
 .pm-nav {
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: #999;
   letter-spacing: 0.04em;
   text-transform: lowercase;
   margin-bottom: 20px;
@@ -355,6 +355,7 @@ a:hover { opacity: 0.7; }
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.15;
+  color: #111;
 }
 
 .pm-visit-btn {
@@ -363,8 +364,8 @@ a:hover { opacity: 0.7; }
   align-items: center;
   gap: 6px;
   padding: 9px 18px;
-  border: 1px solid rgba(255,255,255,0.18);
-  color: #fcfcfc;
+  border: 1px solid rgba(0,0,0,0.2);
+  color: #111;
   font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.02em;
@@ -373,8 +374,8 @@ a:hover { opacity: 0.7; }
   white-space: nowrap;
 }
 .pm-visit-btn:hover {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.4);
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.4);
   opacity: 1;
 }
 
@@ -390,8 +391,8 @@ a:hover { opacity: 0.7; }
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   padding: 5px 12px;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.15);
+  color: rgba(0,0,0,0.5);
   text-transform: uppercase;
 }
 
@@ -400,7 +401,7 @@ a:hover { opacity: 0.7; }
   padding: 36px 44px;
 }
 
-/* 큰 프로젝트 타이틀 (canva-site의 # FUNNY SLIME) */
+/* 큰 프로젝트 타이틀 */
 .pm-big-title {
   font-family: 'Outfit', sans-serif;
   font-size: clamp(2.8rem, 7vw, 4.5rem);
@@ -408,6 +409,7 @@ a:hover { opacity: 0.7; }
   letter-spacing: -0.05em;
   line-height: 0.95;
   margin-bottom: 28px;
+  color: #111;
 }
 
 .pm-big-title em {
@@ -415,7 +417,7 @@ a:hover { opacity: 0.7; }
   font-style: italic;
   font-weight: 300;
   font-size: 0.65em;
-  color: var(--text-muted);
+  color: #999;
   letter-spacing: -0.02em;
 }
 
@@ -423,7 +425,7 @@ a:hover { opacity: 0.7; }
 .pm-desc {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(0,0,0,0.6);
   line-height: 1.8;
   font-weight: 300;
   margin-bottom: 32px;
@@ -434,15 +436,15 @@ a:hover { opacity: 0.7; }
 .pm-meta {
   display: flex;
   gap: 0;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-top: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
   margin-bottom: 44px;
 }
 
 .pm-meta-item {
   flex: 1;
   padding: 18px 0;
-  border-right: 1px solid rgba(255,255,255,0.07);
+  border-right: 1px solid rgba(0,0,0,0.07);
 }
 .pm-meta-item:last-child { border-right: none; }
 
@@ -451,7 +453,7 @@ a:hover { opacity: 0.7; }
   font-size: 0.65rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #999;
   margin-bottom: 6px;
 }
 
@@ -459,7 +461,7 @@ a:hover { opacity: 0.7; }
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.88rem;
   font-weight: 400;
-  color: var(--text-main);
+  color: #111;
 }
 
 /* ── 기획/실행/역량 섹션 ── */
@@ -475,7 +477,7 @@ a:hover { opacity: 0.7; }
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #999;
   margin-bottom: 16px;
 }
 
@@ -483,20 +485,20 @@ a:hover { opacity: 0.7; }
   content: '';
   flex: 1;
   height: 1px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.08);
 }
 
 .pm-section-content {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.88rem;
   line-height: 1.85;
-  color: rgba(255,255,255,0.72);
+  color: rgba(0,0,0,0.65);
   font-weight: 300;
 }
 
 .pm-section-content strong {
   font-weight: 500;
-  color: var(--text-main);
+  color: #111;
 }
 
 /* 실행 프로세스 스텝 */
@@ -513,7 +515,7 @@ a:hover { opacity: 0.7; }
   align-items: flex-start;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.87rem;
-  color: rgba(255,255,255,0.7);
+  color: rgba(0,0,0,0.65);
   font-weight: 300;
   line-height: 1.65;
 }
@@ -522,11 +524,11 @@ a:hover { opacity: 0.7; }
   flex-shrink: 0;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(0,0,0,0.2);
   border-radius: 50%;
   font-family: 'Outfit', sans-serif;
   font-size: 0.68rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -545,18 +547,18 @@ a:hover { opacity: 0.7; }
   font-size: 0.8rem;
   font-weight: 400;
   padding: 7px 16px;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.15);
+  color: rgba(0,0,0,0.6);
   transition: border-color 0.2s, color 0.2s;
 }
 .pm-badge:hover {
-  border-color: rgba(255,255,255,0.35);
-  color: var(--text-main);
+  border-color: rgba(0,0,0,0.4);
+  color: #111;
 }
 
-/* ── Live Preview 영역 (canva-site 하단 구조) ── */
+/* ── Live Preview 영역 ── */
 .pm-preview {
-  border-top: 1px solid rgba(255,255,255,0.07);
+  border-top: 1px solid rgba(0,0,0,0.07);
   padding: 32px 44px 44px;
 }
 
@@ -565,14 +567,14 @@ a:hover { opacity: 0.7; }
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #999;
   margin-bottom: 16px;
 }
 
 .pm-preview-url {
   font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.35);
+  color: rgba(0,0,0,0.35);
   margin-bottom: 20px;
   letter-spacing: 0.02em;
 }
@@ -582,8 +584,8 @@ a:hover { opacity: 0.7; }
   align-items: center;
   gap: 14px;
   padding: 20px 24px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.07);
   margin-bottom: 20px;
 }
 
@@ -595,7 +597,7 @@ a:hover { opacity: 0.7; }
 .pm-preview-notice p {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: #888;
   font-weight: 300;
   line-height: 1.6;
 }
@@ -605,8 +607,8 @@ a:hover { opacity: 0.7; }
   align-items: center;
   gap: 8px;
   padding: 13px 28px;
-  background: var(--text-main);
-  color: #050505;
+  background: #111;
+  color: #fff;
   font-family: 'Outfit', sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
@@ -615,7 +617,7 @@ a:hover { opacity: 0.7; }
   transition: background 0.2s, transform 0.2s;
 }
 .pm-open-btn:hover {
-  background: #e8e8e8;
+  background: #333;
   transform: translateY(-1px);
   opacity: 1;
 }
@@ -628,7 +630,7 @@ a:hover { opacity: 0.7; }
   .pm-big-title { font-size: clamp(2.2rem, 10vw, 3rem); }
   .pm-title-row { flex-direction: column; gap: 14px; }
   .pm-meta { flex-direction: column; }
-  .pm-meta-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .pm-meta-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.07); }
   .pm-meta-item:last-child { border-bottom: none; }
 }
 </style>
@@ -1386,7 +1388,7 @@ a:hover { opacity: 0.7; }
       <!-- 설명 -->
       <p class="pm-desc">
         보홀 여행을 앞두고 일정을 한눈에 보고 싶어서 Claude Code로 직접 만든 여행 일정 앱.<br>
-        단순한 포트폴리오 작업이 아니라, <strong style="color:var(--text-main);font-weight:500;">실제 여행지에서 직접 링크에 접속해 일정 관리에 활용했습니다.</strong>
+        단순한 포트폴리오 작업이 아니라, <strong style="color:#111;font-weight:500;">실제 여행지에서 직접 링크에 접속해 일정 관리에 활용했습니다.</strong>
       </p>
 
       <!-- 메타 정보 -->
@@ -1514,7 +1516,7 @@ a:hover { opacity: 0.7; }
       <!-- 설명 -->
       <p class="pm-desc">
         편의점 OFC로 일하는 남편의 부탁으로 만든 실용 웹 툴.<br>
-        편집 프로그램을 잘 다루지 못하는 편의점 점주들이 <strong style="color:var(--text-main);font-weight:500;">상품 이미지만 있으면 전단지와 상품 카드를 바로 만들 수 있도록</strong> Claude Code로 제작했습니다.
+        편집 프로그램을 잘 다루지 못하는 편의점 점주들이 <strong style="color:#111;font-weight:500;">상품 이미지만 있으면 전단지와 상품 카드를 바로 만들 수 있도록</strong> Claude Code로 제작했습니다.
       </p>
 
       <!-- 메타 정보 -->
