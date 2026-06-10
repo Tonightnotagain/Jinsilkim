@@ -714,6 +714,126 @@ a:hover { opacity: 0.7; }
   justify-content: center;
 }
 
+/* ── 작업물 그리드 (방식 A) ── */
+.pm-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+.pm-work-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.pm-work-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.pm-work-card.active {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+}
+.pm-work-card img {
+  width: 100%;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+  display: block;
+}
+.pm-work-card-info {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 28px 10px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+  color: #fff;
+}
+.pm-work-card-tool {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 2px;
+}
+.pm-work-card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* 비디오 패널 */
+.pm-video-panel {
+  display: none;
+  margin-top: 16px;
+  border: 1.5px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f9f9f9;
+  animation: panelSlideIn 0.3s ease;
+}
+.pm-video-panel.active { display: block; }
+@keyframes panelSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pm-video-panel video {
+  width: 100%;
+  max-height: 480px;
+  background: #000;
+  display: block;
+}
+.pm-video-panel-info {
+  padding: 14px 16px 16px;
+}
+.pm-video-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.pm-video-panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+.pm-video-panel-close {
+  background: rgba(0,0,0,0.06);
+  border: none;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #555;
+  display: flex; align-items: center; justify-content: center;
+}
+.pm-video-panel-tool {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: #111;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.pm-video-panel-desc {
+  font-size: 0.85rem;
+  color: rgba(0,0,0,0.6);
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .pm-works-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .pm-video-panel video { max-height: 300px; }
+}
+
 /* ── 프로세스 카드 (카드 안의 카드) ── */
 .pm-process-cards {
   display: flex;
@@ -970,14 +1090,14 @@ a:hover { opacity: 0.7; }
         </div>
       </div>
 
-      <!-- 9. AI 광고 영상 제작 — 모달로 열기 -->
+      <!-- 9. 쇼츠 제작 — 모달로 열기 -->
       <div class="project-card" onclick="openProjectModal('shorts')" style="cursor:pointer">
         <div class="project-image-placeholder">
-          <img src="images/lemonpop/Plastic_container_with_lid_202605211206.jpeg" alt="AI 광고 영상 제작" class="project-image-preview">
+          <img src="images/shorts/nurungepop-thumb.jpeg" alt="쇼츠 제작" class="project-image-preview">
         </div>
         <div class="project-info">
-          <h3>AI 광고 영상 제작</h3>
-          <p>2026 · Seedance 2.0</p>
+          <h3>쇼츠 제작</h3>
+          <p>2025–2026 · AI 영상</p>
         </div>
       </div>
 
@@ -1974,7 +2094,7 @@ a:hover { opacity: 0.7; }
 </div><!-- /pm-overlay #ittem -->
 
 <!-- ════════════════════════════════════════════════════════════
-     AI 광고 영상 제작 — LemonPop 프로세스 모달
+     쇼츠 제작 — 6개 작업물 컬렉션 모달
 ════════════════════════════════════════════════════════════ -->
 <div class="pm-overlay" id="pm-shorts" role="dialog" aria-modal="true" aria-labelledby="pm-title-shorts">
 
@@ -1985,44 +2105,40 @@ a:hover { opacity: 0.7; }
     <!-- ── 헤더 ── -->
     <div class="pm-header">
       <p class="pm-nav">← portfolio / works</p>
-
       <div class="pm-title-row">
-        <h2 class="pm-title" id="pm-title-shorts">AI 광고 영상<br>제작 프로세스</h2>
+        <h2 class="pm-title" id="pm-title-shorts">쇼츠 제작<br>컬렉션</h2>
       </div>
-
       <div class="pm-tags">
-        <span class="pm-tag">AI 영상 광고</span>
-        <span class="pm-tag">제품 연출</span>
+        <span class="pm-tag">AI 광고 영상</span>
+        <span class="pm-tag">쇼츠 애니메이션</span>
         <span class="pm-tag">Seedance 2.0</span>
-        <span class="pm-tag">Midjourney</span>
+        <span class="pm-tag">Kling AI</span>
+        <span class="pm-tag">Vrew</span>
       </div>
     </div>
 
     <!-- ── 본문 ── -->
     <div class="pm-body">
 
-      <h3 class="pm-big-title">
-        Lemon<em>Pop</em>
-      </h3>
+      <h3 class="pm-big-title">AI<br><em>Shorts</em></h3>
 
       <p class="pm-desc">
-        가상의 탄산수 브랜드 <strong>LemonPop</strong>을 설정하고,
-        AI 툴만으로 제품 연출샷 → 스토리보드 → 광고 영상까지 제작한 풀 프로세스 프로젝트입니다.<br>
-        Midjourney로 제품 이미지를 생성하고, Seedance 2.0으로 최종 광고 영상을 완성했습니다.
+        Seedance 2.0, Kling AI, Vrew 등 다양한 AI 영상 툴을 활용해 제작한 쇼츠·광고 영상 컬렉션입니다.<br>
+        제품 광고부터 캐릭터 애니메이션, 야식 쇼츠까지 — 기획부터 영상 완성까지 직접 제작했습니다.
       </p>
 
       <div class="pm-meta">
         <div class="pm-meta-item">
-          <p class="pm-meta-label">연도</p>
-          <p class="pm-meta-value">2026</p>
+          <p class="pm-meta-label">기간</p>
+          <p class="pm-meta-value">2025 – 2026</p>
         </div>
         <div class="pm-meta-item">
           <p class="pm-meta-label">툴</p>
-          <p class="pm-meta-value">Midjourney · Seedance 2.0 · Claude</p>
+          <p class="pm-meta-value">Seedance 2.0 · Kling AI · Vrew · Midjourney</p>
         </div>
         <div class="pm-meta-item">
           <p class="pm-meta-label">분야</p>
-          <p class="pm-meta-value">AI 영상 · 제품 광고</p>
+          <p class="pm-meta-value">AI 영상 · 광고 · 쇼츠</p>
         </div>
         <div class="pm-meta-item">
           <p class="pm-meta-label">유형</p>
@@ -2034,107 +2150,92 @@ a:hover { opacity: 0.7; }
       <div class="pm-section">
         <p class="pm-section-label">💡 &nbsp;드러난 역량</p>
         <div class="pm-skill-badges">
-          <span class="pm-badge">AI 제품 연출샷 생성</span>
-          <span class="pm-badge">광고 스토리보드 기획</span>
-          <span class="pm-badge">Seedance 2.0 영상 제작</span>
-          <span class="pm-badge">브랜드 톤 설계</span>
-          <span class="pm-badge">AI 툴 풀 파이프라인</span>
+          <span class="pm-badge">AI 광고 영상 기획·제작</span>
+          <span class="pm-badge">Seedance 2.0 프롬프팅</span>
+          <span class="pm-badge">Kling AI 영상 생성</span>
+          <span class="pm-badge">Vrew 영상 편집</span>
+          <span class="pm-badge">쇼츠 스토리보드 설계</span>
+          <span class="pm-badge">캐릭터 애니메이션</span>
         </div>
       </div>
 
-      <!-- 🎬 프로세스 카드 -->
+      <!-- 🎬 작업물 그리드 -->
       <div class="pm-section">
-        <p class="pm-section-label">🎬 &nbsp;제작 프로세스</p>
-        <div class="pm-process-cards">
+        <p class="pm-section-label">🎬 &nbsp;작업물 — 클릭해서 보기</p>
 
-          <!-- STEP 1 -->
-          <div class="pm-process-card" id="proc-1">
-            <div class="pm-process-card-header" onclick="toggleProcessCard('proc-1')">
-              <div class="pm-process-step-badge">1</div>
-              <div class="pm-process-card-info">
-                <p class="pm-process-card-title">제품 연출샷 생성</p>
-                <p class="pm-process-card-tool">Midjourney · AI 이미지</p>
-              </div>
-              <span class="pm-process-card-toggle">▼</span>
-            </div>
-            <div class="pm-process-card-body">
-              <div class="pm-process-card-content">
-                <p class="pm-process-card-desc">
-                  LemonPop 브랜드 아이덴티티(블루 캡 + 레몬 옐로우 로고)를 설정하고,
-                  Midjourney로 다양한 각도·분위기의 제품 연출 이미지를 생성했습니다.
-                  해변, 나무 테이블, 레몬·민트 소품을 활용한 청량한 여름 무드로 연출했습니다.
-                </p>
-                <div class="pm-process-img-grid">
-                  <img src="images/lemonpop/product-shot-1.jpeg"
-                       alt="LemonPop 멀티 연출샷"
-                       onclick="openLightbox('images/lemonpop/product-shot-1.jpeg')"
-                       loading="lazy">
-                  <img src="images/lemonpop/product-shot-2.jpeg"
-                       alt="LemonPop 플레이버 컬렉션"
-                       onclick="openLightbox('images/lemonpop/product-shot-2.jpeg')"
-                       loading="lazy">
-                  <img src="images/lemonpop/Plastic_container_with_lid_202605211206.jpeg"
-                       alt="LemonPop 메인 연출샷"
-                       onclick="openLightbox('images/lemonpop/Plastic_container_with_lid_202605211206.jpeg')"
-                       loading="lazy">
-                </div>
-              </div>
+        <div class="pm-works-grid">
+          <div class="pm-work-card" id="work-lemonpop"
+               onclick="openVideoPanel('images/shorts/lemonpop-ad.mp4','레몬팝 광고','Seedance 2.0','Midjourney로 제품 연출샷을 생성하고 Seedance 2.0으로 광고 영상을 완성한 풀 파이프라인 작업. 청량한 여름 탄산수 브랜드 LemonPop의 AI 광고 영상입니다.','work-lemonpop')">
+            <img src="images/shorts/lemompop-thumb.png" alt="레몬팝 광고" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Seedance 2.0</span>
+              <p class="pm-work-card-title">레몬팝 광고</p>
             </div>
           </div>
 
-          <!-- STEP 2 -->
-          <div class="pm-process-card" id="proc-2">
-            <div class="pm-process-card-header" onclick="toggleProcessCard('proc-2')">
-              <div class="pm-process-step-badge">2</div>
-              <div class="pm-process-card-info">
-                <p class="pm-process-card-title">광고 스토리보드 기획</p>
-                <p class="pm-process-card-tool">Claude · 콘텐츠 기획</p>
-              </div>
-              <span class="pm-process-card-toggle">▼</span>
-            </div>
-            <div class="pm-process-card-body">
-              <div class="pm-process-card-content">
-                <p class="pm-process-card-desc">
-                  "톡 터지는 상큼함, 레몬팝 탄산수"라는 광고 컨셉을 설정하고
-                  6컷 스토리보드를 직접 기획했습니다. 첫 탄산의 등장 → 마시기 직전의 기대감 →
-                  상큼함 폭발 → 여름 무드 완성 → 라인업 공개까지 흐름을 설계했습니다.
-                </p>
-                <div class="pm-process-img-single">
-                  <img src="images/lemonpop/storyboard.png"
-                       alt="LemonPop 광고 스토리보드"
-                       onclick="openLightbox('images/lemonpop/storyboard.png')"
-                       loading="lazy">
-                </div>
-              </div>
+          <div class="pm-work-card" id="work-nurungepop"
+               onclick="openVideoPanel('images/shorts/nurungepop-ad.mp4','누룽지팝 광고','Seedance 2.0','구수한 누룽지 탄산수 브랜드 누룽지팝의 AI 광고 영상. Midjourney 제품 이미지를 베이스로 Seedance 2.0으로 영상화했습니다.','work-nurungepop')">
+            <img src="images/shorts/nurungepop-thumb.jpeg" alt="누룽지팝 광고" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Seedance 2.0</span>
+              <p class="pm-work-card-title">누룽지팝 광고</p>
             </div>
           </div>
 
-          <!-- STEP 3 -->
-          <div class="pm-process-card" id="proc-3">
-            <div class="pm-process-card-header" onclick="toggleProcessCard('proc-3')">
-              <div class="pm-process-step-badge">3</div>
-              <div class="pm-process-card-info">
-                <p class="pm-process-card-title">광고 영상 생성</p>
-                <p class="pm-process-card-tool">Seedance 2.0 · AI 영상</p>
-              </div>
-              <span class="pm-process-card-toggle">▼</span>
-            </div>
-            <div class="pm-process-card-body">
-              <div class="pm-process-card-content">
-                <p class="pm-process-card-desc">
-                  스토리보드를 바탕으로 Seedance 2.0에 프롬프트를 작성해 광고 영상을 생성했습니다.
-                  사진과 동선은 0→S 방향으로 유지하고, 탄산 / 물방울 / 음식 재료들로 청량한 분위기를 연출했습니다.
-                </p>
-                <video class="pm-process-video" controls playsinline preload="metadata">
-                  <source src="images/lemonpop/lemonpop-ad.mp4" type="video/mp4">
-                  브라우저가 동영상을 지원하지 않습니다.
-                </video>
-              </div>
+          <div class="pm-work-card" id="work-tumblur"
+               onclick="openVideoPanel('images/shorts/tumblur-ad.mp4','텀블러 광고','Kling AI','NAEGGUshop 미니 텀블러 제품 광고 영상. Kling AI로 제품의 감성적인 연출을 담아 제작했습니다.','work-tumblur')">
+            <img src="images/shorts/tumblur-thumb.jpeg" alt="텀블러 광고" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Kling AI</span>
+              <p class="pm-work-card-title">텀블러 광고</p>
             </div>
           </div>
 
-        </div><!-- /pm-process-cards -->
-      </div>
+          <div class="pm-work-card" id="work-carrot"
+               onclick="openVideoPanel('images/shorts/carrot.mp4','애니메이션 캐릭터','Kling AI','AI 툴로 생성한 당근 캐릭터 애니메이션. 쇼츠용 캐릭터 콘텐츠로 제작했습니다.','work-carrot')">
+            <img src="images/shorts/carrot-thumb.jpeg" alt="애니메이션 캐릭터" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Kling AI</span>
+              <p class="pm-work-card-title">애니메이션 캐릭터</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card" id="work-koreanfood"
+               onclick="openVideoPanel('images/shorts/koreanfood.mp4','야식 쇼츠','Vrew','야식을 주제로 Vrew를 활용해 제작한 쇼츠 영상. 자막과 편집을 통해 야식 문화를 감성적으로 담아냈습니다.','work-koreanfood')">
+            <img src="images/shorts/koreanfood-thumb.jpeg" alt="야식 쇼츠" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Vrew</span>
+              <p class="pm-work-card-title">야식 쇼츠</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card" id="work-dinner"
+               onclick="openVideoPanel('images/shorts/dinner.mp4','애니메이션 쇼츠','Seedance 2.0','저녁 식사 장면을 AI 애니메이션으로 표현한 쇼츠. 스토리텔링과 장면 연출 역량을 담은 작업물입니다.','work-dinner')">
+            <img src="images/shorts/Dinner-thumb.jpeg" alt="애니메이션 쇼츠" loading="lazy">
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Seedance 2.0</span>
+              <p class="pm-work-card-title">애니메이션 쇼츠</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 비디오 패널 -->
+        <div class="pm-video-panel" id="pm-video-panel">
+          <video controls playsinline preload="metadata" id="pm-panel-video">
+            <source src="" type="video/mp4" id="pm-panel-source">
+            브라우저가 동영상을 지원하지 않습니다.
+          </video>
+          <div class="pm-video-panel-info">
+            <div class="pm-video-panel-header">
+              <p class="pm-video-panel-title" id="pm-panel-title"></p>
+              <button class="pm-video-panel-close" onclick="closeVideoPanel()">✕</button>
+            </div>
+            <span class="pm-video-panel-tool" id="pm-panel-tool"></span>
+            <p class="pm-video-panel-desc" id="pm-panel-desc"></p>
+          </div>
+        </div>
+
+      </div><!-- /pm-section -->
 
     </div><!-- /pm-body -->
 
@@ -2265,6 +2366,36 @@ document.addEventListener('keydown', (e) => {
     });
   }
 });
+
+// 작업물 비디오 패널
+function openVideoPanel(src, title, tool, desc, cardId) {
+  // 모든 카드 active 해제
+  document.querySelectorAll('.pm-work-card').forEach(c => c.classList.remove('active'));
+  // 선택 카드 active
+  const card = document.getElementById(cardId);
+  if (card) card.classList.add('active');
+
+  // 패널 내용 업데이트
+  const panel = document.getElementById('pm-video-panel');
+  const video = document.getElementById('pm-panel-video');
+  const source = document.getElementById('pm-panel-source');
+  source.src = src;
+  document.getElementById('pm-panel-title').textContent = title;
+  document.getElementById('pm-panel-tool').textContent = tool;
+  document.getElementById('pm-panel-desc').textContent = desc;
+  video.load();
+
+  // 패널 표시 + 스크롤
+  panel.classList.add('active');
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+function closeVideoPanel() {
+  const panel = document.getElementById('pm-video-panel');
+  const video = document.getElementById('pm-panel-video');
+  video.pause();
+  panel.classList.remove('active');
+  document.querySelectorAll('.pm-work-card').forEach(c => c.classList.remove('active'));
+}
 
 // 프로세스 카드 토글
 function toggleProcessCard(id) {
