@@ -714,6 +714,30 @@ a:hover { opacity: 0.7; }
   justify-content: center;
 }
 
+/* ── 갤러리 배너형 (가로 이미지용) ── */
+.pm-gallery-grid.banner-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.pm-gallery-grid.banner-grid .pm-gallery-item img {
+  aspect-ratio: 4/3;
+}
+.pm-gallery-grid.single-grid {
+  grid-template-columns: 1fr;
+}
+.pm-gallery-grid.single-grid .pm-gallery-item img {
+  aspect-ratio: auto;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  background: #f4f4f4;
+}
+.pm-gallery-grid.misc-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.pm-gallery-grid.misc-grid .pm-gallery-item img {
+  aspect-ratio: 3/2;
+}
+
 /* ── 작업물 그리드 (방식 A) ── */
 .pm-works-grid {
   display: grid;
@@ -2083,6 +2107,112 @@ a:hover { opacity: 0.7; }
             <div class="pm-gallery-item" onclick="openLightbox('images/ittem/7.png')">
               <img src="images/ittem/7.png" alt="주방 찌든때, 스팀으로 한 방에" loading="lazy">
               <div class="pm-gallery-label">주방 찌든때, 스팀으로 한 방에</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📢 배너 -->
+      <div class="pm-section">
+        <p class="pm-section-label">📢 &nbsp;배너</p>
+        <div class="pm-gallery">
+          <div class="pm-gallery-grid banner-grid">
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/banner1.png')">
+              <img src="images/ittem/banner1.png" alt="배너 1" loading="lazy">
+              <div class="pm-gallery-label">배너</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/banner2.png')">
+              <img src="images/ittem/banner2.png" alt="배너 2" loading="lazy">
+              <div class="pm-gallery-label">배너</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/banner3.png')">
+              <img src="images/ittem/banner3.png" alt="배너 3" loading="lazy">
+              <div class="pm-gallery-label">배너</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/banner4.png')">
+              <img src="images/ittem/banner4.png" alt="배너 4" loading="lazy">
+              <div class="pm-gallery-label">배너</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/banner5.png')">
+              <img src="images/ittem/banner5.png" alt="배너 5" loading="lazy">
+              <div class="pm-gallery-label">배너</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🎉 이벤트 이미지 -->
+      <div class="pm-section">
+        <p class="pm-section-label">🎉 &nbsp;이벤트 이미지</p>
+        <div class="pm-gallery">
+          <div class="pm-gallery-grid">
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event1.png')">
+              <img src="images/ittem/event1.png" alt="이벤트 1" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event2.png')">
+              <img src="images/ittem/event2.png" alt="이벤트 2" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event3.png')">
+              <img src="images/ittem/event3.png" alt="이벤트 3" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event4.png')">
+              <img src="images/ittem/event4.png" alt="이벤트 4" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event5.png')">
+              <img src="images/ittem/event5.png" alt="이벤트 5" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event6.png')">
+              <img src="images/ittem/event6.png" alt="이벤트 6" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event7.png')">
+              <img src="images/ittem/event7.png" alt="이벤트 7" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/event8.png')">
+              <img src="images/ittem/event8.png" alt="이벤트 8" loading="lazy">
+              <div class="pm-gallery-label">이벤트</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📋 기타 작업물 -->
+      <div class="pm-section">
+        <p class="pm-section-label">📋 &nbsp;기타 작업물</p>
+        <div class="pm-gallery">
+          <div class="pm-gallery-grid misc-grid">
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/apartment-flyer.png')">
+              <img src="images/ittem/apartment-flyer.png" alt="아파트 전단지" loading="lazy">
+              <div class="pm-gallery-label">전단지</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/logo-namecard.png')">
+              <img src="images/ittem/logo-namecard.png" alt="로고 & 명함 디자인" loading="lazy">
+              <div class="pm-gallery-label">로고 & 명함</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/warning1.png')">
+              <img src="images/ittem/warning1.png" alt="안내 이미지 1" loading="lazy">
+              <div class="pm-gallery-label">안내 이미지</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/warning2.png')">
+              <img src="images/ittem/warning2.png" alt="안내 이미지 2" loading="lazy">
+              <div class="pm-gallery-label">안내 이미지</div>
+            </div>
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/warning3.png')">
+              <img src="images/ittem/warning3.png" alt="안내 이미지 3" loading="lazy">
+              <div class="pm-gallery-label">안내 이미지</div>
+            </div>
+          </div>
+          <!-- 상세페이지 (세로 길이가 길 수 있어 단독 배치) -->
+          <div class="pm-gallery-grid single-grid" style="margin-top:10px;">
+            <div class="pm-gallery-item" onclick="openLightbox('images/ittem/osmo6-page.png')">
+              <img src="images/ittem/osmo6-page.png" alt="osmo6 상세페이지" loading="lazy">
+              <div class="pm-gallery-label">상세페이지</div>
             </div>
           </div>
         </div>
