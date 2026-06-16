@@ -789,6 +789,38 @@ a:hover { opacity: 0.7; }
   line-height: 1.3;
 }
 
+/* 네이버 클립 카드 */
+.pm-naver-thumb {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: linear-gradient(145deg, #1ec800 0%, #03c75a 50%, #00a846 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  border-radius: 8px 8px 0 0;
+}
+.pm-naver-play {
+  font-size: 2.2rem;
+  color: #fff;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
+.pm-naver-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fff;
+  background: rgba(0,0,0,0.22);
+  padding: 0.22rem 0.55rem;
+  border-radius: 3px;
+}
+.pm-work-card.pm-naver-card:hover .pm-naver-thumb {
+  filter: brightness(1.08);
+}
+
 /* 비디오 패널 */
 .pm-video-panel {
   display: none;
@@ -2380,6 +2412,50 @@ a:hover { opacity: 0.7; }
             <div class="pm-work-card-info">
               <span class="pm-work-card-tool">Meta AI</span>
               <p class="pm-work-card-title">디저트숲에서 만난 친구</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card pm-naver-card" onclick="window.open('https://m.blog.naver.com/sodeepka/clip/14846898','_blank')">
+            <div class="pm-naver-thumb">
+              <span class="pm-naver-play">▶</span>
+              <span class="pm-naver-badge">NAVER CLIP</span>
+            </div>
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Google Veo · ChatGPT · CapCut</span>
+              <p class="pm-work-card-title">천안아산모든정보 앱 홍보 영상</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card pm-naver-card" onclick="window.open('https://m.blog.naver.com/sodeepka/clip/14865543','_blank')">
+            <div class="pm-naver-thumb">
+              <span class="pm-naver-play">▶</span>
+              <span class="pm-naver-badge">NAVER CLIP</span>
+            </div>
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Google Veo · ChatGPT · CapCut</span>
+              <p class="pm-work-card-title">관광두레 청년창업지원 공고 홍보 영상</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card pm-naver-card" onclick="window.open('https://m.blog.naver.com/sodeepka/clip/14890921','_blank')">
+            <div class="pm-naver-thumb">
+              <span class="pm-naver-play">▶</span>
+              <span class="pm-naver-badge">NAVER CLIP</span>
+            </div>
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Google Veo · ChatGPT · CapCut</span>
+              <p class="pm-work-card-title">천안여성인력개발센터 홍보 영상</p>
+            </div>
+          </div>
+
+          <div class="pm-work-card pm-naver-card" onclick="window.open('https://m.blog.naver.com/sodeepka/clip/14902093','_blank')">
+            <div class="pm-naver-thumb">
+              <span class="pm-naver-play">▶</span>
+              <span class="pm-naver-badge">NAVER CLIP</span>
+            </div>
+            <div class="pm-work-card-info">
+              <span class="pm-work-card-tool">Google Veo · ChatGPT · CapCut</span>
+              <p class="pm-work-card-title">메디쿠아 이온수기 홍보 영상</p>
             </div>
           </div>
         </div>
