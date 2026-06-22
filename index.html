@@ -1203,7 +1203,18 @@ a:hover { opacity: 0.7; }
     <h2 class="section-title">Works</h2>
     <div class="projects-grid">
 
-      <!-- 1. FIFTH&OATS 브랜딩 — 모달로 열기 -->
+      <!-- 1. DipitIn 브랜딩 — 모달로 열기 -->
+      <div class="project-card" onclick="openProjectModal('dipitin')" style="cursor:pointer;">
+        <div class="project-image-placeholder">
+          <img src="dipitin-thumb.png" alt="DipitIn Branding" class="project-image-preview">
+        </div>
+        <div class="project-info">
+          <h3>DipitIn</h3>
+          <p>2026 · 브랜딩</p>
+        </div>
+      </div>
+
+      <!-- 2. FIFTH&OATS 브랜딩 — 모달로 열기 -->
       <div class="project-card" onclick="openProjectModal('fifthoats')" style="cursor:pointer;">
         <div class="project-image-placeholder">
           <img src="fifth-oats-thumb.png" alt="FIFTH&amp;OATS Branding" class="project-image-preview">
@@ -1349,6 +1360,68 @@ a:hover { opacity: 0.7; }
   </footer>
 
 </div><!-- /container -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     DipitIn 프로젝트 모달
+════════════════════════════════════════════════════════════ -->
+<div class="pm-overlay" id="pm-dipitin" role="dialog" aria-modal="true" aria-labelledby="pm-title-dipitin">
+  <div class="pm-modal">
+    <button class="pm-close" onclick="closeProjectModal('dipitin')" aria-label="닫기">✕</button>
+    <div class="pm-modal-inner">
+
+      <!-- 헤더 -->
+      <div class="pm-header">
+        <div class="pm-title-row">
+          <h2 class="pm-title" id="pm-title-dipitin">DipitIn<br>브랜딩</h2>
+          <div class="pm-meta">
+            <div class="pm-meta-item"><span class="pm-meta-label">카테고리</span><span class="pm-meta-value">브랜드 디자인</span></div>
+            <div class="pm-meta-item"><span class="pm-meta-label">툴</span><span class="pm-meta-value">ChatGPT · 나노바나나 · Seedance · Canva</span></div>
+            <div class="pm-meta-item"><span class="pm-meta-label">연도</span><span class="pm-meta-value">2026</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 기획 -->
+      <div class="pm-section">
+        <p class="pm-section-label">🎯 &nbsp;기획</p>
+        <div class="pm-section-content">
+          <p>아이들은 그냥 먹는 것보다 <strong>재미있게 먹는 것</strong>을 더 좋아한다는 관찰에서 출발했습니다. 초콜릿과 스프링클을 찍어 먹는 막대과자 브랜드 <strong>DipitIn</strong>을 기획하여, 즐거움과 생동감 있는 브랜드 이미지를 표현하고자 했습니다.</p>
+        </div>
+      </div>
+
+      <!-- 실행 -->
+      <div class="pm-section">
+        <p class="pm-section-label">⚙️ &nbsp;실행 프로세스</p>
+        <div class="pm-section-content">
+          <p><strong>1. 브랜드 정의</strong> — ChatGPT와 함께 브랜드 컨셉, 타깃, 톤앤매너를 정의했습니다.</p>
+          <p><strong>2. 비주얼 생성</strong> — 나노바나나로 로고, 캐릭터, 패키징 이미지를 생성했습니다.</p>
+          <p><strong>3. 광고 영상</strong> — 생성된 이미지를 기반으로 스토리보드를 만들어 Seedance 2.0으로 광고 영상 2편을 제작했습니다.</p>
+          <p><strong>4. 브랜딩 페이지</strong> — 결과물을 모아 Canva로 브랜드 소개 웹페이지를 제작했습니다.</p>
+        </div>
+      </div>
+
+      <!-- 브랜딩 사이트 미리보기 -->
+      <div class="pm-section">
+        <p class="pm-section-label">🔗 &nbsp;브랜딩 사이트</p>
+        <a class="pm-visit-btn" href="http://funnyslime.my.canva.site/dipitin" target="_blank" rel="noopener noreferrer">
+          DipitIn 브랜딩 사이트 보기 ↗
+        </a>
+      </div>
+
+      <!-- 역량 -->
+      <div class="pm-section">
+        <p class="pm-section-label">💡 &nbsp;드러난 역량</p>
+        <div class="pm-section-content">
+          <p><strong>AI 풀 파이프라인 기획</strong> — 브랜드 정의부터 로고·캐릭터·패키징·광고 영상·웹페이지까지 AI 툴만으로 완성했습니다.</p>
+          <p><strong>브랜드 스토리텔링</strong> — 어린이 타깃에 맞는 컨셉과 비주얼 언어를 일관되게 적용했습니다.</p>
+          <p><strong>멀티포맷 콘텐츠 제작</strong> — 이미지·영상·웹페이지를 아우르는 통합 브랜딩 작업을 수행했습니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /pm-overlay #dipitin -->
 
 
 <!-- ════════════════════════════════════════════════════════════
